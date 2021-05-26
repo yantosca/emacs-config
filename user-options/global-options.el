@@ -1,7 +1,6 @@
 ;;; init-global.el --- Define various global settings for Emacs
 ;;
-;; Bob Yantosca (yantosca@seas.harvard.edu)
-;; 25 May 2021
+;; 25 May 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
 
 ;; Whatever your configuration is, you get TWO WINDOWS SPLIT VERTICAL. If
 ;; it is already the case, the left and right buffers are switched.
