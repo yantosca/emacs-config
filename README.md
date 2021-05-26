@@ -31,16 +31,16 @@ Then edit your `~/.emacs.d/init.el` file to contain only these lines:
 
 The `user_options` folder contains several `*.el` files that you can customize for your own setup:
 
-  *`cmake-mode.el`: Sets indent, formatting etc. options for cmake-mode.
-  *`display-options.el`: Sets general display options (timestamp, line/number, scrollbar, etc.) for Emacs frames.
-  *`frame-options-desktop.el`: Sets the window and frame size for a typical desktop display (2 vertical frames side by side).
-  *`frame-options-laptop.el`: Sets the window and frame size for a typical laptop setup (1 vertical frame).
-  *`global-options.el`: Sets various global settings (backup & save, repositories, other misc. settings)
-  *`keybind-options.el`: Sets keybindings for executing various functions or macros.
-  *`mode-options.el`: Sets indent and formatting options for several common major modes (f90-mode, python-mode, etc.)
-  *`motion-options.el`: Sets cursor and mouse scroll options.
-  *`term-options.el`: Sets options for the emacs terminal (aka "term").
-  *`yaml-mode.el`: Sets indentation and formatting options for yaml-mode.
+  - `cmake-mode.el`: Sets indent, formatting etc. options for cmake-mode.
+  - `display-options.el`: Sets general display options (timestamp, line/number, scrollbar, etc.) for Emacs frames.
+  - `frame-options-desktop.el`: Sets the window and frame size for a typical desktop display (2 vertical frames side by side).
+  - `frame-options-laptop.el`: Sets the window and frame size for a typical laptop setup (1 vertical frame).
+  - `global-options.el`: Sets various global settings (backup & save, repositories, other misc. settings)
+  - `keybind-options.el`: Sets keybindings for executing various functions or macros.
+  - `mode-options.el`: Sets indent and formatting options for several common major modes (f90-mode, python-mode, etc.)
+  - `motion-options.el`: Sets cursor and mouse scroll options.
+  - `term-options.el`: Sets options for the emacs terminal (aka "term").
+  - `yaml-mode.el`: Sets indentation and formatting options for yaml-mode.
 
 ### color-theme-6.6.0 directory
 
