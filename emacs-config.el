@@ -85,8 +85,8 @@
 ;; NOTE: Only pick one of frame-options-laptop or frame-options-desktop!
 (require 'global-options)           ;; Global settings & func defs
 (require 'display-options)          ;; Display customizations
-(require 'frame-options-laptop)     ;; Window & frame size options
-;(require 'frame-options-desktop)   ;; Window & frame size options
+;(require 'frame-options-laptop)     ;; Window & frame size options
+(require 'frame-options-desktop)   ;; Window & frame size options
 (require 'keybind-options)          ;; Emacs keybindings
 (require 'mode-options)             ;; Major mode options
 (require 'motion-options)           ;; Cursor & mouse motion options
