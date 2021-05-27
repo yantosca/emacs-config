@@ -104,7 +104,7 @@
 
 ;; Pick the "Yantosca" custom color-theme
 (require 'color-theme)
-(setq color-theme-global t)
+(setq color-theme-is-global t)
 (color-theme-initialize)
 (color-theme-yantosca)
 
