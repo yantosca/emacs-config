@@ -51,4 +51,12 @@
 ;;(setq ediff-split-window-function 'split-window-horizontally) ;; horizontal
 (setq ediff-split-window-function 'split-window-vertically)     ;; vertical
 
+;; Subtly flash the mode line when an exception (e.g. compiler warning) occurs
+(setq visible-bell nil
+      ring-bell-function 'flash-mode-line)
+(defun flash-mode-line ()
+  (invert-face 'mode-line)
+  (run-with-timer 0.1 nil #'invert-face 'mode-line))
+
+
 (provide 'display-options)
