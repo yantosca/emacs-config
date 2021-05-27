@@ -6,11 +6,11 @@
 ;; FONTS - customize to look best on your system!
 ;;
 ;; Some good options (note: 120 = 12pt, etc)
-;; (1) "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" 
-;; (2) "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1" 
+;; (1) "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1"
+;; (2) "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1"
 ;; (3) "-*-Lucidatypewriter-*-R-*-*-*-140-*-*-*-*-iso8859-1"
 ;; (4) "-*-Lucidatypewriter-Bold-R-*-*-*-130-*-*-*-*-iso8859-1"
-;; (5) "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" 
+;; (5) "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1"
 ;;=============================================================================
 (set-face-font
  'default "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
@@ -19,9 +19,10 @@
 ;; COLOR SETTINGS - customize
 ;;=============================================================================
 
+;; Comment out since we are now using a color theme
 ;; Only load the background color if we are running Emacs in Xwindows
-(when (display-graphic-p)
-  (set-face-background 'default "gray75"))
+;(when (display-graphic-p)
+;  (set-face-background 'default "gray75"))
 
 ;; "COLORIZATION" COLORS FOR CODE
 (custom-set-faces
@@ -42,12 +43,7 @@
  '(font-lock-string-face ((t (:foreground "green4"))))
  '(font-lock-type-face ((t (:foreground "brown"))))
  '(font-lock-variable-name-face ((t (:foreground "blue"))))
- '(sh-heredoc ((((class color) (background light)) (:foreground "green4"))))
- '(term-color-black ((t (:background "black" :foreground "black"))))
- '(term-color-cyan ((t (:background "cyan" :foreground "cyan"))))
- '(term-color-green ((t (:background "green3" :foreground "green3"))))
- '(term-color-magenta ((t (:background "dark magenta" :foreground "dark magenta")))
- '(term-color-yellow ((t (:background "yellow" :foreground "yellow"))))))
+ '(sh-heredoc ((((class color) (background light)) (:foreground "green4")))))
 ;
 ;; Set syntax highlighting for diff mode (*.diff files)
 (defun update-diff-colors ()
@@ -74,36 +70,43 @@
  '(global-font-lock-mode t nil (font-lock))
  '(package-selected-packages '(better-shell magit yasnippet-classic-snippets))
  '(query-user-mail-address nil)
- '(term-default-fg-color "LemonChiffon")
- '(term-default-bg-color "DarkSlateGray")
  '(user-mail-address "yantosca@seas.harvard.edu"))
 
 ;;=============================================================================
-;; Load customizations that are less likely to be modified by the user.
-;; We have abstracted these into separate files in the ~/.emacs.d folder.
+;; USER CUSTOMIZATIONS
+;; We have abstracted these into separate *.el (Emacs-Lisp) files in
+;; the emacs-config/user-options folder.  Edit these to your tastes.
 ;;=============================================================================
 
 ;; Look for config files (*.el) in these directories
 (add-to-list 'load-path "~/.emacs.d/emacs-config/user-options")
-(add-to-list 'load-path "~/.emacs.d/emacs-config/color-theme-6.6.0/")
 
 ;; Load user-customizable options
 ;; NOTE: Only pick one of frame-options-laptop or frame-options-desktop!
-(require 'global-options)         ;; Global settings & func defs
-(require 'display-options)        ;; Display customizations
-(require 'frame-options-laptop)   ;; Window & frame size options
-;(require 'frame-options-desktop)  ;; Window & frame size options
-(require 'keybind-options)        ;; Emacs keybindings
-(require 'mode-options)           ;; Major mode options
-(require 'motion-options)         ;; Cursor & mouse motion options
-(require 'term-options)           ;; Terminal options w/in emacs
-(require 'color-theme)            ;; Color themes
+(require 'global-options)           ;; Global settings & func defs
+(require 'display-options)          ;; Display customizations
+(require 'frame-options-laptop)     ;; Window & frame size options
+;(require 'frame-options-desktop)   ;; Window & frame size options
+(require 'keybind-options)          ;; Emacs keybindings
+(require 'mode-options)             ;; Major mode options
+(require 'motion-options)           ;; Cursor & mouse motion options
+(require 'term-options)             ;; Terminal options w/in emacs
 
-;(require 'color-theme-buffer-local)
-;(add-hook 'term-mode
-;	  (lambda nil
-;	    (color-theme-buffer-local 'color-theme-gnome (current-buffer))))
-;EOC
+;;=============================================================================
+;; COLOR THEME CUSTOMIZATIONS
+;; We now use the "color-theme-yantosca" color theme by default.
+;; This is based off of "color-theme-gnome" with further customizations
+;; to match the Xterminal color scheme of Bob Yantosca.
+;;=============================================================================
+
+;; Look for config files (*.el) in these directories
+(add-to-list 'load-path "~/.emacs.d/emacs-config/color-theme-6.6.1/")
+
+;; Pick the "Yantosca" custom color-theme
+(require 'color-theme)
+(setq color-theme-global t)
+(color-theme-initialize)
+(color-theme-yantosca)
 
 
 (provide 'emacs-config)

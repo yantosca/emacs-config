@@ -32,7 +32,8 @@
 ;; always use bash
 (defvar my-term-shell "/bin/bash")
 (defadvice term (before force-bash)
-  (interactive (list my-term-shell)))
+  (interactive
+   (list my-term-shell)))
 (ad-activate 'term)
 
 ;; utf8

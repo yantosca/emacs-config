@@ -13536,4 +13536,36 @@ Created by Dave Benjamin <ramen@ramenfest.com> Dec 23 2005."
     (underline ((t (:underline t))))
     (variable-pitch ((t (:family "helv")))))))
 
+
+(defun color-theme-yantosca ()
+  "LemonChiffon on DarkSlateGray scheme, modified from `color-theme-gnome`."
+  (interactive)
+  (color-theme-install
+   '(color-theme-yantosca
+     ((foreground-color . "LemonChiffon")
+      (background-color . "DarkSlateGray")
+      (background-mode . dark))
+     (default ((t (nil))))
+     (region ((t (:foreground "cyan" :background "dark cyan"))))
+     (underline ((t (:foreground "yellow" :underline t))))
+     (modeline ((t (:foreground "dark cyan" :background "LemonChiffon"))))
+     (modeline-buffer-id ((t (:foreground "dark cyan" :background "LemonChiffon"))))
+     (modeline-mousable ((t (:foreground "dark cyan" :background "LemonChiffon"))))
+     (modeline-mousable-minor-mode ((t (:foreground "dark cyan" :background "LemonChiffon"))))
+      (italic ((t (:foreground "red2" :italic t))))
+     (bold-italic ((t (:foreground "red2" :bold t :italic t))))
+     (font-lock-builtin-face ((t (:foreground "red2"))))
+     (font-lock-comment-face ((t (:foreground "MediumOrchid1"))))
+     (font-lock-doc-face ((t (:foreground "chartreuse1"))))
+     (font-lock-doc-string-face ((t (:foreground "chartreuse1"))))
+     (font-lock-function-name-face ((t (:foreground "red2"))))
+     (font-lock-keyword-face ((t (:foreground "DarkOrange1"))))
+     (font-lock-other-type-face ((t (:foreground "DeepSkyBlue"))))
+     (font-lock-preprocessor-face ((t (:foreground "red2"))))
+     (font-lock-reference-face ((t (:foreground "red2"))))
+     (font-lock-string-face ((t (:foreground "chartreuse1"))))
+     (font-lock-type-face ((t (:foreground "DarkOrange1"))))
+     (font-lock-variable-name-face ((t (:foreground "DeepSkyBlue"))))
+     (bold ((t (:bold)))))))
+
 ;;; color-theme-library.el ends here
