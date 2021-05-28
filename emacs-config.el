@@ -78,8 +78,9 @@
 ;; the emacs-config/user-options folder.  Edit these to your tastes.
 ;;=============================================================================
 
-;; Look for config files (*.el) in these directories
+;; Look for Emacs-Lisp config files (*.el) in these directories
 (add-to-list 'load-path "~/.emacs.d/emacs-config/user-options")
+(add-to-list 'load-path "~/.emacs.d/emacs-config/emacs-libvterm")
 
 ;; Load user-customizable options
 ;; NOTE: Only pick one of frame-options-laptop or frame-options-desktop!
@@ -90,6 +91,7 @@
 (require 'keybind-options)          ;; Emacs keybindings
 (require 'mode-options)             ;; Major mode options
 (require 'motion-options)           ;; Cursor & mouse motion options
+(require 'vterm)                    ;; Vterm native-compiled terminal
 (require 'term-options)             ;; Terminal options w/in emacs
 
 ;;=============================================================================
@@ -99,14 +101,15 @@
 ;; to match the Xterminal color scheme of Bob Yantosca.
 ;;=============================================================================
 
-;; Look for config files (*.el) in these directories
+;; Look for Emacs-Lisp config files (*.el) in these directories
 (add-to-list 'load-path "~/.emacs.d/emacs-config/color-theme-6.6.1/")
 
-;; Pick the "Yantosca" custom color-theme
-(require 'color-theme)
-(setq color-theme-is-global t)
-(color-theme-initialize)
-(color-theme-yantosca)
+;; Pick the "Yantosca" custom color-theme if we are running in X11
+(when (display-graphic-p)
+  (require 'color-theme)
+  (setq color-theme-is-global t)
+  (color-theme-initialize)
+  (color-theme-yantosca)
 
 
 (provide 'emacs-config)
