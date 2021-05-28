@@ -93,6 +93,7 @@
 (require 'motion-options)           ;; Cursor & mouse motion options
 (require 'vterm)                    ;; Vterm native-compiled terminal
 (require 'term-options)             ;; Terminal options w/in emacs
+(require 'eterm-256color)           ;; Extended color options for term mode
 
 ;;=============================================================================
 ;; COLOR THEME CUSTOMIZATIONS
