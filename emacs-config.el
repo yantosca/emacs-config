@@ -86,14 +86,18 @@
 ;; NOTE: Only pick one of frame-options-laptop or frame-options-desktop!
 (require 'global-options)           ;; Global settings & func defs
 (require 'display-options)          ;; Display customizations
-;(require 'frame-options-laptop)     ;; Window & frame size options
-(require 'frame-options-desktop)   ;; Window & frame size options
 (require 'keybind-options)          ;; Emacs keybindings
 (require 'mode-options)             ;; Major mode options
 (require 'motion-options)           ;; Cursor & mouse motion options
-(require 'vterm)                    ;; Vterm native-compiled terminal
-(require 'term-options)             ;; Terminal options w/in emacs
-(require 'eterm-256color)           ;; Extended color options for term mode
+(require 'term-options)             ;; term customizations w/in emacs
+(require 'vterm)                    ;; vterm native-compiled terminal
+(require 'vterm-options)            ;; vterm customizations w/in emacs
+(require 'xterm-color)              ;; Color Xterminal options
+
+;; Set the window frame options depending on the user's choice in ../init.el
+(if two-vertical-frames
+    (require 'frame-options-desktop)
+  (require 'frame-options-laptop))
 
 ;;=============================================================================
 ;; COLOR THEME CUSTOMIZATIONS
@@ -110,7 +114,7 @@
   (require 'color-theme)
   (setq color-theme-is-global t)
   (color-theme-initialize)
-  (color-theme-yantosca)
+  (color-theme-yantosca))
 
 
 (provide 'emacs-config)

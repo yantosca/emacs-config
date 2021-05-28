@@ -93,7 +93,7 @@
         ("M-." . term-send-raw-meta)))
 
 ;; Open a uniquely-named terminal
-(defun unique-bash-terminal ()
+(defun unique-bash-term ()
   "Opens a uniquely-named terminal running bash."
   (interactive)
   (set-buffer (make-term "terminal" my-term-shell))
@@ -104,7 +104,7 @@
   )
 
 ; Keybindings for unique-bash-terminal
-(global-set-key [(control f1)] 'unique-bash-terminal)
+(global-set-key [kbd "C-q"] 'unique-bash-term)
 (global-set-key (kbd "C-;") "\C-c \C-j") ;; Line mode
 (global-set-key (kbd "C-'") "\C-c \C-k") ;; Char mode
 
