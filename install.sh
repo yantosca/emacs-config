@@ -12,10 +12,10 @@ echo "-----------------------"
 echo "Installing emacs-config"
 echo "-----------------------"
 echo ""
-echo "1. Copying the sample init.el file to ~/.emacs.d"
+echo "1. Copying the sample init.el file to .emacs.d"
 echo "   You can customize this further."
 echo ""
-cp -f ./sample-init-el/init.el ~/.emacs.d/init.el
+cp -f ./sample-init-el/init.el ../init.el
 
 # Load all submodules
 echo "2. Attempting to build the vterm module. If this fails"
