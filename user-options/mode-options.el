@@ -11,7 +11,10 @@
 (autoload 'idl-mode "idl" "Major mode for editing IDL/WAVE CL .pro files" t)
 (autoload 'idlwave-mode  "idlwave"  "IDLWAVE Mode"  t)
 
-;; Load different major modes depending on the file extension
+;; Use org-mode by default ...
+(setq-default major-mode 'org-mode)
+
+;; ... but load the appropriate mode for different file types
 (setq auto-mode-alist
       (append '(("\\.cmake"                 . cmake-mode)
                 ("\\.c$"                    . c-mode)
@@ -26,8 +29,9 @@
 		("\\.H$"                    . f90-mode)
 		("\\.F90"                   . f90-mode)
 		("\\.kpp"                   . f90-mode)
-		("\\.tex$"                  . latex-mode)
+		("\\.tex$"                  . org-mode)
 		("\\.m$"                    . matlab-mode)
+		("\\.md$"                   . org-mode)
 		("\\.sh$"                   . shell-script-mode)
 		("\\.env$"                  . shell-script-mode)
 		("\\.centos7$"              . shell-script-mode)
@@ -41,6 +45,7 @@
 (add-to-list 'auto-mode-alist '(".bashrc"               . shell-script-mode))
 (add-to-list 'auto-mode-alist '(".bash_aliases"         . shell-script-mode))
 (add-to-list 'auto-mode-alist '(".my_personal_settings" . shell-script-mode))
+(add-to-list 'auto-mode-alist '("README"                . org-mode))
 
 ;;-----------------------------------------------------------------------------
 ;; FORTRAN MODE CUSTOMIZATIONS (aka Fortran 77 style)

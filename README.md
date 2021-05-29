@@ -11,15 +11,19 @@ This repository contains several settings for Emacs in a directory that can be c
 ```console
 $ cd ~/.emacs.d
 $ git clone https://github.com/yantosca/emacs-config.git
+$ cd emacs-config
+$ ./install.sh
 ```
+This will copy an init.el file to your ~/.emacs.d folder where you can
+customize the following settings:
 
-Then edit your `~/.emacs.d/init.el` file to contain only these lines:
+  - Window font
+  - Display frame options:
+    - 2 vertical frames, optimized for desktop
+    - 1 vertical frame, optmized for laptop
+  - Enable or disable the vterm terminal module
 
-```lisp
-;; Load emacs configuration from the emacs-config subfolder or submodule
-(add-to-list 'load-path "~/.emacs.d/emacs-config)
-(require 'emacs-config)
-```
+All of the other settings will be defined by the various configuration files (*.el) in the emacs-config directory structure.
 
 ## Contents
 
@@ -42,7 +46,7 @@ The `user_options` folder contains several `*.el` files that you can customize f
   - `term-options.el`: Sets options for the emacs terminal (aka "term").
   - `yaml-mode.el`: Sets indentation and formatting options for yaml-mode.
 
-### color-theme-6.6.0 directory
+### color-theme-6.6.1 directory
 
 This folder contains the `color-theme` package.  You can use this to set the background color of frames.
 

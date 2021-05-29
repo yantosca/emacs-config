@@ -3,26 +3,8 @@
 ;; 26 May 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
 
 ;;=============================================================================
-;; FONTS - customize to look best on your system!
-;;
-;; Some good options (note: 120 = 12pt, etc)
-;; (1) "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1"
-;; (2) "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1"
-;; (3) "-*-Lucidatypewriter-*-R-*-*-*-140-*-*-*-*-iso8859-1"
-;; (4) "-*-Lucidatypewriter-Bold-R-*-*-*-130-*-*-*-*-iso8859-1"
-;; (5) "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1"
-;;=============================================================================
-(set-face-font
- 'default "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
-
-;;=============================================================================
 ;; COLOR SETTINGS - customize
 ;;=============================================================================
-
-;; Comment out since we are now using a color theme
-;; Only load the background color if we are running Emacs in Xwindows
-;(when (display-graphic-p)
-;  (set-face-background 'default "gray75"))
 
 ;; "COLORIZATION" COLORS FOR CODE
 (custom-set-faces
@@ -82,20 +64,22 @@
 (add-to-list 'load-path "~/.emacs.d/emacs-config/user-options")
 (add-to-list 'load-path "~/.emacs.d/emacs-config/emacs-libvterm")
 
-;; Load user-customizable options
-;; NOTE: Only pick one of frame-options-laptop or frame-options-desktop!
+;; Load several user-customizable settings
 (require 'global-options)           ;; Global settings & func defs
 (require 'display-options)          ;; Display customizations
 (require 'keybind-options)          ;; Emacs keybindings
 (require 'mode-options)             ;; Major mode options
 (require 'motion-options)           ;; Cursor & mouse motion options
 (require 'term-options)             ;; term customizations w/in emacs
-(require 'vterm)                    ;; vterm native-compiled terminal
-(require 'vterm-options)            ;; vterm customizations w/in emacs
 (require 'xterm-color)              ;; Color Xterminal options
 
+;; Enable vterm (compiled module, faster than term)
+(when enable-vterm
+  (require 'vterm)                  ;; vterm native-compiled terminal
+  (require 'vterm-options))         ;; vterm customizations w/in emacs
+
 ;; Set the window frame options depending on the user's choice in ../init.el
-(if two-vertical-frames
+(if enable-two-vertical-frames
     (require 'frame-options-desktop)
   (require 'frame-options-laptop))
 
@@ -117,4 +101,5 @@
   (color-theme-yantosca))
 
 
+;; Export this configuration
 (provide 'emacs-config)
