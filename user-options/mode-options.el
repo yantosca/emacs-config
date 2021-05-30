@@ -180,7 +180,10 @@
 ;;-----------------------------------------------------------------------------
 (add-to-list 'load-path
 	     "~/.emacs.d/emacs-config/elpa/yasnippet-0.14.0")
+(add-to-list 'load-path
+	     "~/.emacs.d/emacs-config/elpa/yasnippet-classic-snippets-1.0.2")
 (require 'yasnippet)
+(require 'yasnippet-classic-snippets)
 (yas-global-mode 1)
 
 
