@@ -12,8 +12,9 @@
 ;; (4) "-*-Lucidatypewriter-Bold-R-*-*-*-130-*-*-*-*-iso8859-1"
 ;; (5) "-*-source code pro-Bold-R-*-*-*-140-*-*-*-*-iso8859-1"
 ;;=============================================================================
-(set-face-font
- 'default "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
+(when (display-graphic-p)
+  (set-face-font
+   'default "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" ))
 
 ;;=============================================================================
 ;; Set variables to toggle various options on (t) or off (nil)
