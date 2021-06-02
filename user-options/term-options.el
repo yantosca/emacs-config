@@ -104,7 +104,7 @@
   )
 
 ; Keybindings for unique-bash-terminal
-(global-set-key [kbd "C-q"] 'unique-bash-term)
+(global-set-key (kbd "C-q") 'unique-bash-term)
 (global-set-key (kbd "C-;") "\C-c \C-j") ;; Line mode
 (global-set-key (kbd "C-'") "\C-c \C-k") ;; Char mode
 
