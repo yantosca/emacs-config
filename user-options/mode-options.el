@@ -16,7 +16,7 @@
 
 ;; ... but load the appropriate mode for different file types
 (setq auto-mode-alist
-      (append '(("\\.cmake"                 . cmake-mode)
+      (append '(("\\.cmake$"                . cmake-mode)
                 ("\\.c$"                    . c-mode)
 		("\\.C$"                    . c++-mode)
 		("\\.cc$"                   . c++-mode)
@@ -30,6 +30,8 @@
 		("\\.F90"                   . f90-mode)
 		("\\.kpp"                   . f90-mode)
 		("\\.tex$"                  . org-mode)
+		("\\.eqn$"                  . txt-mode)
+		("\\.log*$"                 . txt-mode)
 		("\\.m$"                    . matlab-mode)
 		("\\.md$"                   . org-mode)
 		("\\.sh$"                   . shell-script-mode)
