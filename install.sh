@@ -17,6 +17,14 @@ echo "   You can customize this further."
 echo ""
 cp -f ./sample-init-el/init.el ../init.el
 
+# Skip building the emacs vterm if any argument is passed
+if [[ "x${1}" != "x" ]]; then
+    echo "2. Skip building emacs-libvterm..."
+    echo ""
+    echo "3. Done!"
+    return
+fi
+
 # Load all submodules
 echo "2. Attempting to build the vterm module. If this fails"
 echo "   on your system, you can disable vterm by setting"
