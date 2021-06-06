@@ -45,7 +45,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Put vertical scroll bar on the left (bmy, 5/30/17)
-(set-scroll-bar-mode 'left)
+(when (display-graphic-p)
+  (set-scroll-bar-mode 'left))
 
 ;; Set Ediff window splitting
 ;;(setq ediff-split-window-function 'split-window-horizontally) ;; horizontal
