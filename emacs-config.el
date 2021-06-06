@@ -70,13 +70,14 @@
 (require 'keybind-options)          ;; Emacs keybindings
 (require 'mode-options)             ;; Major mode options
 (require 'motion-options)           ;; Cursor & mouse motion options
-(require 'term-options)             ;; term customizations w/in emacs
 (require 'xterm-color)              ;; Color Xterminal options
 
-;; Enable vterm (compiled module, faster than term)
+;; Terminal emulation: enable vterm or term (these are mutually exclusive)
 (when enable-vterm
-  (require 'vterm)                  ;; vterm native-compiled terminal
-  (require 'vterm-options))         ;; vterm customizations w/in emacs
+    (require 'vterm)                ;; vterm native-compiled terminal
+    (require 'vterm-options))       ;; vterm customizations w/in emacs
+(unless enable-vterm
+    (require 'term-options))        ;; term customizations w/in emacs
 
 ;; Set the window frame options depending on the user's choice in ../init.el
 (if enable-two-vertical-frames

@@ -2,6 +2,8 @@
 ;;
 ;; 25 May 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
 ;;
+;; NOTE: Will be ignored if enable-vterm is set to nil.
+;;
 ;; see http://stackoverflow.com/questions/2886184/copy-paste-in-emacs-ansi-term-shell/2886539#2886539
 
 ;; {{ @see http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html
@@ -44,8 +46,6 @@
 	    (multi-vterm)
 	  (switch-to-buffer b))))
 
-(define-key global-map (kbd "C-x e") 'multi-vterm)
-
 (defun vterm-send-kill-whole-line ()
   "Kill whole line in vterm mode."
   (interactive)
@@ -57,16 +57,22 @@
   (interactive)
   (vterm-send-raw-string "\C-k"))
 
+(defun vterm-send-escape ()
+  (vterm-send-key "<escape>"))
+
 ;; Open a uniquely-named vterminal
 (defun unique-bash-vterm ()
   "Opens a uniquely-named vterminal running bash."
   (interactive)
   (vterm)
+  (vterm-send-key "<escape>")
   (rename-uniquely)
   )
 
-; Keybindings for unique-bash-vterminal
+;; Keybindings
 (global-set-key [(control f1)] 'unique-bash-vterm)
+(global-set-key (kbd "C-q") 'unique-bash-vterm)
+(define-key global-map (kbd "C-x e") 'multi-vterm)
 
 
 (provide 'vterm-options)

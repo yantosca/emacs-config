@@ -55,10 +55,9 @@
 (global-set-key [(meta p)]             'scroll-n-lines-behind)
 (global-set-key [(control tab)]        'other-window)
 
-;; Terminals
+;; Shell
 (global-set-key (kbd "C-'") 'better-shell-shell)
 (global-set-key (kbd "C-;") 'better-shell-remote-open)
-(global-set-key [(control f1)] 'term)
 
 
 (provide 'keybind-options)

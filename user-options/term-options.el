@@ -1,7 +1,9 @@
 ;;; term-options.el -- Options for the Emacs "term" mode
 ;;
 ;; 25 May 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
-
+;;
+;; NOTE: Will be ignored if enable-vterm is set to t
+;;
 ;; @see http://stackoverflow.com/questions/2886184/copy-paste-in-emacs-ansi-term-shell/2886539#2886539
 (defun ash-term-hooks ()
   ;; dabbrev-expand in term
@@ -59,7 +61,6 @@
 	    (multi-term)
 	  (switch-to-buffer b))))
 
-(define-key global-map (kbd "C-x e") 'multi-term)
 
 (defun term-send-kill-whole-line ()
   "Kill whole line in term mode."
@@ -103,10 +104,11 @@
   (rename-uniquely)
   )
 
-; Keybindings for unique-bash-terminal
+; Keybindings
 (global-set-key (kbd "C-q") 'unique-bash-term)
 (global-set-key (kbd "C-;") "\C-c \C-j") ;; Line mode
 (global-set-key (kbd "C-'") "\C-c \C-k") ;; Char mode
+(define-key global-map (kbd "C-x e") 'multi-term)
 
 
 (provide 'term-options)
