@@ -11,8 +11,8 @@
 (autoload 'idl-mode "idl" "Major mode for editing IDL/WAVE CL .pro files" t)
 (autoload 'idlwave-mode  "idlwave"  "IDLWAVE Mode"  t)
 
-;; Use org-mode by default ...
-(setq-default major-mode 'org-mode)
+;; Use fundamental-mode by default ...
+(setq-default major-mode 'fundamental-mode)
 
 ;; ... but load the appropriate mode for different file types
 (setq auto-mode-alist
@@ -29,11 +29,14 @@
 		("\\.H$"                    . f90-mode)
 		("\\.F90"                   . f90-mode)
 		("\\.kpp"                   . f90-mode)
-		("\\.tex$"                  . org-mode)
-		("\\.eqn$"                  . txt-mode)
-		("\\.log*$"                 . txt-mode)
+		("\\.eqn$"                  . fundamental-mode)
+		("\\.geos$"                 . fundamental-mode)
+		("\\.log$"                  . fundamental-mode)
+		("\\.rc$"                   . fundamental-mode)
 		("\\.m$"                    . matlab-mode)
 		("\\.md$"                   . org-mode)
+		("\\.rst$"                  . org-mode)
+		("\\.tex$"                  . org-mode)
 		("\\.sh$"                   . shell-script-mode)
 		("\\.env$"                  . shell-script-mode)
 		("\\.centos7$"              . shell-script-mode)
@@ -47,7 +50,7 @@
 (add-to-list 'auto-mode-alist '(".bashrc"               . shell-script-mode))
 (add-to-list 'auto-mode-alist '(".bash_aliases"         . shell-script-mode))
 (add-to-list 'auto-mode-alist '(".my_personal_settings" . shell-script-mode))
-(add-to-list 'auto-mode-alist '("README"                . org-mode))
+(add-to-list 'auto-mode-alist '("README"                . fundamental-mode))
 
 ;;-----------------------------------------------------------------------------
 ;; FORTRAN MODE CUSTOMIZATIONS (aka Fortran 77 style)
@@ -210,6 +213,17 @@
     ("q" . "quote\n")
     ("s" . "src")
     ("v" . "verse\n")))
+
+;; Need this to get Yasnippets to work with Org Mode
+(defun yas-org-very-safe-expand()
+  (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (make-variable-buffer-local 'yas/trigger-key)
+	    (setq yas/trigger-key [tab])
+	    (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
+	    (define key yas/keymap [tab] 'yas/next-field)))
+
 
 
 (provide 'mode-options)
