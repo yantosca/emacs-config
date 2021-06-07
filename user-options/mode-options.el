@@ -188,5 +188,28 @@
 (require 'yasnippet-classic-snippets)
 (yas-global-mode 1)
 
+;;-----------------------------------------------------------------------------
+;; ORG MODE
+;;-----------------------------------------------------------------------------
+(require 'org-tempo)
+(setq org-startup-indented t)
+(setq org-src-tab-acts-natively t)
+(setq org-hide-emphasis-markers t)
+(setq org-fontify-done-headline t)
+(setq org-hide-leading-stars t)
+(setq org-pretty-entities t)
+(setq org-odd-levels-only t)
+(setq org-structure-template-alist
+  '(("a" . "export ascii\n")
+    ("c" . "center\n")
+    ("C" . "comment\n")
+    ("e" . "example\n")
+    ("E" . "export")
+    ("h" . "export html\n")
+    ("l" . "export latex\n")
+    ("q" . "quote\n")
+    ("s" . "src")
+    ("v" . "verse\n")))
+
 
 (provide 'mode-options)
