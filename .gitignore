@@ -1,0 +1,3 @@
+# NOTE: Ignore emacs-config.el because this will be built
+# from emacs-config.org at startup by org-babel-load-file.
+.emacs-config.el

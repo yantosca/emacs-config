@@ -1,0 +1,50 @@
+
+* Add load path
+
+Tell emacs to look in the current folder for files
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/")
+#+END_SRC
+
+* Mode settings
+
+*** cmake-mode
+
+Load the cmake-mode.el configuration file obtained from:
+https:/github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (require 'cmake-mode)
+#+END_SRC
+
+*** yaml-mode
+
+Load the yaml-mode.el configuration file obtained from:
+https://github.com/yoshiki/yaml-mode/blob/master/yaml-mode.el
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (require 'yaml-mode)
+#+END_SRC
+
+We'll also define a hook to define a yaml-mode specific key binding.
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'yaml-mode-hook
+      '(lambda ()
+         (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+#+END_SRC
+
+* Terminal settings
+
+Load 256 color options for terminal mode
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  ;;(require 'eterm-256color)
+  (require 'xterm-color)
+#+END_SRC
