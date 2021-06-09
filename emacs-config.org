@@ -19,26 +19,23 @@ settings further down in this initialization file.
 
 *** Graphical backend library
 
-Select athena/X11 or GTK as the graphical display package
+Select athena/X11 or GTK as the graphical display package.
 
-#+NAME: 
 #+BEGIN_SRC emacs-lisp
   (setq enable-athena-backend nil)
 #+END_SRC
 
 *** Number of frames
 
-Decide whether to use 1 or 2 vertical frames at startup
+Decide whether to use 1 or 2 vertical frames at startup.
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq enable-two-vertical-frames t)
 #+END_SRC
 
 *** Vterm
 
-Enable vterm terminal emulation
-
+Enable vterm terminal emulation.
  
 #+BEGIN_SRC emacs-lisp
   (setq enable-vterm t)
@@ -55,7 +52,6 @@ in the elpa/ and elisp/ subfolders.
 
 The "elisp" folder contains Emacs-lisp files from
 other packages obtained via the internet.
-
  
 #+BEGIN_SRC emacs-lisp
   (org-babel-load-file "~/.emacs.d/emacs-config/elisp/elisp.org")
@@ -66,7 +62,6 @@ other packages obtained via the internet.
 Load the initialization file in the elpa subdirectory, which will
 load external packages such as color-theme and yasnippet. 
 
- 
 #+BEGIN_SRC emacs-lisp
   (org-babel-load-file "~/.emacs.d/emacs-config/elpa/elpa.org")
 #+END_SRC
@@ -108,7 +103,6 @@ Display a timestamp in a buffer
 
 Customized insertion of timestamp (function is defined below in miscella.)
 
- 
 #+BEGIN_SRC emacs-lisp
 (fset 'macrotimestamp
       [?\M-x ?i ?n ?s ?e ?r ?t ?- ?t ?i ?m ?e ?s ?t tab return return left ? ])
@@ -121,15 +115,6 @@ Select a default font (Emacs with GTK backend only)
 
 NOTE: If using athena/X11 as the backend, then the default font can be
 set with the emacs.Font specification in your ~/.Xresources file.
-
-Some good options are:
-
-(1) "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1"
-(2) "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1"
-(3) "-*-Lucidatypewriter-*-R-*-*-*-140-*-*-*-*-iso8859-1"
-(4) "-*-Lucidatypewriter-Bold-R-*-*-*-130-*-*-*-*-iso8859-1"
-(5) "-*-source code pro-Bold-R-*-*-*-140-*-*-*-*-iso8859-1"
-
  
 #+BEGIN_SRC emacs-lisp
   (unless enable-athena-backend
@@ -143,7 +128,6 @@ Some good options are:
 
 Display line and column numbers in bottom bar
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq-default line-number-mode   t)
   (setq-default column-number-mode t)
@@ -152,9 +136,8 @@ Display line and column numbers in bottom bar
 *** Scroll bar
 
 Set the vertical scroll bar on the left
-This will not take effect if running emacs -nw
+This will not take effect if running emacs -nw.
 
- 
 #+BEGIN_SRC emacs-lisp
 (when (display-graphic-p)
   (set-scroll-bar-mode 'left))
@@ -162,9 +145,8 @@ This will not take effect if running emacs -nw
 
 *** Splash screen
 
-Do not show the splash screen at startup
+Do not show the splash screen at startup.
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t)   ;; not working w/ 21.4
   (setq inhibit-startup-message t) ;; working w/ 21.4
@@ -172,16 +154,15 @@ Do not show the splash screen at startup
 
 *** Top title 
 
-Display path name in window title
+Display path name in window title.
 
- top-title
 #+BEGIN_SRC emacs-lisp
   (setq frame-title-format "%S: %f")
 #+END_SRC
 
 *** User input
 
-Set C-k to kill the entire line
+Set C-k to kill the entire line.
  
 #+BEGIN_SRC emacs-lisp
   (setq kill-whole-line t)
@@ -190,23 +171,22 @@ Set C-k to kill the entire line
 Enable multiple minibuffers.  If you don't do this, then you
 can't do things like search the minibuffer history with M-s.
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq minibuffer-max-depth nil)
 #+END_SRC
 
-To answer Y/ N instead of YES/NO RET when asked for confirmation
+To answer Y/N instead of YES/NO RET when asked for confirmation
 NOTE: not for newbies!
 
- 
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 *** Visual bell
 
-Subtly flash the mode line when an exception (e.g. compiler warning) occurs
- 
+Subtly flash the mode line when an exception (e.g. compiler warning)
+occurs.  This is less annoying than the audible bell.
+
 #+BEGIN_SRC emacs-lisp
   (setq visible-bell nil
         ring-bell-function 'flash-mode-line)
@@ -216,15 +196,12 @@ Subtly flash the mode line when an exception (e.g. compiler warning) occurs
 #+END_SRC
 
 
-
-
 * General settings
 
 This section contains various settings.
 
 *** Custom variables
 
- 
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -244,9 +221,8 @@ This section contains various settings.
 
 *** Backup and autosave
 
-Various settings for backing up and autosaving
+Various settings for backing up and autosaving.
 
- backup-and-autosave 
 #+BEGIN_SRC emacs-lisp
   (setq backup-by-copying t) 
   (setq delete-old-versions t)
@@ -258,24 +234,23 @@ Various settings for backing up and autosaving
 *** Omit 
 
 ;; This C-o business was working in Xemacs, but it is not in Emacs...:
-;; to add ".mod" to the list of file type to omit when you do C-o in Directory
-
+;; to add ".mod" to the list of file type to omit when you do C-o in
+;; Directory. 
  
 #+BEGIN_SRC emacs-lisp
   (defalias 'omitmod
     (read-kbd-macro "C-u %o.mod RET"))
 #+END_SRC
 
-Redefine the "omit" functions for Emacs in dired mode:
+Redefine the "omit" functions for Emacs in dired mode.
  
 #+BEGIN_SRC emacs-lisp
   (fset 'omitdotfiles
         [?% ?m ?^ ?\\ ?. ?. ?* return ?k])
 #+END_SRC
 
-And this one will omit .o, .mod, ~, and . files from directory listing
+And this one will omit .o, .mod, ~, and . files from directory listing.
 
- 
 #+BEGIN_SRC emacs-lisp
   (fset 'omit-fortran
         [?% ?m ?^ ?\\ ?. ?\\ ?| ?\\ ?. ?o ?$ ?\\ ?| ?\\ ?. ?m ?o ?d ?$ ?\\ ?| ?~ ?$ return ?k])
@@ -284,9 +259,8 @@ And this one will omit .o, .mod, ~, and . files from directory listing
 *** Repositories
 
 Use MELPA-Stable repository for installing packages
-This is the emacs default package location
+This is the emacs default package location.
 
- 
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (add-to-list 'package-archives
@@ -298,15 +272,13 @@ This is the emacs default package location
 
 Kill process (like a tail -f) and purge output. In shell mode.
 
-#+NAME quitnclean
 #+BEGIN_SRC emacs-lisp
 (defalias 'quitnclean
   (read-kbd-macro "C-c C-\\ C-c C-o"))
 #+END_SRC
 
-Quick swapping between 2 buffers
+Quick swapping between 2 buffers.
 
- quickswap
 #+BEGIN_SRC emacs-lisp
 (defalias 'swapbuffer
   (read-kbd-macro "C-x b RET"))
@@ -317,31 +289,38 @@ Quick swapping between 2 buffers
 
 *** Buffers
 
- 
+Keybindings for swapping or deleting buffers.
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f10] 'swapbuffer)
   (global-set-key [f11] 'switch-to-buffer)
   (global-set-key [f12] 'kill-this-buffer)
 #+END_SRC
+
 *** Deletion
 
+Keybindings for deleting characters and words.
  
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(delete)]            "\C-d")   
   (global-set-key [(control delete)]    'kill-word)
   (global-set-key [(control backspace)] 'backward-kill-word)
   (delete-selection-mode t)
-#+END_SRC 
+#+END_SRC
+
 *** Ediff 
 
+Keybindings for Ediff-mode.
  
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(shift f1)] 'ediff-files)
   (global-set-key [(shift f2)] 'ediff-buffers)
   (global-set-key [(shift f3)] 'fullcleanediff)
 #+END_SRC
+
 *** Editing
 
+Keybindings for common editing commands.
  
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f1]               'kill-line)
@@ -357,7 +336,8 @@ Quick swapping between 2 buffers
 
 *** Modes
 
- 
+Keybindings to toggle major modes.
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(control f3)]  'c++-mode)
   (global-set-key [(control f4)]  'cmake-mode)
@@ -371,6 +351,7 @@ Quick swapping between 2 buffers
 
 *** Navigation 
 
+Keybindings for navigation commands.
  
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(meta n)]      'scroll-n-lines-ahead)
@@ -380,6 +361,7 @@ Quick swapping between 2 buffers
 
 *** Search and replace
 
+Keybindings for search & replace commands.
  
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f6]          'find-file)
@@ -391,7 +373,6 @@ Quick swapping between 2 buffers
 #+END_SRC
 
 
-
 * Major modes
 
 This section contains customizations for the various major modes.
@@ -400,10 +381,59 @@ NOTE: Customizations for cmake-mode and yaml-mode may be found in
 elisp/elisp.org.  This is because these modes are external add-ons.
 
 *** Default mode
+
+Use fundamental-mode as the default mode.
+
+#+BEGIN_SRC emacs-lisp
+  (setq initial-major-mode 'fundamental-mode)
+#+END_SRC
+
+*** Auto-assign modes
+
+Assign major modes to certain file extensions
+
+#+BEGIN_SRC emacs-lisp
+  (setq auto-mode-alist
+        (append '(("\\.cmake"      . cmake-mode)
+                  ("\\.c$"         . c-mode)
+                  ("\\.C$"         . c++-mode)
+                  ("\\.cc$"        . c++-mode)
+                  ("\\.hh$"        . c++-mode)
+                  ("\\.hpp$"       . c++-mode)
+                  ("\\.cpp$"       . c++-mode)
+                  ("\\.h$"         . c++-mode)
+                  ("\\.hM$"        . c++-mode)
+                  ("\\.F$"         . fortran-mode)
+                  ("\\.H$"         . f90-mode)
+                  ("\\.F90$"       . f90-mode)
+                  ("\\.kpp$"       . f90-mode)
+                  ("\\.tex$"       . latex-mode)
+                  ("\\.m$"         . matlab-mode)
+                  ("\\.md$"        . org-mode)
+                  ("\\.sh$"        . shell-script-mode)
+                  ("\\.env$"       . shell-script-mode)
+                  ("\\.centos7$"   . shell-script-mode)
+                  ("\\.pl$"        . cperl-mode)
+		        ("\\.rc$"        . conf-mode)
+                  ("\\.yaml$"      . yaml-mode)
+                  ("\\.yml$"       . yaml-mode)
+                  )auto-mode-alist))
+#+END_SRC
+
+Manually specify major-modes for certain files.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '(".bash_profile"         . shell-script-mode))
+  (add-to-list 'auto-mode-alist '(".bashrc"               . shell-script-mode))
+  (add-to-list 'auto-mode-alist '(".bash_aliases"         . shell-script-mode))
+  (add-to-list 'auto-mode-alist '(".my_personal_settings" . shell-script-mode))
+  (add-to-list 'auto-mode-alist '(".README"               . fundamental-mode))
+  (add-to-list 'auto-mode-alist '("input.geos"            . conf-mode))
+#+END_SRC
+
 *** auto-image-file-mode
 
-Display images in emacs buffer
-
+Display images in emacs buffer.
  
 #+BEGIN_SRC emacs-lisp
   (auto-image-file-mode)
@@ -411,24 +441,21 @@ Display images in emacs buffer
 
 *** cperl-mode
 
-Set indent level to 2 spaces (also in sub-blocks)
+Set indent level to 2 spaces (also in sub-blocks).
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq perl-indent-level 2)
   (setq perl-continued-statement-offset 2)
  #+END_SRC
 
-Create a new comment with TAB
+Create a new comment with TAB.
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq perl-tab-to-comment t)
 #+END_SRC
 
-Matching parentheses and auto-expansion of keywords
+Matching parentheses and auto-expansion of keywords.
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq perl-electric-parens t)
   (setq perl-electric-keywords t)
@@ -436,16 +463,14 @@ Matching parentheses and auto-expansion of keywords
 
 *** ediff-mode
 
-Create two Ediff windows, stacked one atop another
+Create two Ediff windows, stacked one atop another.
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq ediff-split-window-function 'split-window-vertically)
 #+END_SRC
 
-Set background colors for ediff-mode
+Set background colors for ediff-mode.
 
- update-diff-colors
 #+BEGIN_SRC emacs-lisp
   (defun update-diff-colors ()
     "update the colors for diff faces"
@@ -459,17 +484,15 @@ Set background colors for ediff-mode
     '(update-diff-colors))
 #+END_SRC
 
-To restore my 2 windows setting w/ each compared file in one window
+To restore my 2 windows setting w/ each compared file in one window.
 
- clean-after-ediff
 #+BEGIN_SRC emacs-lisp
   (defalias 'clean-after-ediff
     (read-kbd-macro "C-x 1 C-x 3 C-x b RET"))
 #+END_SRC
 
-Close the two compared windows
+Close the two compared windows.
 
- fullcleanediff
 #+BEGIN_SRC emacs-lisp
   (defalias 'fullcleanediff
     (read-kbd-macro "<f3> <f2> <f3>"))
@@ -481,7 +504,6 @@ Close the two compared windows
 Turn on global font-lock mode (which colorizes text depending on which
 mode you are in).  Useful for programming.
 
- 
 #+BEGIN_SRC emacs-lisp
 (if (fboundp 'global-font-lock-mode)
     (global-font-lock-mode 1)          ; GNU Emacs
@@ -493,7 +515,6 @@ mode you are in).  Useful for programming.
 Define a hook so that certain things start when F90-mode starts.
 Most notably, disable the electric indent mode.
 
- 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'f90-mode-hook
             (function
@@ -510,18 +531,15 @@ Most notably, disable the electric indent mode.
             )
 #+END_SRC
 
+Align comments with the code.
 
-Align comments with the code
-
- 
 #+BEGIN_SRC emacs-lisp
 (fset 'smart-f90-tab
    [home ?  tab end])
 #+END_SRC
 
-Load f90-mode
+Load f90-mode.
 
- 
 #+BEGIN_SRC emacs-lisp
   (require 'f90)
 #+END_SRC
@@ -531,7 +549,6 @@ Load f90-mode
 Add a hook to enable certain things when Fortran mode starts.
 Most notably, disable electric-indent-mode.
 
- 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'fortran-mode-hook
             (function
@@ -548,18 +565,16 @@ Most notably, disable electric-indent-mode.
   )
 #+END_SRC
 
-Load fortran-mode
+Load fortran-mode.
 
- 
 #+BEGIN_SRC emacs-lisp
   (require 'fortran)
 #+END_SRC
 
 *** org-mode
 
-Here are some settings for Emacs org-mode/
+Here are some settings for Emacs org-mode:
 
- 
 #+BEGIN_SRC emacs-lisp
 (require 'org-tempo)
 (setq org-startup-indented t)
@@ -587,7 +602,6 @@ Here are some settings for Emacs org-mode/
 Define a hook that will start certain things when shell-script mode
 starts: The home key, cycling up & down through command history.
 
- 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'shell-mode-hook
 	  '(lambda ()
@@ -611,7 +625,6 @@ starts: The home key, cycling up & down through command history.
 *** text-mode
 
 Turn-on auto-formatting in text-mode
-
  
 #+BEGIN_SRC emacs-lisp
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -626,7 +639,6 @@ BOUNCE BETWEEN PARENTHESES
 bounces from one sexp "(){}[]<>" to another (ala vi's %)
 written by Joe Casadonte (joc@netaxs.com)
 
- 
 #+BEGIN_SRC emacs-lisp
   (defun joc-bounce-sexp ()
     "Will bounce between matching parens just like % in vi"
@@ -641,17 +653,15 @@ written by Joe Casadonte (joc@netaxs.com)
 
 *** Cursor scroll
 
-Scroll up & down
+Scroll up & down.
 
- 
 #+BEGIN_SRC emacs-lisp
   (defalias 'scroll-ahead 'scroll-up)
   (defalias 'scroll-behind 'scroll-down)
 #+END_SRC
 
-Scroll N lines up and down
+Scroll N lines up and down.
 
- 
 #+BEGIN_SRC emacs-lisp
   (defun scroll-n-lines-ahead (&optional n)
     "Scroll ahead N lines (1 by default)."
@@ -664,26 +674,24 @@ Scroll N lines up and down
     (scroll-behind (prefix-numeric-value n)))
 #+END_SRC
 
-Scroll fast by 10 lines at a time
+Scroll fast by 10 lines at a time.
 
- 
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(control shift n)] (lambda () (interactive) (next-line 10)))
   (global-set-key [(control shift p)] (lambda () (interactive) (previous-line 10)))
 #+END_SRC
 
-Scroll only one line when cursor is at the bottom of the screen (instead of finding the lastline suddenly in the middle)
+Scroll only one line when cursor is at the bottom of the screen
+(instead of finding the lastline suddenly in the middle). 
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq scroll-step 1)
 #+END_SRC
 
 *** Mouse scroll
 
-Scroll 3 lines at a time with the mouse wheel
+Scroll 3 lines at a time with the mouse wheel.
 
- 
 #+BEGIN_SRC emacs-lisp
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 3) ((control) . nil)))
   (setq mouse-wheel-progressive-speed nil)
@@ -702,10 +710,8 @@ compiled module.
 
 Also note: if vterm is available, these options will not be applied.
 
-
 See http://stackoverflow.com/questions/2886184/copy-paste-in-emacs-ansi-term-shell/2886539#2886539
 
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defun ash-term-hooks ()
@@ -729,7 +735,6 @@ See http://stackoverflow.com/questions/2886184/copy-paste-in-emacs-ansi-term-she
 Kill the buffer when the terminal is exited.
 See: http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-term.html
 
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
@@ -744,7 +749,6 @@ See: http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-term.html
 
 Always enable bash (sorry zsh...)
 
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defvar my-term-shell "/bin/bash")
@@ -755,9 +759,8 @@ Always enable bash (sorry zsh...)
     )
 #+END_SRC
 
-Enable UTF-8 characters
+Enable UTF-8 character encoding.
 
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defun my-term-use-utf8 ()
@@ -766,10 +769,8 @@ Enable UTF-8 characters
     )
 #+END_SRC
 
+Return most recently used term buffer.
 
-Return most recently used term buffer
-
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defun last-term-buffer (l)
@@ -784,8 +785,6 @@ Return most recently used term buffer
 Switch to the term buffer last used, or create a new one if none
 exists, or if the current buffer is already a term. 
 
-
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defun get-term ()
@@ -799,7 +798,6 @@ exists, or if the current buffer is already a term.
 
 Kill entire line with C-k
 
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defun term-send-kill-whole-line ()
@@ -812,7 +810,6 @@ Kill entire line with C-k
 Opens a uniquely-named terminal running bash.  Appends the terminal
 number (with <>) to the name of the buffer.
 
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defun unique-bash-term ()
@@ -828,7 +825,6 @@ number (with <>) to the name of the buffer.
 
 Set some keybindings specific to term-mode
 
- 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (setq multi-term-program "/bin/bash")
@@ -863,8 +859,7 @@ Set some keybindings specific to term-mode
 This section contains customizations for vterm terminal emulation
 (will be activated if enable-vterm is set to t).
 
-Look for init files in the emacs-libvterm submodule
-
+Look for init files in the emacs-libvterm submodule.
 
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
@@ -874,7 +869,7 @@ Look for init files in the emacs-libvterm submodule
 #+END_SRC
 
 
-Kill the buffer when vterminal is exited
+Kill the buffer when vterminal is exited.
 See http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html
  
 #+BEGIN_SRC emacs-lisp
@@ -901,7 +896,7 @@ Always use bash (sorry zsh...)
   )
 #+END_SRC
 
-Use UTF-8 character encoding
+Use UTF-8 character encoding.
  
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
@@ -936,8 +931,7 @@ exists, or if the current buffer is already a vterm.
   )
 #+END_SRC
 
-
-Define functions for killing an entire line
+Define functions for killing an entire line.
 
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
@@ -951,7 +945,7 @@ Define functions for killing an entire line
   )
 #+END_SRC
 
-Open a uniquely-named vterminal
+Open a uniquely-named vterminal.
  
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
@@ -963,8 +957,7 @@ Open a uniquely-named vterminal
   )
 #+END_SRC
 
-
-Set some vterm-specific keybindings
+Set some vterm-specific keybindings.
  
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm

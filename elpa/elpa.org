@@ -7,7 +7,6 @@ elpa/color-theme-6.6.1 folder.
 NOTE: We will not activate this color-theme if we have started emacs
 with the -nw (no-windowing-system) option.
 
-#+NAME: 
 #+BEGIN_SRC emacs-lisp
   (add-to-list
    'load-path
@@ -23,7 +22,6 @@ with the -nw (no-windowing-system) option.
 
 Activate the YASnippets package.
 
-#+NAME: 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path
    "~/.emacs.d/emacs-config/elpa/yasnippet-0.14.0")
@@ -33,7 +31,6 @@ Activate the YASnippets package.
 
 Load some classic snippets for various major modes.
 
-#+NAME: 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path
    "~/.emacs.d/emacs-config/elpa/yasnippet-classic-snippets-1.0.2")
