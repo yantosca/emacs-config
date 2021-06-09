@@ -14,42 +14,25 @@ $ git clone https://github.com/yantosca/emacs-config.git
 $ cd emacs-config
 $ ./install.sh
 ```
-This will copy an init.el file to your ~/.emacs.d folder where you can
-customize the following settings:
+This will copy the following files to your ~/.emacs.d folder:
 
-  - Window font
-  - Display frame options:
-    - 2 vertical frames, optimized for desktop
-    - 1 vertical frame, optmized for laptop
-  - Enable or disable the vterm terminal module
+  1. init.el
+  2. emacs-config.org
 
-All of the other settings will be defined by the various configuration files (*.el) in the emacs-config directory structure.
+The init.el file loads the emacs-config.org file (via
+org-babel-file-load).  A configuration file (emacs-config.el) will be
+created with all of the corresponding options each time you start
+emacs.
 
-## Contents
+## Configuration notes
 
-### Main directory
+You should edit any configuration settings in the emacs-config.org
+file.  You can use org-mode keys to open or close each of the
+sections.  Configuration settings are contained in emacs-lisp code blocks.
 
- `emacs.config.el`: Main configuration file (called from `~/.emacs.d/init.el`).  Loads configuration options from other *.el files in subfolders.
+Some external packages (e.g. color-theme, yasnippet, etc.) are
+contained in the elpa/ directory tree.
 
-### user-options directory
+Third-party configuration files (e.g. cmake-mode.el, yaml-mode.el) are
+contained in the elisp/ folder.
 
-The `user_options` folder contains several `*.el` files that you can customize for your own setup:
-
-  - `cmake-mode.el`: Sets indent, formatting etc. options for cmake-mode.
-  - `display-options.el`: Sets general display options (timestamp, line/number, scrollbar, etc.) for Emacs frames.
-  - `frame-options-desktop.el`: Sets the window and frame size for a typical desktop display (2 vertical frames side by side).
-  - `frame-options-laptop.el`: Sets the window and frame size for a typical laptop setup (1 vertical frame).
-  - `global-options.el`: Sets various global settings (backup & save, repositories, other misc. settings)
-  - `keybind-options.el`: Sets keybindings for executing various functions or macros.
-  - `mode-options.el`: Sets indent and formatting options for several common major modes (f90-mode, python-mode, etc.)
-  - `motion-options.el`: Sets cursor and mouse scroll options.
-  - `term-options.el`: Sets options for the emacs terminal (aka "term").
-  - `yaml-mode.el`: Sets indentation and formatting options for yaml-mode.
-
-### color-theme-6.6.1 directory
-
-This folder contains the `color-theme` package.  You can use this to set the background color of frames.
-
-### elpa directory
-
-Directory containing various other Emacs packages (including yasnippet-0.14.0 and magit).  You should not need to modify this folder.

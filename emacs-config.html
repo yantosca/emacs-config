@@ -1,0 +1,1660 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-06-08 Tue 21:16 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bob Yantosca's Emacs Configuration</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Bob Yantosca" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Bob Yantosca's Emacs Configuration</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org87e2cb8">1. Global toggles</a>
+<ul>
+<li><a href="#org6e62ffc">1.1. Graphical backend library</a></li>
+<li><a href="#org799bc44">1.2. Number of frames</a></li>
+<li><a href="#org85b7b11">1.3. Vterm</a></li>
+</ul>
+</li>
+<li><a href="#org45c8c50">2. Externals</a>
+<ul>
+<li><a href="#orgd4ac028">2.1. External configurations</a></li>
+<li><a href="#org5a8329d">2.2. External packages</a></li>
+</ul>
+</li>
+<li><a href="#org5a199f7">3. Display</a>
+<ul>
+<li><a href="#org81a41fa">3.1. Date and time</a></li>
+<li><a href="#org01027c6">3.2. Font</a></li>
+<li><a href="#orgad7c003">3.3. Line and column numbers</a></li>
+<li><a href="#org2c7510f">3.4. Scroll bar</a></li>
+<li><a href="#org7c892b2">3.5. Splash screen</a></li>
+<li><a href="#org8fdd13e">3.6. Top title</a></li>
+<li><a href="#org9d06a70">3.7. User input</a></li>
+<li><a href="#orgd555749">3.8. Visual bell</a></li>
+</ul>
+</li>
+<li><a href="#org4b69792">4. General settings</a>
+<ul>
+<li><a href="#orgb2630e7">4.1. Custom variables</a></li>
+<li><a href="#orgb64d658">4.2. Backup and autosave</a></li>
+<li><a href="#org6a44194">4.3. Omit</a></li>
+<li><a href="#orgb80b585">4.4. Repositories</a></li>
+<li><a href="#org6e70811">4.5. Miscellaneous</a></li>
+</ul>
+</li>
+<li><a href="#orgca29c61">5. Key bindings</a>
+<ul>
+<li><a href="#org2a35366">5.1. Buffers</a></li>
+<li><a href="#org45852d8">5.2. Deletion</a></li>
+<li><a href="#org8ac7f3e">5.3. Ediff</a></li>
+<li><a href="#org814d290">5.4. Editing</a></li>
+<li><a href="#orgf916087">5.5. Modes</a></li>
+<li><a href="#orgf21f096">5.6. Navigation</a></li>
+<li><a href="#orgaaa8b20">5.7. Search and replace</a></li>
+</ul>
+</li>
+<li><a href="#orgd57daa2">6. Major modes</a>
+<ul>
+<li><a href="#orgf35b1d3">6.1. Default mode</a></li>
+<li><a href="#org9adcb09">6.2. auto-image-file-mode</a></li>
+<li><a href="#org30c58cd">6.3. cperl-mode</a></li>
+<li><a href="#orgd5e4b1b">6.4. ediff-mode</a></li>
+<li><a href="#orgcff4b01">6.5. font-lock-mode</a></li>
+<li><a href="#org9aa173d">6.6. f90-mode</a></li>
+<li><a href="#orgaa6948d">6.7. fortran-mode</a></li>
+<li><a href="#orge734936">6.8. org-mode</a></li>
+<li><a href="#orga192e76">6.9. shell-script-mode</a></li>
+<li><a href="#org5305b87">6.10. text-mode</a></li>
+</ul>
+</li>
+<li><a href="#org124afd5">7. Motion (cursor and mouse)</a>
+<ul>
+<li><a href="#org6bd1898">7.1. Bounce betwen parentheses</a></li>
+<li><a href="#orgd573e58">7.2. Cursor scroll</a></li>
+<li><a href="#orgb76fc65">7.3. Mouse scroll</a></li>
+</ul>
+</li>
+<li><a href="#orgfe09cf8">8. Terminal emulation</a>
+<ul>
+<li><a href="#orgff2cf31">8.1. term</a></li>
+<li><a href="#org3d617b2">8.2. vterm</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+;;; emacs-config.org: Main file for Emacs customizations
+;;
+;; 08 Jun 2021 &#x2013; Bob Yantosca &#x2013; yantosca@seas.harvard.edu
+;;
+;; This file is loaded by init.el, which issues a call to
+;;(org-babel-load-file ~./emacs.d/emacs-config.org) 
+;;
+;; You may edit this file as you wish.  Emacs-lisp code needs to go in
+;; the designated blocks.  These commands will be executed upon
+;; loading and then will be saved to an emacs-config.el file.
+;;
+</p>
+
+<div id="outline-container-org87e2cb8" class="outline-2">
+<h2 id="org87e2cb8"><span class="section-number-2">1</span> Global toggles</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This section defines global variables that are used to toggle other
+settings further down in this initialization file.
+</p>
+</div>
+
+<div id="outline-container-org6e62ffc" class="outline-3">
+<h3 id="org6e62ffc"><span class="section-number-3">1.1</span> Graphical backend library</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Select athena/X11 or GTK as the graphical display package
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp" id="orgd1cd5ff">(setq enable-athena-backend nil)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org799bc44" class="outline-3">
+<h3 id="org799bc44"><span class="section-number-3">1.2</span> Number of frames</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Decide whether to use 1 or 2 vertical frames at startup
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq enable-two-vertical-frames t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org85b7b11" class="outline-3">
+<h3 id="org85b7b11"><span class="section-number-3">1.3</span> Vterm</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Enable vterm terminal emulation
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq enable-vterm t)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org45c8c50" class="outline-2">
+<h2 id="org45c8c50"><span class="section-number-2">2</span> Externals</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+This section loads external packages or configuration files that are
+contained as part of this emacs-config distribution.  These are stored
+in the elpa/ and elisp/ subfolders.
+</p>
+</div>
+
+<div id="outline-container-orgd4ac028" class="outline-3">
+<h3 id="orgd4ac028"><span class="section-number-3">2.1</span> External configurations</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The "elisp" folder contains Emacs-lisp files from
+other packages obtained via the internet.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(org-babel-load-file "~/.emacs.d/emacs-config/elisp/elisp.org")
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5a8329d" class="outline-3">
+<h3 id="org5a8329d"><span class="section-number-3">2.2</span> External packages</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Load the initialization file in the elpa subdirectory, which will
+load external packages such as color-theme and yasnippet. 
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(org-babel-load-file "~/.emacs.d/emacs-config/elpa/elpa.org")
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org5a199f7" class="outline-2">
+<h2 id="org5a199f7"><span class="section-number-2">3</span> Display</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+This section contains settings for display options.
+</p>
+</div>
+
+<div id="outline-container-org81a41fa" class="outline-3">
+<h3 id="org81a41fa"><span class="section-number-3">3.1</span> Date and time</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Display date and time in the info bar ("mode line")
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq display-time-day-and-date t)
+(setq display-time-string-forms
+      (quote
+       ((if (and (not display-time-format)
+		 display-time-day-and-date)
+	    (format-time-string "%a %b %e   " now) "  ")
+	(format-time-string
+	 (or display-time-format
+	     (if display-time-24hr-format "%H:%M" "%-I:%M%p")) now)
+	))
+      )
+(display-time)
+</pre>
+</div>
+
+<p>
+Display a timestamp in a buffer
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defun insert-timestamp ()
+  "Insert a nicely formatted date string."
+  (interactive)
+  (insert (format-time-string "!  %e %b %Y - R. Yantosca - ")))
+</pre>
+</div>
+
+<p>
+Customized insertion of timestamp (function is defined below in miscella.)
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(fset 'macrotimestamp
+      [?\M-x ?i ?n ?s ?e ?r ?t ?- ?t ?i ?m ?e ?s ?t tab return return left ? ])
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org01027c6" class="outline-3">
+<h3 id="org01027c6"><span class="section-number-3">3.2</span> Font</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Select a default font (Emacs with GTK backend only)
+</p>
+
+<p>
+NOTE: If using athena/X11 as the backend, then the default font can be
+set with the emacs.Font specification in your ~/.Xresources file.
+</p>
+
+<p>
+Some good options are:
+</p>
+
+<p>
+(1) "-<b>-DejaVuSansMono-Bold-R-</b>-<b>-</b>-120-<b>-</b>-<b>-</b>-iso8859-1"
+(2) "-<b>-Lucidatypewriter-Bold-R-</b>-<b>-</b>-140-<b>-</b>-<b>-</b>-iso8859-1"
+(3) "-<b>-Lucidatypewriter-</b>-R-<b>-</b>-<b>-140-</b>-<b>-</b>-<b>-iso8859-1"
+(4) "-</b>-Lucidatypewriter-Bold-R-<b>-</b>-<b>-130-</b>-<b>-</b>-<b>-iso8859-1"
+(5) "-</b>-source code pro-Bold-R-<b>-</b>-<b>-140-</b>-<b>-</b>-*-iso8859-1"
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-athena-backend
+  (when (display-graphic-p)
+    (set-face-font
+     'default
+     "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1")))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgad7c003" class="outline-3">
+<h3 id="orgad7c003"><span class="section-number-3">3.3</span> Line and column numbers</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+Display line and column numbers in bottom bar
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq-default line-number-mode   t)
+(setq-default column-number-mode t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c7510f" class="outline-3">
+<h3 id="org2c7510f"><span class="section-number-3">3.4</span> Scroll bar</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+Set the vertical scroll bar on the left
+This will not take effect if running emacs -nw
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when (display-graphic-p)
+  (set-scroll-bar-mode 'left))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7c892b2" class="outline-3">
+<h3 id="org7c892b2"><span class="section-number-3">3.5</span> Splash screen</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+Do not show the splash screen at startup
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq inhibit-splash-screen t)   ;; not working w/ 21.4
+(setq inhibit-startup-message t) ;; working w/ 21.4
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8fdd13e" class="outline-3">
+<h3 id="org8fdd13e"><span class="section-number-3">3.6</span> Top title</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+Display path name in window title
+</p>
+
+<p>
+top-title
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq frame-title-format "%S: %f")
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9d06a70" class="outline-3">
+<h3 id="org9d06a70"><span class="section-number-3">3.7</span> User input</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+Set C-k to kill the entire line
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq kill-whole-line t)
+</pre>
+</div>
+
+<p>
+Enable multiple minibuffers.  If you don't do this, then you
+can't do things like search the minibuffer history with M-s.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq minibuffer-max-depth nil)
+</pre>
+</div>
+
+<p>
+To answer Y/ N instead of YES/NO RET when asked for confirmation
+NOTE: not for newbies!
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defalias 'yes-or-no-p 'y-or-n-p)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd555749" class="outline-3">
+<h3 id="orgd555749"><span class="section-number-3">3.8</span> Visual bell</h3>
+<div class="outline-text-3" id="text-3-8">
+<p>
+Subtly flash the mode line when an exception (e.g. compiler warning) occurs
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq visible-bell nil
+      ring-bell-function 'flash-mode-line)
+(defun flash-mode-line ()
+  (invert-face 'mode-line)
+  (run-with-timer 0.1 nil #'invert-face 'mode-line))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-org4b69792" class="outline-2">
+<h2 id="org4b69792"><span class="section-number-2">4</span> General settings</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+This section contains various settings.
+</p>
+</div>
+
+<div id="outline-container-orgb2630e7" class="outline-3">
+<h3 id="orgb2630e7"><span class="section-number-3">4.1</span> Custom variables</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(auto-compression-mode t nil (jka-compr))
+ '(case-fold-search t)
+ '(column-number-mode t)
+ '(current-language-environment "ASCII")
+ '(display-time-mode t)
+ '(global-font-lock-mode t nil (font-lock))
+ '(package-selected-packages '(better-shell magit yasnippet-classic-snippets))
+ '(query-user-mail-address nil)
+ '(user-mail-address "yantosca@seas.harvard.edu"))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb64d658" class="outline-3">
+<h3 id="orgb64d658"><span class="section-number-3">4.2</span> Backup and autosave</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Various settings for backing up and autosaving
+</p>
+
+<p>
+backup-and-autosave 
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq backup-by-copying t) 
+(setq delete-old-versions t)
+(setq kept-new-versions 10)
+(setq kept-old-versions 2)
+(setq version-control t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6a44194" class="outline-3">
+<h3 id="org6a44194"><span class="section-number-3">4.3</span> Omit</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+;; This C-o business was working in Xemacs, but it is not in Emacs&#x2026;:
+;; to add ".mod" to the list of file type to omit when you do C-o in Directory
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defalias 'omitmod
+  (read-kbd-macro "C-u %o.mod RET"))
+</pre>
+</div>
+
+<p>
+Redefine the "omit" functions for Emacs in dired mode:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(fset 'omitdotfiles
+      [?% ?m ?^ ?\\ ?. ?. ?* return ?k])
+</pre>
+</div>
+
+<p>
+And this one will omit .o, .mod, ~, and . files from directory listing
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(fset 'omit-fortran
+      [?% ?m ?^ ?\\ ?. ?\\ ?| ?\\ ?. ?o ?$ ?\\ ?| ?\\ ?. ?m ?o ?d ?$ ?\\ ?| ?~ ?$ return ?k])
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb80b585" class="outline-3">
+<h3 id="orgb80b585"><span class="section-number-3">4.4</span> Repositories</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+Use MELPA-Stable repository for installing packages
+This is the emacs default package location
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(require 'package)
+(add-to-list 'package-archives
+	     '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6e70811" class="outline-3">
+<h3 id="org6e70811"><span class="section-number-3">4.5</span> Miscellaneous</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+Kill process (like a tail -f) and purge output. In shell mode.
+</p>
+
+<p>
+#+NAME quitnclean
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defalias 'quitnclean
+  (read-kbd-macro "C-c C-\\ C-c C-o"))
+</pre>
+</div>
+
+<p>
+Quick swapping between 2 buffers
+</p>
+
+<p>
+quickswap
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defalias 'swapbuffer
+  (read-kbd-macro "C-x b RET"))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgca29c61" class="outline-2">
+<h2 id="orgca29c61"><span class="section-number-2">5</span> Key bindings</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org2a35366" class="outline-3">
+<h3 id="org2a35366"><span class="section-number-3">5.1</span> Buffers</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [f10] 'swapbuffer)
+(global-set-key [f11] 'switch-to-buffer)
+(global-set-key [f12] 'kill-this-buffer)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org45852d8" class="outline-3">
+<h3 id="org45852d8"><span class="section-number-3">5.2</span> Deletion</h3>
+<div class="outline-text-3" id="text-5-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [(delete)]            "\C-d")   
+(global-set-key [(control delete)]    'kill-word)
+(global-set-key [(control backspace)] 'backward-kill-word)
+(delete-selection-mode t)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8ac7f3e" class="outline-3">
+<h3 id="org8ac7f3e"><span class="section-number-3">5.3</span> Ediff</h3>
+<div class="outline-text-3" id="text-5-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [(shift f1)] 'ediff-files)
+(global-set-key [(shift f2)] 'ediff-buffers)
+(global-set-key [(shift f3)] 'fullcleanediff)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org814d290" class="outline-3">
+<h3 id="org814d290"><span class="section-number-3">5.4</span> Editing</h3>
+<div class="outline-text-3" id="text-5-4">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [f1]               'kill-line)
+(global-set-key [f2]               'kill-word)
+(global-set-key [f3]               'string-rectangle)
+(global-set-key [f4]               'delete-rectangle)
+(global-set-key [f5]               'shell) ;macrotimestamp)
+(global-set-key [(shift f5)]       'delete-trailing-whitespace)
+(global-set-key (kbd "&lt;S-pause&gt;")  "\M-l")
+(global-set-key (kbd "&lt;pause&gt;")    "\M-u")
+(global-set-key (kbd "&lt;kp-enter&gt;") 'goto-line)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf916087" class="outline-3">
+<h3 id="orgf916087"><span class="section-number-3">5.5</span> Modes</h3>
+<div class="outline-text-3" id="text-5-5">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [(control f3)]  'c++-mode)
+(global-set-key [(control f4)]  'cmake-mode)
+(global-set-key [(control f5)]  'f90-mode)
+(global-set-key [(control f6)]  'org-mode)
+(global-set-key [(control f7)]  'makefile-mode)
+(global-set-key [(control f8)]  'shell-script-mode)
+(global-set-key [(control f9)]  'cperl-mode)
+(global-set-key [(control f10)] 'font-lock-mode)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf21f096" class="outline-3">
+<h3 id="orgf21f096"><span class="section-number-3">5.6</span> Navigation</h3>
+<div class="outline-text-3" id="text-5-6">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [(meta n)]      'scroll-n-lines-ahead)
+(global-set-key [(meta p)]      'scroll-n-lines-behind)
+(global-set-key [(control tab)] 'other-window)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaaa8b20" class="outline-3">
+<h3 id="orgaaa8b20"><span class="section-number-3">5.7</span> Search and replace</h3>
+<div class="outline-text-3" id="text-5-7">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [f6]          'find-file)
+(global-set-key [(shift f6)]  'insert-file)
+(global-set-key [f7]          'save-buffer)
+(global-set-key [f8]          'isearch-forward)
+(global-set-key [f9]          'replace-string)
+(global-set-key [(shift f9)]  'query-replace)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgd57daa2" class="outline-2">
+<h2 id="orgd57daa2"><span class="section-number-2">6</span> Major modes</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+This section contains customizations for the various major modes.
+</p>
+
+<p>
+NOTE: Customizations for cmake-mode and yaml-mode may be found in
+elisp/elisp.org.  This is because these modes are external add-ons.
+</p>
+</div>
+
+<div id="outline-container-orgf35b1d3" class="outline-3">
+<h3 id="orgf35b1d3"><span class="section-number-3">6.1</span> Default mode</h3>
+</div>
+<div id="outline-container-org9adcb09" class="outline-3">
+<h3 id="org9adcb09"><span class="section-number-3">6.2</span> auto-image-file-mode</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+Display images in emacs buffer
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(auto-image-file-mode)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org30c58cd" class="outline-3">
+<h3 id="org30c58cd"><span class="section-number-3">6.3</span> cperl-mode</h3>
+<div class="outline-text-3" id="text-6-3">
+<p>
+Set indent level to 2 spaces (also in sub-blocks)
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq perl-indent-level 2)
+(setq perl-continued-statement-offset 2)
+</pre>
+</div>
+
+<p>
+Create a new comment with TAB
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq perl-tab-to-comment t)
+</pre>
+</div>
+
+<p>
+Matching parentheses and auto-expansion of keywords
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq perl-electric-parens t)
+(setq perl-electric-keywords t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd5e4b1b" class="outline-3">
+<h3 id="orgd5e4b1b"><span class="section-number-3">6.4</span> ediff-mode</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+Create two Ediff windows, stacked one atop another
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq ediff-split-window-function 'split-window-vertically)
+</pre>
+</div>
+
+<p>
+Set background colors for ediff-mode
+</p>
+
+<p>
+update-diff-colors
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defun update-diff-colors ()
+  "update the colors for diff faces"
+  (set-face-attribute 'diff-added nil
+		      :foreground "black" :background "DarkSeaGreen1")
+  (set-face-attribute 'diff-removed nil
+		      :foreground "black" :background "RosyBrown1")
+  (set-face-attribute 'diff-changed nil
+		      :foreground "black" :background "wheat1"))
+(eval-after-load "diff-mode"
+  '(update-diff-colors))
+</pre>
+</div>
+
+<p>
+To restore my 2 windows setting w/ each compared file in one window
+</p>
+
+<p>
+clean-after-ediff
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defalias 'clean-after-ediff
+  (read-kbd-macro "C-x 1 C-x 3 C-x b RET"))
+</pre>
+</div>
+
+<p>
+Close the two compared windows
+</p>
+
+<p>
+fullcleanediff
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defalias 'fullcleanediff
+  (read-kbd-macro "&lt;f3&gt; &lt;f2&gt; &lt;f3&gt;"))
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcff4b01" class="outline-3">
+<h3 id="orgcff4b01"><span class="section-number-3">6.5</span> font-lock-mode</h3>
+<div class="outline-text-3" id="text-6-5">
+<p>
+Turn on global font-lock mode (which colorizes text depending on which
+mode you are in).  Useful for programming.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(if (fboundp 'global-font-lock-mode)
+    (global-font-lock-mode 1)          ; GNU Emacs
+    (setq font-lock-auto-fontify t))   ; XEmacs
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9aa173d" class="outline-3">
+<h3 id="org9aa173d"><span class="section-number-3">6.6</span> f90-mode</h3>
+<div class="outline-text-3" id="text-6-6">
+<p>
+Define a hook so that certain things start when F90-mode starts.
+Most notably, disable the electric indent mode.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-hook 'f90-mode-hook
+	  (function
+	   (lambda ()
+
+	     ;; use abbreviations (e.g.: "`pr" for "print")
+	     (setq  abbrev-mode 1)
+
+	     ; Turn off automatic indentation for Fortran mode only
+	     (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
+
+	     )
+	   )
+	  )
+</pre>
+</div>
+
+
+<p>
+Align comments with the code
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(fset 'smart-f90-tab
+   [home ?  tab end])
+</pre>
+</div>
+
+<p>
+Load f90-mode
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(require 'f90)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaa6948d" class="outline-3">
+<h3 id="orgaa6948d"><span class="section-number-3">6.7</span> fortran-mode</h3>
+<div class="outline-text-3" id="text-6-7">
+<p>
+Add a hook to enable certain things when Fortran mode starts.
+Most notably, disable electric-indent-mode.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-hook 'fortran-mode-hook
+	  (function
+	   (lambda ()
+	     (setq
+	      ;; use abbreviations (e.g.: ";s" for "stop")
+	      abbrev-mode 1
+	      )
+
+	     ; Turn off automatic indentation for Fortran mode only
+	     (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
+	     )
+	   )
+)
+</pre>
+</div>
+
+<p>
+Load fortran-mode
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(require 'fortran)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge734936" class="outline-3">
+<h3 id="orge734936"><span class="section-number-3">6.8</span> org-mode</h3>
+<div class="outline-text-3" id="text-6-8">
+<p>
+Here are some settings for Emacs org-mode/
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(require 'org-tempo)
+(setq org-startup-indented t)
+(setq org-src-tab-acts-natively t)
+(setq org-hide-emphasis-markers t)
+(setq org-fontify-done-headline t)
+(setq org-hide-leading-stars t)
+(setq org-pretty-entities t)
+(setq org-odd-levels-only t)
+(setq org-structure-template-alist
+  '(("a" . "export ascii\n")
+    ("c" . "center\n")
+    ("C" . "comment\n")
+    ("e" . "example\n")
+    ("E" . "export")
+    ("h" . "export html\n")
+    ("l" . "export latex\n")
+    ("q" . "quote\n")
+    ("s" . "src")
+    ("v" . "verse\n")))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga192e76" class="outline-3">
+<h3 id="orga192e76"><span class="section-number-3">6.9</span> shell-script-mode</h3>
+<div class="outline-text-3" id="text-6-9">
+<p>
+Define a hook that will start certain things when shell-script mode
+starts: The home key, cycling up &amp; down through command history.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-hook 'shell-mode-hook
+	  '(lambda ()
+	     (local-set-key [home] 'comint-bol)                ;; Home key
+
+	     (local-set-key [up]                                 ;; Cycle up
+			    '(lambda () (interactive)          ;; through
+			       (if (comint-after-pmark-p)      ;; command
+				   (comint-previous-input 1)   ;; history
+				 (previous-line 1))))
+
+	     (local-set-key [down]                               ;; Cycle down
+			    '(lambda () (interactive)          ;; through
+			       (if (comint-after-pmark-p)      ;; command
+				   (comint-next-input 1)       ;; history
+				 (forward-line 1))))
+	     )
+)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5305b87" class="outline-3">
+<h3 id="org5305b87"><span class="section-number-3">6.10</span> text-mode</h3>
+<div class="outline-text-3" id="text-6-10">
+<p>
+Turn-on auto-formatting in text-mode
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-hook 'text-mode-hook 'turn-on-auto-fill)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org124afd5" class="outline-2">
+<h2 id="org124afd5"><span class="section-number-2">7</span> Motion (cursor and mouse)</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org6bd1898" class="outline-3">
+<h3 id="org6bd1898"><span class="section-number-3">7.1</span> Bounce betwen parentheses</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+BOUNCE BETWEEN PARENTHESES 
+bounces from one sexp "(){}[]&lt;&gt;" to another (ala vi's %)
+written by Joe Casadonte (joc@netaxs.com)
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defun joc-bounce-sexp ()
+  "Will bounce between matching parens just like % in vi"
+  (interactive)
+  (let ((prev-char (char-to-string (preceding-char)))
+	(next-char (char-to-string (following-char))))
+	(cond ((string-match "[[{(&lt;]" next-char) (forward-sexp 1))
+		  ((string-match "[\]})&gt;]" prev-char) (backward-sexp 1))
+		  (t (error "%s" "Not on a paren, brace, or bracket")))))
+(global-set-key [(control =)] 'joc-bounce-sexp)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd573e58" class="outline-3">
+<h3 id="orgd573e58"><span class="section-number-3">7.2</span> Cursor scroll</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+Scroll up &amp; down
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defalias 'scroll-ahead 'scroll-up)
+(defalias 'scroll-behind 'scroll-down)
+</pre>
+</div>
+
+<p>
+Scroll N lines up and down
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defun scroll-n-lines-ahead (&amp;optional n)
+  "Scroll ahead N lines (1 by default)."
+  (interactive "P")
+  (scroll-ahead (prefix-numeric-value n)))
+
+(defun scroll-n-lines-behind (&amp;optional n)
+  "Scroll behind N lines (1 by default)."
+  (interactive "P")
+  (scroll-behind (prefix-numeric-value n)))
+</pre>
+</div>
+
+<p>
+Scroll fast by 10 lines at a time
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-set-key [(control shift n)] (lambda () (interactive) (next-line 10)))
+(global-set-key [(control shift p)] (lambda () (interactive) (previous-line 10)))
+</pre>
+</div>
+
+<p>
+Scroll only one line when cursor is at the bottom of the screen (instead of finding the lastline suddenly in the middle)
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq scroll-step 1)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb76fc65" class="outline-3">
+<h3 id="orgb76fc65"><span class="section-number-3">7.3</span> Mouse scroll</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+Scroll 3 lines at a time with the mouse wheel
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(setq mouse-wheel-scroll-amount '(3 ((shift) . 3) ((control) . nil)))
+(setq mouse-wheel-progressive-speed nil)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgfe09cf8" class="outline-2">
+<h2 id="orgfe09cf8"><span class="section-number-2">8</span> Terminal emulation</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+This section contains options for the terminal emulation modes.
+</p>
+</div>
+
+<div id="outline-container-orgff2cf31" class="outline-3">
+<h3 id="orgff2cf31"><span class="section-number-3">8.1</span> term</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+Define options for the default term-mode, which is a terminal emulator
+written in emacs-lisp.  This will be slower than vterm, which is a
+compiled module.
+</p>
+
+<p>
+Also note: if vterm is available, these options will not be applied.
+</p>
+
+
+<p>
+See <a href="http://stackoverflow.com/questions/2886184/copy-paste-in-emacs-ansi-term-shell/2886539#2886539">http://stackoverflow.com/questions/2886184/copy-paste-in-emacs-ansi-term-shell/2886539#2886539</a>
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defun ash-term-hooks ()
+    ;; dabbrev-expand in term
+    (define-key term-raw-escape-map "/"
+      (lambda ()
+	(interactive)
+	(let ((beg (point)))
+	  (dabbrev-expand nil)
+	  (kill-region beg (point)))
+	(term-send-raw-string (substring-no-properties (current-kill 0)))))
+    ;; yank in term (bound to C-c C-y)
+    (define-key term-raw-escape-map "\C-y"
+      (lambda ()
+	((insert )nteractive)
+	(term-send-raw-string (current-kill 0)))))
+  (add-hook 'term-mode-hook 'ash-term-hooks)
+)
+</pre>
+</div>
+
+<p>
+Kill the buffer when the terminal is exited.
+See: <a href="http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-term.html">http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-term.html</a>
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
+    (if (memq (process-status proc) '(signal exit))
+	(let ((buffer (process-buffer proc)))
+	  ad-do-it
+	  (kill-buffer buffer))
+      ad-do-it))
+  (ad-activate 'term-sentinel)
+  ) 
+</pre>
+</div>
+
+<p>
+Always enable bash (sorry zsh&#x2026;)
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defvar my-term-shell "/bin/bash")
+  (defadvice term (before force-bash)
+    (interactive
+     (list my-term-shell)))
+  (ad-activate 'term)
+  )
+</pre>
+</div>
+
+<p>
+Enable UTF-8 characters
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defun my-term-use-utf8 ()
+    (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+  (add-hook 'term-exec-hook 'my-term-use-utf8)
+  )
+</pre>
+</div>
+
+
+<p>
+Return most recently used term buffer
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defun last-term-buffer (l)
+    "Return most recently used term buffer."
+    (when l
+	  (if (eq 'term-mode (with-current-buffer (car l) major-mode))
+	      (car l) (last-term-buffer (cdr l)))))
+)
+</pre>
+</div>
+
+
+<p>
+Switch to the term buffer last used, or create a new one if none
+exists, or if the current buffer is already a term. 
+</p>
+
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defun get-term ()
+    (interactive)
+    (let ((b (last-term-buffer (buffer-list))))
+	  (if (or (not b) (eq 'term-mode major-mode))
+	      (multi-term)
+	    (switch-to-buffer b))))
+)
+</pre>
+</div>
+
+<p>
+Kill entire line with C-k
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defun term-send-kill-whole-line ()
+    (interactive)
+    (term-send-raw-string "\C-a")
+    (term-send-raw-string "\C-k"))
+  )
+</pre>
+</div>
+
+<p>
+Opens a uniquely-named terminal running bash.  Appends the terminal
+number (with &lt;&gt;) to the name of the buffer.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (defun unique-bash-term ()
+    (interactive)
+    (set-buffer (make-term "terminal" my-term-shell))
+    (term-mode)
+    (term-char-mode)
+    (switch-to-buffer "*terminal*")
+    (rename-uniquely)
+    )
+  )
+</pre>
+</div>
+
+<p>
+Set some keybindings specific to term-mode
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(unless enable-vterm
+  (setq multi-term-program "/bin/bash")
+  (setq term-unbind-key-list '("C-x" "&lt;ESC&gt;"))
+  (setq term-bind-key-alist
+	'(("C-c" . term-interrupt-subjob)
+	  ("C-p" . term-send-up)
+	  ("C-n" . term-send-down)
+	  ("C-s" . isearch-forward)
+	  ("C-r" . term-send-reverse-search-history)
+	  ("C-m" . term-send-raw)
+	  ("C-k" . term-send-kill-whole-line)
+	  ("C-y" . yank)
+	  ("C-_" . term-send-raw)
+	  ("M-f" . term-send-forward-word)
+	  ("M-b" . term-send-backward-word)
+	  ("M-K" . term-send-kill-line)
+	  ("M-p" . previous-line)
+	  ("M-n" . next-line)
+	  ("M-y" . yank-pop)
+	  ("M-." . term-send-raw-meta)))
+
+  (global-set-key (kbd "C-q") 'unique-bash-term)
+  (global-set-key (kbd "C-;") "\C-c \C-j") ;; Line mode
+  (global-set-key (kbd "C-'") "\C-c \C-k") ;; Char mode
+  (define-key global-map (kbd "C-x e") 'multi-term)
+  )
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3d617b2" class="outline-3">
+<h3 id="org3d617b2"><span class="section-number-3">8.2</span> vterm</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+This section contains customizations for vterm terminal emulation
+(will be activated if enable-vterm is set to t).
+</p>
+
+<p>
+Look for init files in the emacs-libvterm submodule
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (add-to-list 'load-path "~/.emacs.d/emacs-config/emacs-libvterm")
+  (require 'vterm)
+)
+</pre>
+</div>
+
+
+<p>
+Kill the buffer when vterminal is exited
+See <a href="http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html">http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (defadvice vterm-sentinel (around my-advice-vterm-sentinel (proc msg))
+    (if (memq (process-status proc) '(signal exit))
+	(let ((buffer (process-buffer proc)))
+	  ad-do-it
+	  (kill-buffer buffer))
+      ad-do-it))
+  (ad-activate 'vterm-sentinel)
+)
+</pre>
+</div>
+
+<p>
+Always use bash (sorry zsh&#x2026;)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (defvar my-vterm-shell "/bin/bash")
+  (defadvice vterm (before force-bash)
+    (interactive
+     (list my-vterm-shell)))
+  (ad-activate 'vterm)
+)
+</pre>
+</div>
+
+<p>
+Use UTF-8 character encoding
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (defun my-vterm-use-utf8 ()
+    (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+  (add-hook 'vterm-exec-hook 'my-vterm-use-utf8)
+)
+</pre>
+</div>
+
+<p>
+Return the most recently used vterm buffer.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (defun last-vterm-buffer (l)
+    (when l
+	  (if (eq 'vterm-mode (with-current-buffer (car l) major-mode))
+	      (car l) (last-vterm-buffer (cdr l)))))
+)
+</pre>
+</div>
+
+<p>
+Switch to the vterm buffer last used, or create a new one if none
+exists, or if the current buffer is already a vterm. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (defun get-vterm ()
+    (interactive)
+    (let ((b (last-vterm-buffer (buffer-list))))
+	  (if (or (not b) (eq 'vterm-mode major-mode))
+	      (multi-vterm)
+	    (switch-to-buffer b))))
+)
+</pre>
+</div>
+
+
+<p>
+Define functions for killing an entire line
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (defun vterm-send-kill-whole-line ()
+    (interactive)
+    (vterm-send-raw-string "\C-a")
+    (vterm-send-raw-string "\C-k"))
+  (defun vterm-send-kill-line ()
+    (interactive)
+    (vterm-send-raw-string "\C-k"))
+)
+</pre>
+</div>
+
+<p>
+Open a uniquely-named vterminal
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (defun unique-bash-vterm ()
+    (interactive)
+    (vterm)
+    (vterm-send-key "&lt;escape&gt;")
+    (rename-uniquely))
+)
+</pre>
+</div>
+
+
+<p>
+Set some vterm-specific keybindings
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(when enable-vterm
+  (global-set-key [(control f1)] 'unique-bash-vterm)
+  (global-set-key (kbd "C-q") 'unique-bash-vterm)
+  (define-key global-map (kbd "C-x e") 'multi-vterm)
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Bob Yantosca</p>
+<p class="date">Created: 2021-06-08 Tue 21:16</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
