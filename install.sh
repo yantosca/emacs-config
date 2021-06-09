@@ -6,23 +6,23 @@
 # 28 May 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
 #==============================================================================
 
-# Copy the sample init.el file to the ~/.emacs.d folder
-# The user can customize this further
-echo "-----------------------"
-echo "Installing emacs-config"
-echo "-----------------------"
+# Copy startup files ~/.emacs.d folder
+# The user can customize these further
+echo "---------------------------------------"
+echo "Copying the init.org file to ~/.emacs.d"
+echo "---------------------------------------"
 echo ""
-echo "1. Copying the sample init.el file to .emacs.d"
-echo "   You can customize this further."
+echo "1. Copying *.org files file to .emacs.d"
 echo ""
-cp -f ./sample-init-el/init.el ../init.el
+cp -f ./emacs-config.org ~/.emacs.d
+cp -f ./init.el ~/.emacs.d
 
 # Skip building the emacs vterm if any argument is passed
 if [[ "x${1}" != "x" ]]; then
     echo "2. Skip building emacs-libvterm..."
     echo ""
     echo "3. Done!"
-    return
+    exit 0
 fi
 
 # Load all submodules
