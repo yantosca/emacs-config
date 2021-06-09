@@ -1,0 +1,41 @@
+
+* Color theme
+
+Activate the "Yantosca" custom color-theme, which has been added to the
+elpa/color-theme-6.6.1 folder.
+
+NOTE: We will not activate this color-theme if we have started emacs
+with the -nw (no-windowing-system) option.
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (add-to-list
+   'load-path
+   "~/.emacs.d/emacs-config/elpa/color-theme-6.6.1")
+  (when (display-graphic-p)
+    (require 'color-theme)
+    (setq color-theme-is-global t)
+    (color-theme-initialize)
+    (color-theme-yantosca))
+#+END_SRC
+
+* YASnippets
+
+Activate the YASnippets package.
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path
+   "~/.emacs.d/emacs-config/elpa/yasnippet-0.14.0")
+  (require 'yasnippet)
+  (yas-global-mode 1)
+#+END_SRC
+
+Load some classic snippets for various major modes.
+
+#+NAME: 
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path
+   "~/.emacs.d/emacs-config/elpa/yasnippet-classic-snippets-1.0.2")
+  (require 'yasnippet-classic-snippets)
+#+END_SRC
