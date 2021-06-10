@@ -30,7 +30,7 @@ Select athena/X11 or GTK as the graphical display package.
 Decide whether to use 1 or 2 vertical frames at startup.
 
 #+BEGIN_SRC emacs-lisp
-  (setq enable-two-vertical-frames t)
+  (setq enable-two-vertical-frames nil)
 #+END_SRC
 
 ** Vterm
@@ -122,6 +122,27 @@ set with the emacs.Font specification in your ~/.Xresources file.
       (set-face-font
        'default
        "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1")))
+#+END_SRC
+
+** Frames
+
+Use a single frame at startup).
+
+#+BEGIN_SRC emacs-lisp
+  (unless enable-two-vertical-frames
+    (set-frame-height (selected-frame) 41) ;; 40 lines
+    (set-frame-width  (selected-frame) 81) ;; 80 cols
+  )
+#+END_SRC
+
+Use two vertical frames at startup.
+
+#+BEGIN_SRC emacs-lisp
+  (when enable-two-vertical-frames
+   (set-frame-height (selected-frame) 41)  ;; 40 lines
+   (set-frame-width  (selected-frame) 164) ;; 164 cols
+   (split-window-horizontally)
+  )
 #+END_SRC
 
 ** Line and column numbers
