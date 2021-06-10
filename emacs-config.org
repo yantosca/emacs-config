@@ -573,28 +573,64 @@ Load fortran-mode.
 
 *** org-mode
 
-Here are some settings for Emacs org-mode:
+Align text with section headlines.
 
 #+BEGIN_SRC emacs-lisp
-(require 'org-tempo)
-(setq org-startup-indented t)
-(setq org-src-tab-acts-natively t)
-(setq org-hide-emphasis-markers t)
-(setq org-fontify-done-headline t)
-(setq org-hide-leading-stars t)
-(setq org-pretty-entities t)
-(setq org-odd-levels-only t)
-(setq org-structure-template-alist
-  '(("a" . "export ascii\n")
-    ("c" . "center\n")
-    ("C" . "comment\n")
-    ("e" . "example\n")
-    ("E" . "export")
-    ("h" . "export html\n")
-    ("l" . "export latex\n")
-    ("q" . "quote\n")
-    ("s" . "src")
-    ("v" . "verse\n")))
+  (setq org-startup-indented t)
+#+END_SRC
+
+Don't show leading stars in outline levels.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-hide-leading-stars t)
+#+END_SRC
+
+Skip even indent levels, to space sections out little more.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-odd-levels-only t)
+#+END_SRC
+
+In source code blocks, use indentation rules corresponding to the
+language's major mode (i.e. use C-style indentation for C, F90
+indentation for Fortran-90, etc.).
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+Hide markup elements (bold, italic) from rendering in org-mode text.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-hide-emphasis-markers t)
+#+END_SRC
+
+Colorize TODO items that have been marked as "DONE".
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-fontify-done-headline t)
+#+END_SRC
+
+Use LaTeX-style syntax to insert special characters.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-pretty-entities t)
+#+END_SRC
+
+Define keys for certain commands.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-structure-template-alist
+    '(("a" . "export ascii\n")
+      ("c" . "center\n")
+      ("C" . "comment\n")
+      ("e" . "example\n")
+      ("E" . "export")
+      ("h" . "export html\n")
+      ("l" . "export latex\n")
+      ("q" . "quote\n")
+      ("s" . "src")
+      ("v" . "verse\n")))
 #+END_SRC
 
 *** shell-script-mode

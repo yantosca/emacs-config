@@ -35,6 +35,22 @@ We'll also define a hook to define a yaml-mode specific key binding.
          (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 #+END_SRC
 
+*** org-mode
+
+Use fancy-style bullets for org-mode.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook
+            (lambda () (org-bullets-mode 1)))
+#+END_SRC
+
+Use template expansion for org-structures.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'org-tempo)
+#+END_SRC
+
 * Terminal settings
 
 Load 256 color options for terminal mode.
