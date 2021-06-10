@@ -654,6 +654,14 @@ Define keys for certain commands.
       ("v" . "verse\n")))
 #+END_SRC
 
+Look for org-agenda files in the ~/org folder (and any subfolders) in
+your home directory. 
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files
+        (directory-files-recursively "~/org" "\\$.org$"))
+#+END_SRC
+
 ** shell-script-mode
 
 Define a hook that will start certain things when shell-script mode
