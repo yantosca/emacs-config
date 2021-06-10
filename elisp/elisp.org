@@ -1,3 +1,4 @@
+;; elisp.org -- loads configuration files (*.el) contained in this folder
 
 * Add load path
 
@@ -9,7 +10,7 @@ Tell emacs to look in the current folder for files
 
 * Mode settings
 
-*** cmake-mode
+** cmake-mode
 
 Load the cmake-mode.el configuration file obtained from:
 https:/github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
@@ -18,7 +19,7 @@ https:/github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
   (require 'cmake-mode)
 #+END_SRC
 
-*** yaml-mode
+** yaml-mode
 
 Load the yaml-mode.el configuration file obtained from:
 https://github.com/yoshiki/yaml-mode/blob/master/yaml-mode.el
@@ -35,7 +36,7 @@ We'll also define a hook to define a yaml-mode specific key binding.
          (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 #+END_SRC
 
-*** org-mode
+** org-mode
 
 Use fancy-style bullets for org-mode.
 
@@ -50,6 +51,7 @@ Use template expansion for org-structures.
 #+BEGIN_SRC emacs-lisp
   (require 'org-tempo)
 #+END_SRC
+
 
 * Terminal settings
 

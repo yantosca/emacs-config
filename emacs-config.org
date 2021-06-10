@@ -17,7 +17,7 @@
 This section defines global variables that are used to toggle other
 settings further down in this initialization file.
 
-*** Graphical backend library
+** Graphical backend library
 
 Select athena/X11 or GTK as the graphical display package.
 
@@ -25,7 +25,7 @@ Select athena/X11 or GTK as the graphical display package.
   (setq enable-athena-backend nil)
 #+END_SRC
 
-*** Number of frames
+** Number of frames
 
 Decide whether to use 1 or 2 vertical frames at startup.
 
@@ -33,7 +33,7 @@ Decide whether to use 1 or 2 vertical frames at startup.
   (setq enable-two-vertical-frames t)
 #+END_SRC
 
-*** Vterm
+** Vterm
 
 Enable vterm terminal emulation.
  
@@ -48,7 +48,7 @@ This section loads external packages or configuration files that are
 contained as part of this emacs-config distribution.  These are stored
 in the elpa/ and elisp/ subfolders.
 
-*** External configurations
+** External configurations
 
 The "elisp" folder contains Emacs-lisp files from
 other packages obtained via the internet.
@@ -57,7 +57,7 @@ other packages obtained via the internet.
   (org-babel-load-file "~/.emacs.d/emacs-config/elisp/elisp.org")
 #+END_SRC
 
-*** External packages
+** External packages
 
 Load the initialization file in the elpa subdirectory, which will
 load external packages such as color-theme and yasnippet. 
@@ -71,7 +71,7 @@ load external packages such as color-theme and yasnippet.
 
 This section contains settings for display options.
 
-*** Date and time
+** Date and time
 
 Display date and time in the info bar ("mode line")
 
@@ -109,7 +109,7 @@ Customized insertion of timestamp (function is defined below in miscella.)
 
 #+END_SRC
 
-*** Font
+** Font
 
 Select a default font (Emacs with GTK backend only)
 
@@ -124,7 +124,7 @@ set with the emacs.Font specification in your ~/.Xresources file.
        "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1")))
 #+END_SRC
 
-*** Line and column numbers
+** Line and column numbers
 
 Display line and column numbers in bottom bar
 
@@ -133,7 +133,7 @@ Display line and column numbers in bottom bar
   (setq-default column-number-mode t)
 #+END_SRC
 
-*** Scroll bar
+** Scroll bar
 
 Set the vertical scroll bar on the left
 This will not take effect if running emacs -nw.
@@ -143,7 +143,7 @@ This will not take effect if running emacs -nw.
   (set-scroll-bar-mode 'left))
 #+END_SRC
 
-*** Splash screen
+** Splash screen
 
 Do not show the splash screen at startup.
 
@@ -152,7 +152,7 @@ Do not show the splash screen at startup.
   (setq inhibit-startup-message t) ;; working w/ 21.4
 #+END_SRC
 
-*** Top title 
+** Top title 
 
 Display path name in window title.
 
@@ -160,7 +160,7 @@ Display path name in window title.
   (setq frame-title-format "%S: %f")
 #+END_SRC
 
-*** User input
+** User input
 
 Set C-k to kill the entire line.
  
@@ -182,7 +182,7 @@ NOTE: not for newbies!
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
-*** Visual bell
+** Visual bell
 
 Subtly flash the mode line when an exception (e.g. compiler warning)
 occurs.  This is less annoying than the audible bell.
@@ -200,7 +200,7 @@ occurs.  This is less annoying than the audible bell.
 
 This section contains various settings.
 
-*** Custom variables
+** Custom variables
 
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
@@ -219,7 +219,7 @@ This section contains various settings.
  '(user-mail-address "yantosca@seas.harvard.edu"))
 #+END_SRC
 
-*** Backup and autosave
+** Backup and autosave
 
 Various settings for backing up and autosaving.
 
@@ -231,7 +231,7 @@ Various settings for backing up and autosaving.
   (setq version-control t)
 #+END_SRC
 
-*** Omit 
+** Omit 
 
 ;; This C-o business was working in Xemacs, but it is not in Emacs...:
 ;; to add ".mod" to the list of file type to omit when you do C-o in
@@ -256,7 +256,7 @@ And this one will omit .o, .mod, ~, and . files from directory listing.
         [?% ?m ?^ ?\\ ?. ?\\ ?| ?\\ ?. ?o ?$ ?\\ ?| ?\\ ?. ?m ?o ?d ?$ ?\\ ?| ?~ ?$ return ?k])
 #+END_SRC
 
-*** Repositories
+** Repositories
 
 Use MELPA-Stable repository for installing packages
 This is the emacs default package location.
@@ -268,7 +268,7 @@ This is the emacs default package location.
 
 #+END_SRC
 
-*** Miscellaneous
+** Miscellaneous
 
 Kill process (like a tail -f) and purge output. In shell mode.
 
@@ -287,7 +287,7 @@ Quick swapping between 2 buffers.
 
 * Key bindings
 
-*** Buffers
+** Buffers
 
 Keybindings for swapping or deleting buffers.
 
@@ -297,7 +297,7 @@ Keybindings for swapping or deleting buffers.
   (global-set-key [f12] 'kill-this-buffer)
 #+END_SRC
 
-*** Deletion
+** Deletion
 
 Keybindings for deleting characters and words.
  
@@ -308,7 +308,7 @@ Keybindings for deleting characters and words.
   (delete-selection-mode t)
 #+END_SRC
 
-*** Ediff 
+** Ediff 
 
 Keybindings for Ediff-mode.
  
@@ -318,7 +318,7 @@ Keybindings for Ediff-mode.
   (global-set-key [(shift f3)] 'fullcleanediff)
 #+END_SRC
 
-*** Editing
+** Editing
 
 Keybindings for common editing commands.
  
@@ -334,7 +334,7 @@ Keybindings for common editing commands.
   (global-set-key (kbd "<kp-enter>") 'goto-line)
 #+END_SRC
 
-*** Modes
+** Modes
 
 Keybindings to toggle major modes.
 
@@ -349,7 +349,7 @@ Keybindings to toggle major modes.
   (global-set-key [(control f10)] 'font-lock-mode)
 #+END_SRC
 
-*** Navigation 
+** Navigation 
 
 Keybindings for navigation commands.
  
@@ -359,7 +359,7 @@ Keybindings for navigation commands.
   (global-set-key [(control tab)] 'other-window)
 #+END_SRC
 
-*** Search and replace
+** Search and replace
 
 Keybindings for search & replace commands.
  
@@ -380,7 +380,7 @@ This section contains customizations for the various major modes.
 NOTE: Customizations for cmake-mode and yaml-mode may be found in
 elisp/elisp.org.  This is because these modes are external add-ons.
 
-*** Default mode
+** Default mode
 
 Use fundamental-mode as the default mode.
 
@@ -388,7 +388,7 @@ Use fundamental-mode as the default mode.
   (setq initial-major-mode 'fundamental-mode)
 #+END_SRC
 
-*** Auto-assign modes
+** Auto-assign modes
 
 Assign major modes to certain file extensions
 
@@ -431,7 +431,7 @@ Manually specify major-modes for certain files.
   (add-to-list 'auto-mode-alist '("input.geos"            . conf-mode))
 #+END_SRC
 
-*** auto-image-file-mode
+** auto-image-file-mode
 
 Display images in emacs buffer.
  
@@ -439,7 +439,7 @@ Display images in emacs buffer.
   (auto-image-file-mode)
 #+END_SRC
 
-*** cperl-mode
+** cperl-mode
 
 Set indent level to 2 spaces (also in sub-blocks).
 
@@ -461,7 +461,7 @@ Matching parentheses and auto-expansion of keywords.
   (setq perl-electric-keywords t)
 #+END_SRC
 
-*** ediff-mode
+** ediff-mode
 
 Create two Ediff windows, stacked one atop another.
 
@@ -499,7 +499,7 @@ Close the two compared windows.
 
 #+END_SRC
 
-*** font-lock-mode
+** font-lock-mode
 
 Turn on global font-lock mode (which colorizes text depending on which
 mode you are in).  Useful for programming.
@@ -510,7 +510,7 @@ mode you are in).  Useful for programming.
     (setq font-lock-auto-fontify t))   ; XEmacs
 #+END_SRC
 
-*** f90-mode
+** f90-mode
 
 Define a hook so that certain things start when F90-mode starts.
 Most notably, disable the electric indent mode.
@@ -544,7 +544,7 @@ Load f90-mode.
   (require 'f90)
 #+END_SRC
 
-*** fortran-mode
+** fortran-mode
 
 Add a hook to enable certain things when Fortran mode starts.
 Most notably, disable electric-indent-mode.
@@ -571,7 +571,7 @@ Load fortran-mode.
   (require 'fortran)
 #+END_SRC
 
-*** org-mode
+** org-mode
 
 Align text with section headlines.
 
@@ -633,7 +633,7 @@ Define keys for certain commands.
       ("v" . "verse\n")))
 #+END_SRC
 
-*** shell-script-mode
+** shell-script-mode
 
 Define a hook that will start certain things when shell-script mode
 starts: The home key, cycling up & down through command history.
@@ -658,7 +658,7 @@ starts: The home key, cycling up & down through command history.
 )
 #+END_SRC
 
-*** text-mode
+** text-mode
 
 Turn-on auto-formatting in text-mode
  
@@ -669,7 +669,7 @@ Turn-on auto-formatting in text-mode
 
 * Motion (cursor and mouse)
 
-*** Bounce betwen parentheses
+** Bounce betwen parentheses
 
 BOUNCE BETWEEN PARENTHESES 
 bounces from one sexp "(){}[]<>" to another (ala vi's %)
@@ -687,7 +687,7 @@ written by Joe Casadonte (joc@netaxs.com)
   (global-set-key [(control =)] 'joc-bounce-sexp)
 #+END_SRC
 
-*** Cursor scroll
+** Cursor scroll
 
 Scroll up & down.
 
@@ -724,7 +724,7 @@ Scroll only one line when cursor is at the bottom of the screen
   (setq scroll-step 1)
 #+END_SRC
 
-*** Mouse scroll
+** Mouse scroll
 
 Scroll 3 lines at a time with the mouse wheel.
 
@@ -738,7 +738,7 @@ Scroll 3 lines at a time with the mouse wheel.
 
 This section contains options for the terminal emulation modes.
 
-*** term
+** term
 
 Define options for the default term-mode, which is a terminal emulator
 written in emacs-lisp.  This will be slower than vterm, which is a
@@ -890,7 +890,7 @@ Set some keybindings specific to term-mode
     )
 #+END_SRC
 
-*** vterm
+** vterm
 
 This section contains customizations for vterm terminal emulation
 (will be activated if enable-vterm is set to t).

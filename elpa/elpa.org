@@ -1,3 +1,4 @@
+;; elpa.org -- Initializes external packages contained in this folder
 
 * Color theme
 
@@ -17,6 +18,7 @@ with the -nw (no-windowing-system) option.
     (color-theme-initialize)
     (color-theme-yantosca))
 #+END_SRC
+
 
 * YASnippets
 
