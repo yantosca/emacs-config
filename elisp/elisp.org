@@ -8,6 +8,7 @@ Tell emacs to look in the current folder for files
   (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/")
 #+END_SRC
 
+
 * Mode settings
 
 ** cmake-mode
@@ -49,7 +50,13 @@ Use fancy-style bullets for org-mode.
 Use template expansion for org-structures.
 
 #+BEGIN_SRC emacs-lisp
-  (require 'org-tempo)
+;;  (require 'org-tempo)
+#+END_SRC
+
+Require ox-rst for porting org-mode to ReST format
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ox-rst)
 #+END_SRC
 
 
