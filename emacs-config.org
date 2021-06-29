@@ -658,8 +658,9 @@ Look for org-agenda files in the ~/org folder (and any subfolders) in
 your home directory. 
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files
-        (directory-files-recursively "~/org" "\\$.org$"))
+  (if (file-directory-p "~/org")
+     (setq org-agenda-files
+        (directory-files-recursively "~/org" "\\$.org$")))
 #+END_SRC
 
 ** shell-script-mode
