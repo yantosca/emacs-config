@@ -430,12 +430,12 @@ Assign major modes to certain file extensions
                   ("\\.kpp$"       . f90-mode)
                   ("\\.tex$"       . latex-mode)
                   ("\\.m$"         . matlab-mode)
-                  ("\\.md$"        . org-mode)
+                  ("\\.md$"        . markdown-mode)
                   ("\\.sh$"        . shell-script-mode)
                   ("\\.env$"       . shell-script-mode)
                   ("\\.centos7$"   . shell-script-mode)
                   ("\\.pl$"        . cperl-mode)
-		        ("\\.rc$"        . conf-mode)
+		      ("\\.rc$"        . conf-mode)
                   ("\\.yaml$"      . yaml-mode)
                   ("\\.yml$"       . yaml-mode)
                   )auto-mode-alist))
@@ -591,6 +591,15 @@ Load fortran-mode.
 #+BEGIN_SRC emacs-lisp
   (require 'fortran)
 #+END_SRC
+
+** markdown-mode
+
+Load markdown-mode
+
+#+BEGIN_SRC emacs-lisp
+  (require 'markdown)
+#+END_SRC
+
 
 ** org-mode
 
