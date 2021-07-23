@@ -597,7 +597,7 @@ Load fortran-mode.
 Load markdown-mode
 
 #+BEGIN_SRC emacs-lisp
-  (require 'markdown)
+  (require 'markdown-mode)
 #+END_SRC
 
 
