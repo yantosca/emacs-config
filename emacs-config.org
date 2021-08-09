@@ -644,7 +644,7 @@ Colorize TODO items that have been marked as "DONE".
 Use LaTeX-style syntax to insert special characters.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-pretty-entities t)
+  (setq org-pretty-entities nil)
 #+END_SRC
 
 Define keys for certain commands.
