@@ -1,4 +1,4 @@
 # name: code-block-python
 # key: :python
 # --
-.. code_block:: python
+.. code-block:: python

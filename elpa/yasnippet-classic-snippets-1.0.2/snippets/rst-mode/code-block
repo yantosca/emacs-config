@@ -1,6 +1,6 @@
 # name: code-block
 # key: :code
 # --
-.. code_block::
+.. code-block::
 
    

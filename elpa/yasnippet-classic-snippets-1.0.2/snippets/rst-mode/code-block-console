@@ -1,6 +1,5 @@
 # name: code-block-console
-# key: :con
+# key: :cns
 # --
-.. code_block:: console
+.. code-block:: console
 
-   $ 

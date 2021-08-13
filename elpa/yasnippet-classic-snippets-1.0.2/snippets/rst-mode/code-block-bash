@@ -1,6 +1,6 @@
-# name: code-block-console
+# name: code-block-bash
 # key: :ba
 # --
-.. code_block:: bash
+.. code-block:: bash
 
     
