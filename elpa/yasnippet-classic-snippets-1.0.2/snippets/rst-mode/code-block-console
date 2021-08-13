@@ -1,0 +1,6 @@
+# name: code-block-console
+# key: :con
+# --
+.. code_block:: console
+
+   $ 
