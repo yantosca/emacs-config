@@ -345,11 +345,7 @@ Keybindings for common editing commands.
  
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f1]               'kill-line)
-  (global-set-key [f2]               'kill-word)
-  (global-set-key [f3]               'string-rectangle)
-  (global-set-key [f4]               'delete-rectangle)
-  (global-set-key [f5]               'shell) ;macrotimestamp)
-  (global-set-key [(shift f5)]       'delete-trailing-whitespace)
+  (glo      'delete-trailing-whitespace)
   (global-set-key (kbd "<S-pause>")  "\M-l")
   (global-set-key (kbd "<pause>")    "\M-u")
   (global-set-key (kbd "<kp-enter>") 'goto-line)
