@@ -1,3 +1,4 @@
+
 ;;; emacs-config.org: Main file for Emacs customizations
 ;;
 ;; 08 Jun 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
@@ -22,7 +23,7 @@ settings further down in this initialization file.
 Select athena/X11 or GTK as the graphical display package.
 
 #+BEGIN_SRC emacs-lisp
-  (setq enable-athena-backend nil)
+  (setq enable-athena-backend t)
 #+END_SRC
 
 ** Number of frames
@@ -30,7 +31,7 @@ Select athena/X11 or GTK as the graphical display package.
 Decide whether to use 1 or 2 vertical frames at startup.
 
 #+BEGIN_SRC emacs-lisp
-  (setq enable-two-vertical-frames nil)
+  (setq enable-two-vertical-frames t)
 #+END_SRC
 
 ** Vterm
@@ -345,6 +346,9 @@ Keybindings for common editing commands.
  
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f1]               'kill-line)
+  (global-set-key [f2]               'kill-word)
+  (global-set-key [f3]               'string-rectangle)
+  (global-set-key [f4]               'delete-rectangle)
   (global-set-key [f5]               'delete-trailing-whitespace)
   (global-set-key (kbd "<S-pause>")  "\M-l")
   (global-set-key (kbd "<pause>")    "\M-u")
