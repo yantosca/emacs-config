@@ -1,7 +1,7 @@
 
 ;;; emacs-config.org: Main file for Emacs customizations
 ;;
-;; 08 Jun 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
+;; 17 Oct 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
 ;;
 ;; This file is loaded by init.el, which issues a call to
 ;;(org-babel-load-file ~./emacs.d/emacs-config.org) 
@@ -368,6 +368,7 @@ Keybindings to toggle major modes.
   (global-set-key [(control f8)]  'shell-script-mode)
   (global-set-key [(control f9)]  'cperl-mode)
   (global-set-key [(control f10)] 'font-lock-mode)
+  (global-set-key [(control f11)] 'kpp-mode)
 #+END_SRC
 
 ** Navigation 
@@ -418,7 +419,6 @@ Assign major modes to certain file extensions
         (append '(("\\.cmake"      . cmake-mode)
                   ("\\.c$"         . c-mode)
                   ("\\.C$"         . c++-mode)
-                  ("\\.cc$"        . c++-mode)
                   ("\\.hh$"        . c++-mode)
                   ("\\.hpp$"       . c++-mode)
                   ("\\.cpp$"       . c++-mode)
@@ -427,7 +427,6 @@ Assign major modes to certain file extensions
                   ("\\.F$"         . fortran-mode)
                   ("\\.H$"         . f90-mode)
                   ("\\.F90$"       . f90-mode)
-                  ("\\.kpp$"       . f90-mode)
                   ("\\.tex$"       . latex-mode)
                   ("\\.m$"         . matlab-mode)
                   ("\\.md$"        . markdown-mode)
@@ -435,7 +434,7 @@ Assign major modes to certain file extensions
                   ("\\.env$"       . shell-script-mode)
                   ("\\.centos7$"   . shell-script-mode)
                   ("\\.pl$"        . cperl-mode)
-		      ("\\.rc$"        . conf-mode)
+                  ("\\.rc$"        . conf-mode)
                   ("\\.yaml$"      . yaml-mode)
                   ("\\.yml$"       . yaml-mode)
                   )auto-mode-alist))

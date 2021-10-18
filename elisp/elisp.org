@@ -59,6 +59,14 @@ Require ox-rst for porting org-mode to ReST format
   (require 'ox-rst)
 #+END_SRC
 
+** kpp-mode
+
+Load kpp.el configuration file obtained from the KPP repository
+
+#+BEGIN_SRC emacs-lisp
+  (require 'kpp)
+#+END_SRC
+
 
 * Terminal settings
 
