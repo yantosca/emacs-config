@@ -1,10 +1,9 @@
-
 ;;; emacs-config.org: Main file for Emacs customizations
 ;;
-;; 17 Oct 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
+;; 24 Dec 2021 -- Bob Yantosca -- yantosca@seas.harvard.edu
 ;;
 ;; This file is loaded by init.el, which issues a call to
-;;(org-babel-load-file ~./emacs.d/emacs-config.org) 
+;;(org-babel-load-file ~./emacs.d/emacs-config.org)
 ;;
 ;; You may edit this file as you wish.  Emacs-lisp code needs to go in
 ;; the designated blocks.  These commands will be executed upon
@@ -20,7 +19,7 @@ settings further down in this initialization file.
 
 ** Graphical backend library
 
-Select athena/X11 or GTK as the graphical display package.
+Select athena/X11 (t) or GTK (nil) as the graphical display package.
 
 #+BEGIN_SRC emacs-lisp
   (setq enable-athena-backend t)
@@ -37,7 +36,7 @@ Decide whether to use 1 or 2 vertical frames at startup.
 ** Vterm
 
 Enable vterm terminal emulation.
- 
+
 #+BEGIN_SRC emacs-lisp
   (setq enable-vterm t)
 #+END_SRC
@@ -53,7 +52,7 @@ in the elpa/ and elisp/ subfolders.
 
 The "elisp" folder contains Emacs-lisp files from
 other packages obtained via the internet.
- 
+
 #+BEGIN_SRC emacs-lisp
   (org-babel-load-file "~/.emacs.d/emacs-config/elisp/elisp.org")
 #+END_SRC
@@ -61,7 +60,7 @@ other packages obtained via the internet.
 ** External packages
 
 Load the initialization file in the elpa subdirectory, which will
-load external packages such as color-theme and yasnippet. 
+load external packages such as color-theme and yasnippet.
 
 #+BEGIN_SRC emacs-lisp
   (org-babel-load-file "~/.emacs.d/emacs-config/elpa/elpa.org")
@@ -76,7 +75,7 @@ This section contains settings for display options.
 
 Display date and time in the info bar ("mode line")
 
- 
+
 #+BEGIN_SRC emacs-lisp
   (setq display-time-day-and-date t)
   (setq display-time-string-forms
@@ -94,7 +93,7 @@ Display date and time in the info bar ("mode line")
 
 Display a timestamp in a buffer
 
- 
+
 #+BEGIN_SRC emacs-lisp
 (defun insert-timestamp ()
   "Insert a nicely formatted date string."
@@ -116,7 +115,7 @@ Select a default font (Emacs with GTK backend only)
 
 NOTE: If using athena/X11 as the backend, then the default font can be
 set with the emacs.Font specification in your ~/.Xresources file.
- 
+
 #+BEGIN_SRC emacs-lisp
   (unless enable-athena-backend
     (when (display-graphic-p)
@@ -174,7 +173,7 @@ Do not show the splash screen at startup.
   (setq inhibit-startup-message t) ;; working w/ 21.4
 #+END_SRC
 
-** Top title 
+** Top title
 
 Display path name in window title.
 
@@ -185,7 +184,7 @@ Display path name in window title.
 ** User input
 
 Set C-k to kill the entire line.
- 
+
 #+BEGIN_SRC emacs-lisp
   (setq kill-whole-line t)
 #+END_SRC
@@ -246,26 +245,26 @@ This section contains various settings.
 Various settings for backing up and autosaving.
 
 #+BEGIN_SRC emacs-lisp
-  (setq backup-by-copying t) 
+  (setq backup-by-copying t)
   (setq delete-old-versions t)
   (setq kept-new-versions 10)
   (setq kept-old-versions 2)
   (setq version-control t)
 #+END_SRC
 
-** Omit 
+** Omit
 
 ;; This C-o business was working in Xemacs, but it is not in Emacs...:
 ;; to add ".mod" to the list of file type to omit when you do C-o in
-;; Directory. 
- 
+;; Directory.
+
 #+BEGIN_SRC emacs-lisp
   (defalias 'omitmod
     (read-kbd-macro "C-u %o.mod RET"))
 #+END_SRC
 
 Redefine the "omit" functions for Emacs in dired mode.
- 
+
 #+BEGIN_SRC emacs-lisp
   (fset 'omitdotfiles
         [?% ?m ?^ ?\\ ?. ?. ?* return ?k])
@@ -322,18 +321,18 @@ Keybindings for swapping or deleting buffers.
 ** Deletion
 
 Keybindings for deleting characters and words.
- 
+
 #+BEGIN_SRC emacs-lisp
-  (global-set-key [(delete)]            "\C-d")   
+  (global-set-key [(delete)]            "\C-d")
   (global-set-key [(control delete)]    'kill-word)
   (global-set-key [(control backspace)] 'backward-kill-word)
   (delete-selection-mode t)
 #+END_SRC
 
-** Ediff 
+** Ediff
 
 Keybindings for Ediff-mode.
- 
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(shift f1)] 'ediff-files)
   (global-set-key [(shift f2)] 'ediff-buffers)
@@ -343,7 +342,7 @@ Keybindings for Ediff-mode.
 ** Editing
 
 Keybindings for common editing commands.
- 
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f1]               'kill-line)
   (global-set-key [f2]               'kill-word)
@@ -371,10 +370,10 @@ Keybindings to toggle major modes.
   (global-set-key [(control f11)] 'kpp-mode)
 #+END_SRC
 
-** Navigation 
+** Navigation
 
 Keybindings for navigation commands.
- 
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(meta n)]      'scroll-n-lines-ahead)
   (global-set-key [(meta p)]      'scroll-n-lines-behind)
@@ -384,7 +383,7 @@ Keybindings for navigation commands.
 ** Search and replace
 
 Keybindings for search & replace commands.
- 
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f6]          'find-file)
   (global-set-key [(shift f6)]  'insert-file)
@@ -430,6 +429,7 @@ Assign major modes to certain file extensions
                   ("\\.tex$"       . latex-mode)
                   ("\\.m$"         . matlab-mode)
                   ("\\.md$"        . markdown-mode)
+		      ("\\.org$"       . org-mode)
                   ("\\.sh$"        . shell-script-mode)
                   ("\\.env$"       . shell-script-mode)
                   ("\\.centos7$"   . shell-script-mode)
@@ -454,7 +454,7 @@ Manually specify major-modes for certain files.
 ** auto-image-file-mode
 
 Display images in emacs buffer.
- 
+
 #+BEGIN_SRC emacs-lisp
   (auto-image-file-mode)
 #+END_SRC
@@ -591,6 +591,7 @@ Load fortran-mode.
   (require 'fortran)
 #+END_SRC
 
+
 ** markdown-mode
 
 Load markdown-mode
@@ -601,6 +602,12 @@ Load markdown-mode
 
 
 ** org-mode
+
+Activate org-mode
+
+#+BEGIN_SRC emacs-lisp
+  (require 'org)
+#+END_SRC
 
 Align text with section headlines.
 
@@ -640,6 +647,12 @@ Colorize TODO items that have been marked as "DONE".
   (setq org-fontify-done-headline t)
 #+END_SRC
 
+Add a timestamp when each TODO item is marked as DONE.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-done 'time)
+#+END_SRC
+
 Use LaTeX-style syntax to insert special characters.
 
 #+BEGIN_SRC emacs-lisp
@@ -662,14 +675,27 @@ Define keys for certain commands.
       ("v" . "verse\n")))
 #+END_SRC
 
-Look for org-agenda files in the ~/org folder (and any subfolders) in
-your home directory. 
+Look for org-agenda files: ~/org/home.org and ~/org/work.org
 
 #+BEGIN_SRC emacs-lisp
   (if (file-directory-p "~/org")
-     (setq org-agenda-files
-        (directory-files-recursively "~/org" "\\$.org$")))
+      (setq org-agenda-files (list "~/org/home.org"
+                                   "~/org/work.org")))
 #+END_SRC
+
+Define keybindings for org-agenda features.
+
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map "\C-cl" 'org-store-link)
+  (define-key global-map "\C-ca" 'org-agenda)
+#+END_SRC
+
+Set default column view headings: Task Total-Time Time-Stamp
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
+#+END_SRC
+
 
 ** shell-script-mode
 
@@ -699,7 +725,7 @@ starts: The home key, cycling up & down through command history.
 ** text-mode
 
 Turn-on auto-formatting in text-mode
- 
+
 #+BEGIN_SRC emacs-lisp
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
@@ -709,7 +735,7 @@ Turn-on auto-formatting in text-mode
 
 ** Bounce betwen parentheses
 
-BOUNCE BETWEEN PARENTHESES 
+BOUNCE BETWEEN PARENTHESES
 bounces from one sexp "(){}[]<>" to another (ala vi's %)
 written by Joe Casadonte (joc@netaxs.com)
 
@@ -756,7 +782,7 @@ Scroll fast by 10 lines at a time.
 #+END_SRC
 
 Scroll only one line when cursor is at the bottom of the screen
-(instead of finding the lastline suddenly in the middle). 
+(instead of finding the lastline suddenly in the middle).
 
 #+BEGIN_SRC emacs-lisp
   (setq scroll-step 1)
@@ -818,7 +844,7 @@ See: http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-term.html
             (kill-buffer buffer))
         ad-do-it))
     (ad-activate 'term-sentinel)
-    ) 
+    )
 #+END_SRC
 
 Always enable bash (sorry zsh...)
@@ -857,7 +883,7 @@ Return most recently used term buffer.
 
 
 Switch to the term buffer last used, or create a new one if none
-exists, or if the current buffer is already a term. 
+exists, or if the current buffer is already a term.
 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
@@ -945,7 +971,7 @@ Look for init files in the emacs-libvterm submodule.
 
 Kill the buffer when vterminal is exited.
 See http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html
- 
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (defadvice vterm-sentinel (around my-advice-vterm-sentinel (proc msg))
@@ -959,7 +985,7 @@ See http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html
 #+END_SRC
 
 Always use bash (sorry zsh...)
- 
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (defvar my-vterm-shell "/bin/bash")
@@ -971,7 +997,7 @@ Always use bash (sorry zsh...)
 #+END_SRC
 
 Use UTF-8 character encoding.
- 
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (defun my-vterm-use-utf8 ()
@@ -981,7 +1007,7 @@ Use UTF-8 character encoding.
 #+END_SRC
 
 Return the most recently used vterm buffer.
- 
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (defun last-vterm-buffer (l)
@@ -992,8 +1018,8 @@ Return the most recently used vterm buffer.
 #+END_SRC
 
 Switch to the vterm buffer last used, or create a new one if none
-exists, or if the current buffer is already a vterm. 
- 
+exists, or if the current buffer is already a vterm.
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (defun get-vterm ()
@@ -1020,7 +1046,7 @@ Define functions for killing an entire line.
 #+END_SRC
 
 Open a uniquely-named vterminal.
- 
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (defun unique-bash-vterm ()
@@ -1032,7 +1058,7 @@ Open a uniquely-named vterminal.
 #+END_SRC
 
 Set some vterm-specific keybindings.
- 
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (global-set-key [(control f1)] 'unique-bash-vterm)
