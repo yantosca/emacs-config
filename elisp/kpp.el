@@ -27,6 +27,9 @@
 (setq auto-mode-alist
   (cons '("\\.spc\\'" . kpp-mode) auto-mode-alist))
 
+;; Turn on font-lock-mode for KPP
+(add-hook 'kpp-mode-hook 'font-lock-mode)
+
 (setq kpp-font-lock-keywords
  (list
   '("^\\([^=\n]*=[^:\n]*\\):[^;\n]*;" 1 font-lock-constant-face) ; reaction
