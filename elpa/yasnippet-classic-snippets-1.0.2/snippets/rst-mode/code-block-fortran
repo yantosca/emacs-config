@@ -1,4 +1,4 @@
-# name: code-block-python
+# name: code-block-fortran
 # key: :f90
 # --
 .. code-block:: fortran

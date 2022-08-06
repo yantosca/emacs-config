@@ -1,5 +1,5 @@
-# name: Document title
-# key: tit
+# name: Section
+# key: :sec
 # --
 ${1:$(make-string (string-width "text") ?\=)}
 ${1:Title}

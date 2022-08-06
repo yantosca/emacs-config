@@ -1,7 +1,8 @@
 # name: Chapter title
-# key: chap
+# key: :chap
 # --
-${1:Chapter}
+${1:$(make-string (string-width "text") ?\=)}
+${1:Title}
 ${1:$(make-string (string-width "text") ?\=)}
 
 $0

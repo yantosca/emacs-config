@@ -1,7 +1,7 @@
 # name: Section title
-# key: sec
+# key: :subsec
 # --
-${1:Section}
+${1:Subsection}
 ${1:$(make-string (string-width "text") ?\-)}
 
 $0
