@@ -1,3 +1,6 @@
 [submodule "emacs-libvterm"]
 	path = emacs-libvterm
 	url = https://github.com/akermu/emacs-libvterm.git
+[submodule "elisp/rust-mode"]
+	path = elisp/rust-mode
+	url = https://github.com/rust-lang/rust-mode
