@@ -2,10 +2,11 @@
 
 * Add load path
 
-Tell emacs to look in the current folder for files
+Tell emacs to look in these folders for emacs-lisp (*.el) files:
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/")
+  (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/rust-mode")
 #+END_SRC
 
 
@@ -65,6 +66,35 @@ Load kpp.el configuration file obtained from the KPP repository
 
 #+BEGIN_SRC emacs-lisp
   (require 'kpp)
+#+END_SRC
+
+** rust-mode
+
+Load the Rust major mode.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'rust-mode)
+;autoload 'rust-mode "rust-mode" nil t)
+#+END_SRC
+
+Insert spaces instead of tabs, as per the Rust style guide.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'rust-mode-hook
+            (lambda () (setq indent-tabs-mode nil)))
+#+END_SRC
+
+Enable auto-formatting when saving a Rust source code file.
+
+#+BEGIN_SRC emacs-lisp
+  (setq rust-format-on-save t)
+#+END_SRC
+
+Toggle "prettifying" of symbols
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'rust-mode-hook
+            (lambda () (prettify-symbols-mode)))
 #+END_SRC
 
 
