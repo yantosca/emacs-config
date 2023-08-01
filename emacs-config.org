@@ -446,9 +446,12 @@ Assign major modes to certain file extensions
 Manually specify major-modes for certain files.
 
 #+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '(".profile"              . shell-script-mode))
   (add-to-list 'auto-mode-alist '(".bash_profile"         . shell-script-mode))
   (add-to-list 'auto-mode-alist '(".bashrc"               . shell-script-mode))
   (add-to-list 'auto-mode-alist '(".bash_aliases"         . shell-script-mode))
+  (add-to-list 'auto-mode-alist '(".bash_functions"       . shell-script-mode))
+  (add-to-list 'auto-mode-alist '(".bash_logout"          . shell-script-mode))
   (add-to-list 'auto-mode-alist '(".my_personal_settings" . shell-script-mode))
   (add-to-list 'auto-mode-alist '(".README"               . fundamental-mode))
   (add-to-list 'auto-mode-alist '("input.geos"            . conf-mode))
@@ -594,7 +597,6 @@ Load fortran-mode.
   (require 'fortran)
 #+END_SRC
 
-
 ** markdown-mode
 
 Load markdown-mode
@@ -602,7 +604,6 @@ Load markdown-mode
 #+BEGIN_SRC emacs-lisp
   (require 'markdown-mode)
 #+END_SRC
-
 
 ** org-mode
 
@@ -698,7 +699,6 @@ Set default column view headings: Task Total-Time Time-Stamp
 #+BEGIN_SRC emacs-lisp
   (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
 #+END_SRC
-
 
 ** shell-script-mode
 
