@@ -1,0 +1,9 @@
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: git-merge-msg
+# key: gmm
+# --
+Merge PR # ( )
+
+This merge brings PR # ( , by @) into
+
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>
