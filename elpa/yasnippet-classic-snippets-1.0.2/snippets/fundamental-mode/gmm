@@ -1,6 +1,6 @@
 # contributor: Bob Yantosca <yantosca@seas.harvard.edu>
 # name: git-merge-msg
-# key: gmm
+# key: :gmm
 # --
 Merge PR # ( )
 
