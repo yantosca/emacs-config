@@ -725,6 +725,15 @@ starts: The home key, cycling up & down through command history.
 )
 #+END_SRC
 
+Use spaces instead of tabs in shell-script-mode
+
+#+BEGIN_SRC emacs-lisp
+(defun turn-off-indent-tabs-mode ()
+  (setq indent-tabs-mode nil))
+(add-hook 'sh-mode-hook #'turn-off-indent-tabs-mode)
+#+END_SRC
+
+
 ** text-mode
 
 Turn-on auto-formatting in text-mode
