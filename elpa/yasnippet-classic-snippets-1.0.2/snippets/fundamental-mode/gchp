@@ -1,0 +1,14 @@
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: gchp-hash-update
+# key: :gchp
+# --
+GEOS-Chem submod update: Merge PR # ( )
+
+This commit informs the GCHP superproject about the following 
+commits that were pushed to the GitHub geos-chem/geos-chem repository:
+
+
+
+This PR ...
+
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>
