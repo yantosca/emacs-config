@@ -1,10 +1,10 @@
 # contributor: Bob Yantosca <yantosca@seas.harvard.edu>
-# name: gchp-hash-update
+# name: hemco-hash-update
 # key: :hco
 # --
 geos-chem-shared-docs update: Merge PR # ( )
 
-This commit informs the GCHP superproject about the following 
+This commit informs the GCHP superproject about the following
 commits that were pushed to the GitHub geos-chem-shared-docs repository:
 
 
