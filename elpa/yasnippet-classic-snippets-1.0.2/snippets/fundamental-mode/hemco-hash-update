@@ -2,7 +2,7 @@
 # name: hemco-hash-update
 # key: :hco
 # --
-HEMCO submod update: Merge PR # ( )
+HEMCO update: Merge PR # ( )
 
 This commit informs the HEMCO superproject about the following 
 commits that were pushed to the GitHub geoschem/HEMCO repository:

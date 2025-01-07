@@ -2,7 +2,7 @@
 # name: gcclassic-hash-update
 # key: :gcc
 # --
-GEOS-Chem submod update: Merge PR # ( )
+GEOS-Chem update: Merge PR # ( )
 
 This commit informs the GCClassic superproject about the following 
 commits that were pushed to the GitHub geoschem/geos-chem repository:

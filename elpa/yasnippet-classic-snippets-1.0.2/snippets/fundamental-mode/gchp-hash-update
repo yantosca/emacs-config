@@ -2,7 +2,7 @@
 # name: gchp-hash-update
 # key: :gchp
 # --
-GEOS-Chem submod update: Merge PR # ( )
+GEOS-Chem update: Merge PR # ( )
 
 This commit informs the GCHP superproject about the following 
 commits that were pushed to the GitHub geoschem/geos-chem repository:
