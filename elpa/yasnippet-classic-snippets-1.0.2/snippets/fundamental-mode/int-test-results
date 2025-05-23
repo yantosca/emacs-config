@@ -1,28 +1,25 @@
+# -*- mode: snippet -*-
 # contributor: Bob Yantosca <yantosca@seas.harvard.edu>
 # name: int-test-results
 # key: :itr
 # --
 All GEOS-Chem Classic integration tests passed:
-```console
--- Paste log file header here --
-
+\`\`\`console
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  All execution tests passed!  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-```
-All tests were zero-diff w/r/t ___, except
+\`\`\`
+All tests were zero-diff w/r/t ..., except
 
-- item1
-- item2
+- ${2:item1}
+- ${3:item2}
 
 All GCHP integration tests passed:
-```console
--- Paste log file header here --
+\`\`\`console
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  All execution tests passed!  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-```
-All tests were zero-diff w/r/t ___
-
+\`\`\`
+All tests were zero-diff w/r/t ...
