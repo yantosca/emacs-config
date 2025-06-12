@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: merge-ntdb-into-release-msg
+# key: :nd2rel
+# --
+Merge branch 'dev/no-diff-to-benchmark' into release/X.Y.Z
+    
+This merge brings updates from the "dev/no-diff-to-benchmark"
+development stream into the release/X.Y.Z branch, in anticipation
+of the ____ X.Y.Z release.
+    
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>

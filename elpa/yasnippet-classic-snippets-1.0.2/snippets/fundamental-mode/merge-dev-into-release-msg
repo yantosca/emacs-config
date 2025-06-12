@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: merge-dev-into-release-msg
+# key: :dev2rel
+# --
+Merge branch 'dev/X.Y.Z' into release/X.Y.Z
+    
+This merge brings updates from the X.Y.Z development stream
+into the release/X.Y.Z branch, in anticipation of the
+____ X.Y.Z release.
+    
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>

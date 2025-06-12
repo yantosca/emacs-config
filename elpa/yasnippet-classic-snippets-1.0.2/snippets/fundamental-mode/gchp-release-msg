@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: gchp-release-msg
+# key: :gchprel
+# --
+GCHP X.Y.Z release
+
+This is the official release commit of GCHP 14.6.2.
+
+Updated version numbers in:
+- CHANGELOG.md
+- CMakeLists.txt
+- docs/source/conf.py
+
+Updated GEOS-Chem submodule to version 14.6.2
+Updated HEMCO submodule to version 14.6.2
+Updated geos-chem-shared-docs submodule to commit _____
+
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>

@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: gc-release-msg
+# key: :gcrel
+# --
+GEOS-Chem (science codebase) X.Y.Z release
+
+This is the official release commit of GEOS-Chem X.Y.Z.
+
+Updated version numbers in:
+- CHANGELOG.md
+- KPP/fullchem/CHANGELOG_fullchem.md
+
+Please see CHANGELOG.md for updates added to this version.
+
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>

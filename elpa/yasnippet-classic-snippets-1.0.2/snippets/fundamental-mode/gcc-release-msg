@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: gcc-release-msg
+# key: :gccrel
+# --
+GCClassic X.Y.Z release
+
+This is the official release commit of GEOS-Chem Classic
+aka GCClassic) X.Y.Z
+
+Updated version numbers in:
+- CHANGELOG.md
+- CMakeLists.txt
+- docs/source/conf.py
+
+Updated GEOS-Chem submodule to version X.Y.Z
+Updated HEMCO submodule to version X.Y.Z
+Updated geos-chem-shared-docs submodule to commit _____
+
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>

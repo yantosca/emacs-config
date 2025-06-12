@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: hco-release-msg
+# key: :hcorel
+# --
+HEMCO X.Y.Z release
+
+Updated version numbers in:
+- CHANGELOG.md
+- CMakeLists.txt
+- docs/source/conf.py
+- src/Core/hco_error_mod.F90
+
+Please see the CHANGELOG.md for updates included in this version.
+
+Signed-off-by: Bob Yantosca <yantosca@seas.harvard.edu>

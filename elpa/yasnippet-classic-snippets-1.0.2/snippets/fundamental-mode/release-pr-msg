@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# contributor: Bob Yantosca <yantosca@seas.harvard.edu>
+# name: release-pr-msg
+# key: :relpr
+# --
+### Name and Institution (Required)
+Name: Bob Yantosca
+Institution: Harvard + GCST
+
+### Describe the update
+This PR seeks to merge the release/X.Y.Z branch into main in anticipation of the ___ X.Y.Z release.
+
+The release/X.Y.Z branch contains
+
+- Commits from the dev/___ branch
+- Documentation updates from the docs/dev branch
+- Updated version numbers to X.Y.Z in the usual places
+- Updated GEOS-Chem submodule to X.Y.Z
+- Updated HEMCO submodule to X.Y.Z
+- Updated Cloud-J submodule to X.Y.Z
