@@ -315,7 +315,7 @@ Keybindings for swapping or deleting buffers.
 #+BEGIN_SRC emacs-lisp
   (global-set-key [f10] 'swapbuffer)
   (global-set-key [f11] 'switch-to-buffer)
-  (global-set-key [f12] 'kill-this-buffer)
+  (global-set-key [f12] (lambda () (interactive) (kill-buffer (current-buffer))))
 #+END_SRC
 
 ** Deletion
