@@ -10,7 +10,7 @@ All GEOS-Chem Classic integration tests passed:
 %%%  All execution tests passed!  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \`\`\`
-All tests were zero-diff w/r/t ..., except
+All GEOS-Chem Classic tests were zero-diff w/r/t ..., except
 
 - ${2:item1}
 - ${3:item2}
@@ -22,4 +22,4 @@ All GCHP integration tests passed:
 %%%  All execution tests passed!  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \`\`\`
-All tests were zero-diff w/r/t ...
+All GCHP tests were zero-diff w/r/t ...
