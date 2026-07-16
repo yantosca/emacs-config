@@ -1,0 +1,19 @@
+# Normalize text files to LF; let git decide diff-ability for everything else
+* text=auto eol=lf
+
+*.el   text
+*.org  text
+*.md   text
+*.sh   text eol=lf
+
+# Compiled elisp and GnuPG keyrings are binary, not diffable text
+*.elc          binary
+elpa/gnupg/*   binary -diff
+
+# Vendored third-party code: exclude from GitHub language stats / diff stats,
+# except the files/dirs in this repo that are actively maintained rather
+# than dropped in from upstream as-is.
+elpa/**                                                    linguist-vendored
+elpa/yasnippet-classic-snippets-1.0.2/snippets/**          linguist-vendored=false
+elisp/*.el                                                 linguist-vendored
+elisp/kpp.el                                               linguist-vendored=false
