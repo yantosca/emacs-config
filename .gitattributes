@@ -7,8 +7,9 @@
 *.sh   text eol=lf
 
 # Compiled elisp and GnuPG keyrings are binary, not diffable text
-*.elc          binary
-elpa/gnupg/*   binary -diff
+*.elc                  binary
+elpa/gnupg/pubring.kbx binary -diff
+elpa/gnupg/trustdb.gpg binary -diff
 
 # Vendored third-party code: exclude from GitHub language stats / diff stats,
 # except the files/dirs in this repo that are actively maintained rather

@@ -101,12 +101,17 @@ Display a timestamp in a buffer
   (insert (format-time-string "!  %e %b %Y - R. Yantosca - ")))
 #+END_SRC
 
-Customized insertion of timestamp (function is defined below in miscella.)
+Customized insertion of timestamp: insert it, then start a new line
+with a trailing space ready for typing.
 
 #+BEGIN_SRC emacs-lisp
-(fset 'macrotimestamp
-      [?\M-x ?i ?n ?s ?e ?r ?t ?- ?t ?i ?m ?e ?s ?t tab return return left ? ])
-
+(defun macrotimestamp ()
+  "Insert a formatted timestamp, then a new line with a trailing space."
+  (interactive)
+  (insert-timestamp)
+  (newline)
+  (backward-char)
+  (insert " "))
 #+END_SRC
 
 ** Font
@@ -234,7 +239,6 @@ This section contains various settings.
  '(column-number-mode t)
  '(current-language-environment "ASCII")
  '(display-time-mode t)
- '(global-font-lock-mode t nil (font-lock))
  '(package-selected-packages '(better-shell magit yasnippet-classic-snippets))
  '(query-user-mail-address nil)
  '(user-mail-address "yantosca@seas.harvard.edu"))
@@ -254,27 +258,36 @@ Various settings for backing up and autosaving.
 
 ** Omit
 
-;; This C-o business was working in Xemacs, but it is not in Emacs...:
-;; to add ".mod" to the list of file type to omit when you do C-o in
-;; Directory.
+Hide files matching a regexp from the current Dired listing (mark
+matching files, then remove those lines from the display; the files
+themselves are untouched).  Use `M-x revert-buffer' to bring them back.
 
 #+BEGIN_SRC emacs-lisp
-  (defalias 'omitmod
-    (read-kbd-macro "C-u %o.mod RET"))
+  (defun omitmod ()
+    "Hide .mod files from the current Dired listing."
+    (interactive)
+    (dired-mark-files-regexp "\\.mod$")
+    (dired-do-kill-lines))
 #+END_SRC
 
 Redefine the "omit" functions for Emacs in dired mode.
 
 #+BEGIN_SRC emacs-lisp
-  (fset 'omitdotfiles
-        [?% ?m ?^ ?\\ ?. ?. ?* return ?k])
+  (defun omitdotfiles ()
+    "Hide dotfiles from the current Dired listing."
+    (interactive)
+    (dired-mark-files-regexp "^\\..*")
+    (dired-do-kill-lines))
 #+END_SRC
 
 And this one will omit .o, .mod, ~, and . files from directory listing.
 
 #+BEGIN_SRC emacs-lisp
-  (fset 'omit-fortran
-        [?% ?m ?^ ?\\ ?. ?\\ ?| ?\\ ?. ?o ?$ ?\\ ?| ?\\ ?. ?m ?o ?d ?$ ?\\ ?| ?~ ?$ return ?k])
+  (defun omit-fortran ()
+    "Hide dotfiles, .o, .mod, and backup (~) files from the current Dired listing."
+    (interactive)
+    (dired-mark-files-regexp "^\\.\\|\\.o$\\|\\.mod$\\|~$")
+    (dired-do-kill-lines))
 #+END_SRC
 
 ** Repositories
@@ -286,6 +299,7 @@ This is the emacs default package location.
   (require 'package)
   (add-to-list 'package-archives
                '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+  (package-initialize)
 
 #+END_SRC
 
@@ -294,15 +308,20 @@ This is the emacs default package location.
 Kill process (like a tail -f) and purge output. In shell mode.
 
 #+BEGIN_SRC emacs-lisp
-(defalias 'quitnclean
-  (read-kbd-macro "C-c C-\\ C-c C-o"))
+(defun quitnclean ()
+  "Kill the running subjob (e.g. tail -f) and purge its output from the buffer."
+  (interactive)
+  (comint-quit-subjob)
+  (comint-delete-output))
 #+END_SRC
 
 Quick swapping between 2 buffers.
 
 #+BEGIN_SRC emacs-lisp
-(defalias 'swapbuffer
-  (read-kbd-macro "C-x b RET"))
+(defun swapbuffer ()
+  "Switch to the most recently used other buffer."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) t)))
 #+END_SRC
 
 
@@ -430,7 +449,7 @@ Assign major modes to certain file extensions
                   ("\\.spc$"       . kpp-mode)
                   ("\\.F90$"       . f90-mode)
                   ("\\.tex$"       . latex-mode)
-                  ("\\.m$"         . matlab-mode)
+                  ("\\.m$"         . octave-mode)
                   ("\\.md$"        . markdown-mode)
                   ("\\.org$"       . org-mode)
                   ("\\.sh$"        . shell-script-mode)
@@ -446,15 +465,15 @@ Assign major modes to certain file extensions
 Manually specify major-modes for certain files.
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '(".profile"              . shell-script-mode))
-  (add-to-list 'auto-mode-alist '(".bash_profile"         . shell-script-mode))
-  (add-to-list 'auto-mode-alist '(".bashrc"               . shell-script-mode))
-  (add-to-list 'auto-mode-alist '(".bash_aliases"         . shell-script-mode))
-  (add-to-list 'auto-mode-alist '(".bash_functions"       . shell-script-mode))
-  (add-to-list 'auto-mode-alist '(".bash_logout"          . shell-script-mode))
-  (add-to-list 'auto-mode-alist '(".my_personal_settings" . shell-script-mode))
-  (add-to-list 'auto-mode-alist '(".README"               . fundamental-mode))
-  (add-to-list 'auto-mode-alist '("input.geos"            . conf-mode))
+  (add-to-list 'auto-mode-alist '("\\.profile\\'"              . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.bash_profile\\'"         . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.bashrc\\'"               . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'"         . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.bash_functions\\'"       . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.bash_logout\\'"          . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.my_personal_settings\\'" . shell-script-mode))
+  (add-to-list 'auto-mode-alist '("\\.README\\'"               . fundamental-mode))
+  (add-to-list 'auto-mode-alist '("input\\.geos\\'"            . conf-mode))
 #+END_SRC
 
 ** auto-image-file-mode
@@ -467,24 +486,22 @@ Display images in emacs buffer.
 
 ** cperl-mode
 
+NOTE: .pl files are assigned to cperl-mode (see Auto-assign modes,
+above), so settings here use the cperl-* variables, not the perl-*
+variables that belong to the older, separate perl-mode.
+
 Set indent level to 2 spaces (also in sub-blocks).
 
 #+BEGIN_SRC emacs-lisp
-  (setq perl-indent-level 2)
-  (setq perl-continued-statement-offset 2)
+  (setq cperl-indent-level 2)
+  (setq cperl-continued-statement-offset 2)
  #+END_SRC
-
-Create a new comment with TAB.
-
-#+BEGIN_SRC emacs-lisp
-  (setq perl-tab-to-comment t)
-#+END_SRC
 
 Matching parentheses and auto-expansion of keywords.
 
 #+BEGIN_SRC emacs-lisp
-  (setq perl-electric-parens t)
-  (setq perl-electric-keywords t)
+  (setq cperl-electric-parens t)
+  (setq cperl-electric-keywords t)
 #+END_SRC
 
 ** ediff-mode
@@ -513,15 +530,21 @@ Set background colors for ediff-mode.
 To restore my 2 windows setting w/ each compared file in one window.
 
 #+BEGIN_SRC emacs-lisp
-  (defalias 'clean-after-ediff
-    (read-kbd-macro "C-x 1 C-x 3 C-x b RET"))
+  (defun clean-after-ediff ()
+    "Restore a simple 2-window, side-by-side layout after an Ediff session."
+    (interactive)
+    (delete-other-windows)
+    (split-window-right)
+    (switch-to-buffer (other-buffer (current-buffer) t)))
 #+END_SRC
 
 Close the two compared windows.
 
 #+BEGIN_SRC emacs-lisp
-  (defalias 'fullcleanediff
-    (read-kbd-macro "<f3> <f2> <f3>"))
+  (defun fullcleanediff ()
+    "Close all the extra windows opened by an Ediff session, leaving a single window."
+    (interactive)
+    (delete-other-windows))
 
 #+END_SRC
 
@@ -531,9 +554,7 @@ Turn on global font-lock mode (which colorizes text depending on which
 mode you are in).  Useful for programming.
 
 #+BEGIN_SRC emacs-lisp
-(if (fboundp 'global-font-lock-mode)
-    (global-font-lock-mode 1)          ; GNU Emacs
-    (setq font-lock-auto-fontify t))   ; XEmacs
+(global-font-lock-mode 1)
 #+END_SRC
 
 ** f90-mode
@@ -543,18 +564,11 @@ Most notably, disable the electric indent mode.
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'f90-mode-hook
-            (function
-             (lambda ()
-
-               ;; use abbreviations (e.g.: "`pr" for "print")
-               (setq  abbrev-mode 1)
-
-               ; Turn off automatic indentation for Fortran mode only
-               (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
-
-               )
-             )
-            )
+            (lambda ()
+              ;; use abbreviations (e.g.: "`pr" for "print")
+              (setq abbrev-mode 1)
+              ;; Turn off automatic indentation for Fortran mode only
+              (electric-indent-mode -1)))
 #+END_SRC
 
 Align comments with the code.
@@ -577,18 +591,11 @@ Most notably, disable electric-indent-mode.
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'fortran-mode-hook
-            (function
-             (lambda ()
-               (setq
-                ;; use abbreviations (e.g.: ";s" for "stop")
-                abbrev-mode 1
-                )
-
-               ; Turn off automatic indentation for Fortran mode only
-               (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
-               )
-             )
-  )
+            (lambda ()
+              ;; use abbreviations (e.g.: ";s" for "stop")
+              (setq abbrev-mode 1)
+              ;; Turn off automatic indentation for Fortran mode only
+              (electric-indent-mode -1)))
 #+END_SRC
 
 Load fortran-mode.
@@ -700,10 +707,14 @@ Set default column view headings: Task Total-Time Time-Stamp
   (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
 #+END_SRC
 
-** shell-script-mode
+** shell-mode (interactive M-x shell)
 
-Define a hook that will start certain things when shell-script mode
-starts: The home key, cycling up & down through command history.
+Define a hook that will start certain things when an interactive
+shell (M-x shell) starts: The home key, cycling up & down through
+command history.
+
+NOTE: This is shell-mode (the comint-based interactive shell buffer),
+not shell-script-mode/sh-mode (editing .sh files) below.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'shell-mode-hook
@@ -724,6 +735,8 @@ starts: The home key, cycling up & down through command history.
              )
 )
 #+END_SRC
+
+** shell-script-mode (editing scripts)
 
 Use spaces instead of tabs in shell-script-mode
 
@@ -838,7 +851,7 @@ See http://stackoverflow.com/questions/2886184/copy-paste-in-emacs-ansi-term-she
       ;; yank in term (bound to C-c C-y)
       (define-key term-raw-escape-map "\C-y"
         (lambda ()
-          ((insert )nteractive)
+          (interactive)
           (term-send-raw-string (current-kill 0)))))
     (add-hook 'term-mode-hook 'ash-term-hooks)
   )

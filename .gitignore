@@ -1,3 +1,11 @@
 # NOTE: Ignore emacs-config.el because this will be built
 # from emacs-config.org at startup by org-babel-load-file.
 .emacs-config.el
+
+# Byte-compiled elisp is a derived artifact of the vendored .el sources
+# in elpa/ and elisp/; don't track it.
+*.elc
+
+# package.el's cached package-archive index snapshots go stale
+# immediately and shouldn't be tracked either.
+elpa/archives/*/archive-contents*
