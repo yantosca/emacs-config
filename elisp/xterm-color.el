@@ -7,7 +7,7 @@
 ;; Version: 2.0
 ;; Author: xristos <xristos@sdf.org>
 ;; URL: https://github.com/atomontage/xterm-color
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "25.1"))
 ;; Keywords: faces
 
 ;; Redistribution and use in source and binary forms, with or without
@@ -196,15 +196,24 @@ frame, overline.")
                                            59))
 
 (cl-defun xterm-color--string-properties (string)
+  "Split STRING into substrings according to text properties.
+Returns a list of (POS PROPERTIES SUBSTRING) elements."
   (cl-loop
-   with pos = 0 and result do
-   (let ((next-pos (next-property-change pos string)))
-     (if next-pos
-         (progn
-           (push (list pos (text-properties-at pos string) (substring string pos next-pos)) result)
-           (setq pos next-pos))
-       (push (list pos (text-properties-at pos string) (substring string pos)) result)
-       (cl-return-from xterm-color--string-properties (nreverse result))))))
+   with pos = 0 and result
+   for next-pos = (next-property-change pos string)
+   while next-pos do
+   (push (list pos
+               (text-properties-at pos string)
+               (substring string pos next-pos))
+         result)
+   (setq pos next-pos)
+   finally
+   (push (list pos
+               (text-properties-at pos string)
+               (substring string pos))
+         result)
+   (cl-return-from xterm-color--string-properties
+     (nreverse result))))
 
 (defun xterm-color--convert-text-properties-to-overlays (beg end)
   "Transform face text properties between BEG and END, to equivalent overlays."
@@ -220,7 +229,8 @@ frame, overline.")
           (when current-value
             (let ((ov (make-overlay pos next-change)))
               (overlay-put ov face-prop current-value)
-              (overlay-put ov 'xterm-color t)))
+              (overlay-put ov 'xterm-color t)
+              (overlay-put ov 'evaporate t)))
           (goto-char next-change)))
       (remove-text-properties beg end (list 'xterm-color nil face-prop nil)))))
 
@@ -251,7 +261,8 @@ Also see `xterm-color-debug'."
      ,@body))
 
 (cl-defmacro xterm-color--create-SGR-table ((attrib SGR-list) &body body)
-  "Create an iteration/dispatch table based on provided rules that match SGR attributes.
+  "Create an iteration/dispatch table based on provided rules that
+match SGR attributes.
 For each attribute in SGR-LIST, check to see if it matches a rule in BODY and
 evaluate the rule body if that is the case.
 
@@ -264,7 +275,8 @@ BODY must contain rules with each rule being a list of form:
 CONDITION must be a Lisp form which is evaluated as part of a COND
 condition clause. If it is an atom, it is rewritten to (eq CONDITION ATTRIB).
 Otherwise it is used as is. As per COND statement, if CONDITION evaluates
-to non-nil, rule body forms are evaluated as part of the body of the COND clause.
+to non-nil, rule body forms are evaluated as part of the body of the COND
+clause.
 
 SKIP, if given, must be an integer specifying the number of elements that
 should be skipped before the next iteration. The default is 1,
@@ -338,48 +350,52 @@ going down SGR-LIST one element at a time."
                   (eq 2 (cl-second SGR-list)))          ; Truecolor (24-bit) FG color
              :skip 5)
             (when xterm-color--support-truecolor
-              (if-let ((r (cl-third SGR-list))
-                       (g (cl-fourth SGR-list))
-                       (b (cl-fifth SGR-list)))
-                  (if (or (> r 255) (> g 255) (> b 255))
-                      (xterm-color--message "SGR 38;2;%s;%s;%s exceeds range"
-                                            r g b)
-                    (set-truecolor! r g b xterm-color--current-fg))
-                (xterm-color--message "SGR 38;2;%s;%s;%s error, expected 38;2;R;G;B"
-                                      r g b))))
+              (let ((r (cl-third SGR-list))
+                    (g (cl-fourth SGR-list))
+                    (b (cl-fifth SGR-list)))
+                (if (and r g b)
+                    (if (or (> r 255) (> g 255) (> b 255))
+                        (xterm-color--message "SGR 38;2;%s;%s;%s exceeds range"
+                                              r g b)
+                      (set-truecolor! r g b xterm-color--current-fg))
+                  (xterm-color--message "SGR 38;2;%s;%s;%s error, expected 38;2;R;G;B"
+                                        r g b)))))
     (:match ((and (eq 38 (cl-first SGR-list))
                   (eq 5 (cl-second SGR-list)))
              :skip 3)                                   ; XTERM 256 FG color
-            (if-let ((color (cl-third SGR-list)))
-                (if (> color 255)
-                    (xterm-color--message "SGR 38;5;%s exceeds range" color)
-                  (set-f! color))
-              (xterm-color--message "SGR 38;5;%s error, expected 38;5;COLOR"
-                                    color)))
+            (let ((color (cl-third SGR-list)))
+              (if color
+                  (if (> color 255)
+                      (xterm-color--message "SGR 38;5;%s exceeds range" color)
+                    (set-f! color))
+                (xterm-color--message "SGR 38;5;%s error, expected 38;5;COLOR"
+                                      color))))
 
     (:match ((and (eq 48 (cl-first SGR-list))
                   (eq 2 (cl-second SGR-list)))          ; Truecolor (24-bit) BG color
              :skip 5)
             (when xterm-color--support-truecolor
-              (if-let ((r (cl-third SGR-list))
-                       (g (cl-fourth SGR-list))
-                       (b (cl-fifth SGR-list)))
-                (if (or (> r 255) (> g 255) (> b 255))
-                    (xterm-color--message "SGR 48;2;%s;%s;%s exceeds range"
-                                          r g b)
-                  (set-truecolor! r g b xterm-color--current-bg))
-                (xterm-color--message "SGR 48;2;%s;%s;%s error, expected 48;2;R;G;B"
-                                      r g b))))
+              (let ((r (cl-third SGR-list))
+                    (g (cl-fourth SGR-list))
+                    (b (cl-fifth SGR-list)))
+                (if (and r g b)
+                    (if (or (> r 255) (> g 255) (> b 255))
+                        (xterm-color--message "SGR 48;2;%s;%s;%s exceeds range"
+                                              r g b)
+                      (set-truecolor! r g b xterm-color--current-bg))
+                  (xterm-color--message "SGR 48;2;%s;%s;%s error, expected 48;2;R;G;B"
+                                        r g b)))))
 
     (:match ((and (eq 48 (cl-first SGR-list))
                   (eq 5 (cl-second SGR-list)))
              :skip 3)                                   ; XTERM 256 BG color
-            (if-let ((color (cl-third SGR-list)))
-              (if (> color 255)
-                  (xterm-color--message "SGR 48;5;%s exceeds range" color)
-                (set-b! color))
-              (xterm-color--message "SGR 48;5;%s error, expected 48;5;COLOR"
-                                    color)))
+            (let ((color (cl-third SGR-list)))
+              (if color
+                  (if (> color 255)
+                      (xterm-color--message "SGR 48;5;%s exceeds range" color)
+                    (set-b! color))
+                (xterm-color--message "SGR 48;5;%s error, expected 48;5;COLOR"
+                                      color))))
     (:match ((<= 90 elem 97))                           ; AIXTERM hi-intensity FG
             ;; Rather than setting bright, which would be wrong,
             ;; rescale color to fall within 8-15 so that it gets
@@ -533,8 +549,8 @@ in LIFO order."
                                            (if (> fg 255)
                                                (fmt-24bit (unpack fg))
                                              (fmt-256 (if (and (<= fg 7) (has? +bright+))
-                                                             (+ fg 8)
-                                                           fg))))))
+                                                          (+ fg 8)
+                                                        fg))))))
             (make-color-bg ()    `(face! :background (cond ((> bg 255) (fmt-24bit (unpack bg)))
                                                            (t (fmt-256 bg)))))
             (make-face ()        `(let* (k
@@ -560,8 +576,7 @@ in LIFO order."
                                         (add-text-properties
                                          0 (length s)
                                          (list 'xterm-color t
-                                               (if font-lock-mode 'font-lock-face 'face)
-                                               (make-face))
+                                               (if font-lock-mode 'font-lock-face 'face) (make-face))
                                          s))
                                       (out! s))
                                     (setq xterm-color--char-list nil))))
@@ -576,7 +591,7 @@ in LIFO order."
 ;;;###autoload
 (defun xterm-color-filter-strip (string)
   "Translate ANSI color sequences in STRING into text properties.
-Return new STRING with text properties applied.
+Returns new STRING with text properties applied.
 
 In order to get maximum performance, this function strips text properties
 if they are present in STRING."
@@ -591,46 +606,46 @@ if they are present in STRING."
      with state = xterm-color--state and result
      for char across string do
      (cond
-       ((eq state :char)
-        (cond
-         ((eq char 27)                    ; ESC
-          (maybe-fontify)
-          (state! :ansi-esc))
-         (t
-          (if (graphics?)
+      ((eq state :char)
+       (cond
+        ((eq char 27)                    ; ESC
+         (maybe-fontify)
+         (state! :ansi-esc))
+        (t
+         (if (graphics?)
+             (push-char! char)
+           (out! (list char))))))
+      ((eq state :ansi-esc)
+       (cond ((eq char ?\[)
+              (state! :ansi-csi))
+             ((eq char ?\])
+              (state! :ansi-osc))
+             ((or (eq char ?\()
+                  (eq char ?\)))
+              (state! :set-char))
+             (t
               (push-char! char)
-            (out! (list char))))))
-       ((eq state :ansi-esc)
-        (cond ((eq char ?\[)
-               (state! :ansi-csi))
-              ((eq char ?\])
-               (state! :ansi-osc))
-              ((or (eq char ?\()
-                   (eq char ?\)))
-               (state! :set-char))
-              (t
-               (push-char! char)
-               (state! :char))))
-       ((eq state :ansi-csi)
-        (push-csi! char)
-        (when (and (>= char #x40)
-                   (<= char #x7e))
-          (xterm-color--dispatch-CSI)
-          (state! :char)))
-       ((eq state :ansi-osc)
-        ;; OSC sequences are skipped
-        (cond ((eq char 7)
-               (state! :char))
-              ((eq char 27)
-               ;; ESC
-               (state! :ansi-osc-esc))))
-       ((eq state :ansi-osc-esc)
-        (cond ((eq char ?\\)
-               (state! :char))
-              (t (state! :ansi-osc))))
-       ((eq state :set-char)
-        (xterm-color--message "%s SET-CHAR not implemented" char)
-        (state! :char)))
+              (state! :char))))
+      ((eq state :ansi-csi)
+       (push-csi! char)
+       (when (and (>= char #x40)
+                  (<= char #x7e))
+         (xterm-color--dispatch-CSI)
+         (state! :char)))
+      ((eq state :ansi-osc)
+       ;; OSC sequences are skipped
+       (cond ((eq char 7)
+              (state! :char))
+             ((eq char 27)
+              ;; ESC
+              (state! :ansi-osc-esc))))
+      ((eq state :ansi-osc-esc)
+       (cond ((eq char ?\\)
+              (state! :char))
+             (t (state! :ansi-osc))))
+      ((eq state :set-char)
+       (xterm-color--message "%s SET-CHAR not implemented" char)
+       (state! :char)))
      finally return
      (progn (when (eq state :char) (maybe-fontify))
             (setq xterm-color--state state)
@@ -639,7 +654,7 @@ if they are present in STRING."
 ;;;###autoload
 (defun xterm-color-filter (string)
   "Translate ANSI color sequences in STRING into text properties.
-Return new STRING with text properties applied.
+Returns new STRING with text properties applied.
 
 This function checks if `xterm-color-preserve-properties' is non-nil
 and only calls `xterm-color-filter-strip' on substrings that do not
@@ -695,8 +710,8 @@ This can be inserted into `comint-preoutput-filter-functions'."
 ;;;###autoload
 (cl-defun xterm-color-colorize-buffer (&optional use-overlays)
   "Apply `xterm-color-filter' to current buffer, and replace its contents.
-Colors are applied using 'face, unless font-lock-mode is active, in
-which case 'font-lock-face is used. Operation with font-lock mode active
+Colors are applied using \\='face, unless font-lock-mode is active, in
+which case \\='font-lock-face is used. Operation with font-lock mode active
 is not recommended.
 
 If USE-OVERLAYS is non-nil, colors are applied to the buffer using overlays
@@ -709,7 +724,7 @@ instead of text properties. A C-u prefix arg causes overlays to be used."
       (read-only-mode -1))
     (insert (xterm-color-filter (delete-and-extract-region (point-min) (point-max))))
     (when (and xterm-color-render use-overlays)
-        (xterm-color--convert-text-properties-to-overlays (point-min) (point-max)))
+      (xterm-color--convert-text-properties-to-overlays (point-min) (point-max)))
     (goto-char (point-min))
     (when read-only-p (read-only-mode 1))))
 

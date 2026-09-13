@@ -1,6 +1,6 @@
 ;;; ox-rst.el --- Export reStructuredText using org-mode. -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2019  Masanao Igarashi
+;; Copyright (C) 2015-2025  Masanao Igarashi
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -13,12 +13,11 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 ;; Author: Masanao Igarashi <syoux2@gmail.com>
 ;; Keywords: org, rst, reST, reStructuredText
-;; Version: 0.3
+;; Version: 0.4
 ;; URL: https://github.com/msnoigrs/ox-rst
 ;; Package-Requires: ((emacs "25.1") (org "8.3"))
 
@@ -27,6 +26,9 @@
 ;; Org generic exporter.
 
 ;;; Code:
+
+(require 'org-macs)
+(org-assert-version)
 
 (require 'cl-lib)
 (require 'ox)
@@ -110,10 +112,9 @@
     (:rst-pygments-langs nil nil org-rst-pygments-langs))
   :filters-alist '((:filter-options . org-rst-math-block-options-filter)
                    (:filter-headline . org-rst-filter-headline-blank-lines)
-				   (:filter-parse-tree org-rst-math-block-tree-filter
-                                       org-rst-separate-elements
-									   org-rst-filter-paragraph-spacing)
-				   (:filter-section . org-rst-filter-headline-blank-lines)))
+				   (:filter-parse-tree . (org-rst-math-block-tree-filter
+                                          org-rst-separate-elements
+									      org-rst-filter-paragraph-spacing))))
 
 
 ;;; Internal Variables
@@ -169,10 +170,9 @@ When nil, an anchor with reference is used to link to the image."
   :type 'boolean)
 
 (defcustom org-rst-inline-image-rules
-  '(("file" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'")
-    ("attachment" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'")
-    ("http" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'")
-    ("https" . "\\.\\(jpeg\\|jpg\\|png\\|webp\\|gif\\|svg\\|svgz\\|swf\\)\\'"))
+  `(("file" . ,(regexp-opt '(".jpeg" ".jpg" ".png" ".gif" ".svg" ".svgz" ".webp" ".avif")))
+    ("http" . ,(regexp-opt '(".jpeg" ".jpg" ".png" ".gif" ".svg" ".svgz" ".webp" ".avif")))
+    ("https" . ,(regexp-opt '(".jpeg" ".jpg" ".png" ".gif" ".svg" ".svgz" ".webp" ".avif"))))
   "Rules characterizing image files that can be inlined into reStructuredText.
 A rule consists in an association whose key is the type of link
 to consider, and value is a regexp that will be matched against
@@ -196,10 +196,13 @@ link's path."
 									   (italic . "*%s*")
 									   (verbatim . verb))
   "Alist of reStructredText expressions to convert text markup.
+
 The key must be a symbol among `bold', `code', `italic',
 `verbatim'.  The value is a formatting string to
 wrap fontified text with.
+
 Value can also be set to the following symbols: `verb'.
+
 If no association can be found for a given markup, text will be
 returned as-is."
   :group 'org-export-rst
@@ -216,10 +219,12 @@ This margin is applied on left side of the text."
 
 (defcustom org-rst-headline-spacing '(1 . 1)
   "Number of blank lines inserted around headlines.
+
 This variable can be set to a cons cell.  In that case, its car
 represents the number of blank lines present before headline
 contents whereas its cdr reflects the number of blank lines after
 contents.
+
 A nil value replicates the number of blank lines found in the
 original Org buffer at the same place."
   :group 'org-export-rst
@@ -244,18 +249,22 @@ the same number of blank lines as in the original document."
 (defcustom org-rst-headline-underline-characters '(?- ?~ ?^ ?: ?' ?\ ?_)
   "List of underline characters for each headline level."
   :group 'org-export-rst
-  :type 'list)
+  :type '(repeat character))
 
 ;;;; Drawers
 
-(defcustom org-rst-format-drawer-function nil
+(defcustom org-rst-format-drawer-function (lambda (_name contents) contents)
   "Function called to format a drawer in reStructuredText code.
+
 The function must accept two parameters:
   NAME      the drawer name, like \"LOGBOOK\"
   CONTENTS  the contents of the drawer.
+
 The function should return the string to be exported.
+
 For example, the variable could be set to the following function
 in order to mimic default behaviour:
+
 \(defun org-rst-format-drawer-default \(name contents\)
   \"Format a drawer element for reStructuredText export.\"
   contents\)"
@@ -267,6 +276,7 @@ in order to mimic default behaviour:
 
 (defcustom org-rst-format-inlinetask-function nil
   "Function called to format an inlinetask in reStructuredText code.
+
 The function must accept six parameters:
   TODO      the todo keyword, as a string
   TODO-TYPE the todo type, a symbol among `todo', `done' and nil.
@@ -274,6 +284,7 @@ The function must accept six parameters:
   NAME      the inlinetask name, as a string.
   TAGS      the inlinetask tags, as a list of strings.
   CONTENTS  the contents of the inlinetask, as a string.
+
 The function should return the string to be exported."
   :group 'org-export-rst
   :type 'function)
@@ -343,7 +354,7 @@ Empty lines are not indented."
 
 (defun org-rst--make-attribute-string (attributes)
   "Return a list of attributes, as a string.
-ATTRIBUTES is a plist where values are either strings or nil. An
+ATTRIBUTES is a plist where values are either strings or nil.  An
 attributes with a nil value will be omitted from the result."
   (let (output)
     (dolist (item attributes (mapconcat 'identity (nreverse output) "\n"))
@@ -359,16 +370,20 @@ attributes with a nil value will be omitted from the result."
 (defun org-rst--build-title
   (element info &optional underline notags toc)
   "Format ELEMENT title and return it.
+
 ELEMENT is either an `headline' or `inlinetask' element.  INFO is
 a plist used as a communication channel.
+
 When optional argument UNDERLINE is non-nil, underline title,
 without the tags, according to `org-rst-underline'
 specifications.
+
 If optional argument NOTAGS is non-nil, no tags will be added to
 the title.
+
 When optional argument TOC is non-nil, use optional title if
 possible.  It doesn't apply to `inlinetask' elements."
-  (let* ((headlinep (eq (org-element-type element) 'headline))
+  (let* ((headlinep (org-element-type-p element 'headline))
 		 (numbers
 		  ;; Numbering is specific to headlines.
 		  (and headlinep (org-export-numbered-headline-p element info)
@@ -418,6 +433,7 @@ possible.  It doesn't apply to `inlinetask' elements."
 
 (defun org-rst--text-markup (text markup info)
   "Format TEXT depending on MARKUP text markup.
+INFO is a plist used as a communication channel.
 See `org-rst-text-markup-alist' for details."
   (let ((fmt (cdr (assq markup (plist-get info :rst-text-markup-alist))))
         (text (replace-regexp-in-string "[ \t\n]+" " " text)))
@@ -553,9 +569,7 @@ holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
   (concat org-clock-string " "
-		  (org-translate-time
-		   (org-element-property :raw-value
-								 (org-element-property :value clock)))
+		  (org-timestamp-translate (org-element-property :value clock))
 		  (let ((time (org-element-property :duration clock)))
 			(and time
 				 (concat " => "
@@ -575,18 +589,13 @@ channel."
 
 ;;;; Drawer
 
-(defun org-rst-drawer (drawer contents _info)
+(defun org-rst-drawer (drawer contents info)
   "Transcode a DRAWER element from Org to reStructuredText.
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information."
-  (let* ((name (org-element-property :drawer-name drawer))
-	 (output (if (functionp org-rst-format-drawer-function)
-		     (funcall org-rst-format-drawer-function
-			      name contents)
-		   ;; If there's no user defined function: simply
-		   ;; display contents of the drawer.
-		   contents)))
-    output))
+  (funcall (plist-get info :rst-format-drawer-function)
+	   (org-element-property :drawer-name drawer)
+	   contents))
 
 
 ;;;; Dynamic Block
@@ -767,7 +776,7 @@ holding export options."
                    (lines (split-string (org-export-data def info) "\n+[ \t\n]*"))
                    (fntext (concat (car lines) "\n"
                                    (apply 'concat (mapcar
-                                                   '(lambda (x) (if (> (length x) 0)
+                                                   #'(lambda (x) (if (> (length x) 0)
                                                                     (concat (org-rst--indent-string x org-rst-quote-margin) "\n")))
                                                  (cdr lines)))))
                    )
@@ -791,7 +800,7 @@ contextual information."
 CONTENTS is the item contents.  INFO is a plist used as
 a communication channel."
   (let* ((checkbox (org-rst--checkbox item info))
-		 (list-type (org-element-property :type (org-export-get-parent item)))
+		 (list-type (org-element-property :type (org-element-parent item)))
 		 (tag (let
 				  ((tag (org-element-property :tag item)))
 				(and tag (concat (org-export-data tag info) checkbox))))
@@ -807,7 +816,7 @@ a communication channel."
 					(bul (org-element-property :bullet item))
 					(num (number-to-string
 						  (car (last (org-list-get-item-number
-									  (org-element-property :begin item)
+									  (org-element-begin item)
 									  struct
 									  (org-list-prevs-alist struct)
 									  (org-list-parents-alist struct)))))))
@@ -820,7 +829,7 @@ a communication channel."
      (if tag tag (concat bullet checkbox))
      (let ((contents (org-rst--indent-string contents width)))
        (if (and (not tag)
-				(eq (org-element-type (car (org-element-contents item))) 'paragraph))
+				(org-element-type-p (car (org-element-contents item)) 'paragraph))
 		   (org-trim contents)
 		 (concat "\n" contents))))))
 
@@ -919,6 +928,7 @@ if its description is a single link targeting an image file."
 
 (defun org-rst-link (link desc info)
   "Transcode a LINK object from Org to reStructuredText.
+
 DESC is the description part of the link, or the empty string.
 INFO is a plist holding contextual information."
   (let* ((home (when (plist-get info :rst-link-home)
@@ -942,9 +952,6 @@ INFO is a plist holding contextual information."
 		 ;; Ensure DESC really exists, or set it to nil.
 		 (desc (and (not (string= desc "")) desc))
 		 (path (cond
-				((member type '("http" "https" "ftp" "mailto"))
-				 (url-encode-url
-				   (concat type ":" raw-path)))
 				((string= type "file")
 				 ;; Treat links to ".org" files as ".rst", if needed.
 				 (setq raw-path
@@ -953,16 +960,16 @@ INFO is a plist holding contextual information."
 						(setq raw-path
 							  (concat (file-name-as-directory home) raw-path)))
                        (t raw-path)))
-				(t raw-path)))
+				(t (concat type ":" raw-path))))
 		 (attributes-plist
 		  (org-combine-plists
 		   ;; Extract attributes from parent's paragraph.  HACK: Only
 		   ;; do this for the first link in parent (inner image link
 		   ;; for inline images).  This is needed as long as
 		   ;; attributes cannot be set on a per link basis.
-		   (let* ((parent (org-export-get-parent-element link))
-				  (link (let ((container (org-export-get-parent link)))
-						  (if (and (eq 'link (org-element-type container))
+		   (let* ((parent (org-element-parent-element link))
+				  (link (let ((container (org-element-parent link)))
+						  (if (and (org-element-type-p container 'link)
 								   (org-rst-inline-image-p link info))
 							  container
 							link))))
@@ -978,7 +985,7 @@ INFO is a plist holding contextual information."
 			(if (org-string-nw-p attr) (concat "\n" attr "\n") ""))))
     (cond
      ;; Link type is handled by a special function.
-     ((org-export-custom-protocol-maybe link desc 'rst))
+     ((org-export-custom-protocol-maybe link desc 'rst info))
      ;; Image file.
      ((and (plist-get info :rst-inline-images)
            (org-export-inline-image-p
@@ -986,9 +993,9 @@ INFO is a plist holding contextual information."
 	  (let* ((ipath (if (not (file-name-absolute-p raw-path)) raw-path
 					 (expand-file-name raw-path)))
              (caption (org-export-get-caption
-					  (org-export-get-parent-element link)))
+					  (org-element-parent-element link)))
              (linkname
-              (org-element-property :name (org-export-get-parent-element link)))
+              (org-element-property :name (org-element-parent-element link)))
              (label (if linkname (format ".. _%s:\n\n" linkname) "")))
 		(if caption (format "%s.. figure:: %s%s\n\n    %s\n"
                             label ipath attributes
@@ -1019,11 +1026,11 @@ INFO is a plist holding contextual information."
 		   (if desc (format "`%s <%s>`_" desc destination)
 			 (format "`%s`_" destination)))
 		  ;; Fuzzy link points nowhere.
-		  ('nil
-		   (let ((rawlink
-				  (org-export-data (org-element-property :raw-link link) info)))
-			 (if desc (format "`%s <%s>`_" desc rawlink)
-			   (format "`%s`_" rawlink))))
+		  ;; ('nil
+		  ;;  (let ((rawlink
+		  ;;   	  (org-export-data (org-element-property :raw-link link) info)))
+		  ;;    (if desc (format "`%s <%s>`_" desc rawlink)
+		  ;;      (format "`%s`_" rawlink))))
 		  ;; LINK points to a headline.
 		  (headline
              (if (member type '("custom-id" "id"))
@@ -1034,8 +1041,8 @@ INFO is a plist holding contextual information."
                (format "`%s`_" (org-rst--build-title destination info nil))))
           ;; Fuzzy link points to a target.
 		  (otherwise
-           (if (not desc) (format "`%s`_" path)
-             (format "`%s <%s>`_" desc path))))))
+           (if (not desc) (format "`%s`_" raw-path)
+             (format "`%s <%s>`_" desc raw-path))))))
      ;; Coderef: replace link with the reference name or the
      ;; equivalent line number. It is not supported in ReST.
      ((string= type "coderef")
@@ -1082,7 +1089,7 @@ the plist used as a communication channel."
     (let ((lines (split-string contents "\n+[ \t\n]*")))
       (cond ((> (length lines) 2)
              (setq contents (apply 'concat (mapcar
-                                            '(lambda (x) (if (> (length x) 0) (concat "| " x "\n") x))
+                                            #'(lambda (x) (if (> (length x) 0) (concat "| " x "\n") x))
                                             lines)))))))
   contents)
 
@@ -1124,20 +1131,17 @@ channel."
    'identity
    (delq nil
 	 (list (let ((closed (org-element-property :closed planning)))
-		 (when closed
-		   (concat org-closed-string " "
-			   (org-translate-time
-			    (org-element-property :raw-value closed)))))
+		     (when closed
+		       (concat org-closed-string " "
+			           (org-timestamp-translate closed))))
 	       (let ((deadline (org-element-property :deadline planning)))
-		 (when deadline
-		   (concat org-deadline-string " "
-			   (org-translate-time
-			    (org-element-property :raw-value deadline)))))
+		     (when deadline
+		       (concat org-deadline-string " "
+			           (org-timestamp-translate deadline))))
 	       (let ((scheduled (org-element-property :scheduled planning)))
-		 (when scheduled
-		   (concat org-scheduled-string " "
-			   (org-translate-time
-			    (org-element-property :raw-value scheduled)))))))
+		     (when scheduled
+		       (concat org-scheduled-string " "
+			           (org-timestamp-translate scheduled))))))
    " "))
 
 
@@ -1177,23 +1181,23 @@ containing export options.  Modify DATA by side-effect and return it."
     (org-element-map data '(entity latex-fragment subscript superscript)
       (lambda (object)
         ;; Skip objects already wrapped.
-        (when (and (not (eq (org-element-type
-                             (org-element-property :parent object))
-                            'latex-math-block))
+        (when (and (not (org-element-type-p
+                         (org-element-property :parent object)
+                         'latex-math-block))
                    (funcall valid-object-p object))
           (let ((math-block (list 'latex-math-block nil))
                 (next-elements (org-export-get-next-element object info t))
                 (last object))
             ;; Wrap MATH-BLOCK around OBJECT in DATA.
             (org-element-insert-before math-block object)
-            (org-element-extract-element object)
+            (org-element-extract object)
             (org-element-adopt-elements math-block object)
             (when (zerop (or (org-element-property :post-blank object) 0))
               ;; MATH-BLOCK swallows consecutive math objects.
               (catch 'exit
                 (dolist (next next-elements)
                   (if (not (funcall valid-object-p next)) (throw 'exit nil)
-                    (org-element-extract-element next)
+                    (org-element-extract next)
                     (org-element-adopt-elements math-block next)
                     ;; Eschew the case: \beta$x$ -> \(\betax\).
                     (unless (memq (org-element-type next)
@@ -1427,12 +1431,14 @@ contextual information."
 
 (defun org-rst--table-cell-width (table-cell info)
   "Return width of TABLE-CELL.
+
 INFO is a plist used as a communication channel.
+
 Width of a cell is determined either by a width cookie in the
 same column as the cell, or by the maximum cell's length in that
 column."
-  (let* ((row (org-export-get-parent table-cell))
-	 (table (org-export-get-parent row))
+  (let* ((row (org-element-parent table-cell))
+	 (table (org-element-parent row))
 	 (col (let ((cells (org-element-contents row)))
 		(- (length cells) (length (memq table-cell cells)))))
 	 (cache
@@ -1477,8 +1483,9 @@ a communication channel."
 	      (org-rst--justify-lines
 	       contents width
 	       (org-export-table-cell-alignment table-cell info)) "\\")))
-      (setq contents (concat data
-                             (make-string (- width (string-width data)) ? ))))
+      (setq contents
+            (concat data
+                    (make-string (max 0 (- width (string-width data))) ? ))))
     ;; Return cell.
     (concat (format " %s " contents)
 			(when (org-export-get-next-element table-cell info) "|"))))
@@ -1501,7 +1508,7 @@ a communication channel."
                  ((not (= 1 rowgroup-number))
                   ?-)
                  ((org-export-table-has-header-p
-                   (org-export-get-parent-table table-row) info)
+                   (org-element-lineage table-row 'table) info)
                   ?=)
                  (t ?-)))
                (makeline
@@ -1586,13 +1593,15 @@ contextual information."
 
 (defun org-rst-separate-elements (tree _backend _info)
   "Make sure elements are separated by at least one blank line.
+
 TREE is the parse tree being exported.  BACKEND is the export
 back-end used.  INFO is a plist used as a communication channel.
+
 Assume BACKEND is `rst'."
   (org-element-map tree org-element-all-elements
     (lambda (elem)
-      (unless (or (eq (org-element-type elem) 'org-data)
-				  (eq (org-element-type elem) 'table-row))
+      (unless (or (org-element-type-p elem 'org-data)
+				  (org-element-type-p elem 'table-row))
 		(org-element-put-property
 		 elem :post-blank
 		 (let ((post-blank (org-element-property :post-blank elem)))
@@ -1602,9 +1611,11 @@ Assume BACKEND is `rst'."
 
 (defun org-rst-filter-headline-blank-lines (headline _back-end _info)
   "Filter controlling number of blank lines after a headline.
+
 HEADLINE is a string representing a transcoded headline.
 BACK-END is symbol specifying back-end used for export.  INFO is
 plist containing the communication channel.
+
 This function only applies to `rst' back-end.  See
 `org-rst-headline-spacing' for information."
   (if (not org-rst-headline-spacing) headline
@@ -1613,14 +1624,16 @@ This function only applies to `rst' back-end.  See
 
 (defun org-rst-filter-paragraph-spacing (tree _back-end info)
   "Filter controlling number of blank lines between paragraphs.
+
 TREE is the parse tree.  BACK-END is the symbol specifying
 back-end used for export.  INFO is a plist used as
 a communication channel.
+
 See `org-rst-paragraph-spacing' for information."
   (when (wholenump org-rst-paragraph-spacing)
     (org-element-map tree 'paragraph
       (lambda (p)
-		(when (eq (org-element-type (org-export-get-next-element p info))
+		(when (org-element-type-p (org-export-get-next-element p info)
 				  'paragraph)
 		  (org-element-put-property
 		   p :post-blank org-rst-paragraph-spacing)))))
@@ -1634,17 +1647,23 @@ See `org-rst-paragraph-spacing' for information."
 (defun org-rst-export-as-rst
   (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a reStructuredText buffer.
+
 If narrowing is active in the current buffer, only export its
 narrowed part.
+
 If a region is active, export that region.
+
 A non-nil optional argument ASYNC means the process should happen
 asynchronously.  The resulting buffer should be accessible
 through the `org-export-stack' interface.
+
 When optional argument SUBTREEP is non-nil, export the sub-tree
 at point, extracting information from the headline properties
 first.
+
 When optional argument VISIBLE-ONLY is non-nil, don't export
 contents of hidden elements.
+
 Export is done in a buffer named \"*Org RST Export*\", which will
 be displayed when `org-export-show-temporary-export-buffer' is
 non-nil."
@@ -1662,22 +1681,29 @@ to convert it."
   (interactive)
   (org-export-replace-region-by 'rst))
 
+(defalias 'org-export-region-to-rst #'org-rst-convert-region-to-rst)
 
 ;;;###autoload
 (defun org-rst-export-to-rst
   (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a reStructuredText file.
+
 If narrowing is active in the current buffer, only export its
 narrowed part.
+
 If a region is active, export that region.
+
 A non-nil optional argument ASYNC means the process should happen
 asynchronously.  The resulting file should be accessible through
 the `org-export-stack' interface.
+
 When optional argument SUBTREEP is non-nil, export the sub-tree
 at point, extracting information from the headline properties
 first.
+
 When optional argument VISIBLE-ONLY is non-nil, don't export
 contents of hidden elements.
+
 Return output file's name."
   (interactive)
   (let* ((extension (concat "." (or (plist-get ext-plist :rst-extension)
@@ -1690,9 +1716,11 @@ Return output file's name."
 ;;;###autoload
 (defun org-rst-publish-to-rst (plist filename pub-dir)
   "Publish an org file to reStructuredText.
+
 FILENAME is the filename of the Org file to be published.  PLIST
 is the property list for the given project.  PUB-DIR is the
 publishing directory.
+
 Return output file name."
   (org-publish-org-to 'rst filename ".rst" plist pub-dir))
 
