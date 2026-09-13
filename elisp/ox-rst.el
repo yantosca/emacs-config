@@ -34,6 +34,55 @@
 (require 'ox)
 (require 'ox-publish)
 
+
+;;; Org 9.7 compatibility
+;;
+;; Org 9.7 renamed several `org-element' accessors.  This file uses the new
+;; names throughout; the block below defines them in terms of their pre-9.7
+;; equivalents when running against an older Org, so that ox-rst behaves the
+;; same from Emacs 26.1 (Org 9.1) through Emacs 31 (Org 9.7+).  Without it
+;; the renamed calls signal `void-function' on any Emacs whose bundled Org
+;; predates 9.7 -- Emacs 29.3 ships 9.6.15.
+;;
+;; `eval-and-compile' so that the byte and native compilers see the
+;; definitions too, and `with-no-warnings' because the fallbacks deliberately
+;; name functions that 9.7 marked obsolete; the `fboundp' guards mean those
+;; branches never run on an Org that would care.
+(eval-and-compile
+  (with-no-warnings
+
+    (unless (fboundp 'org-element-type-p)
+      (defun org-element-type-p (node types)
+        "Return non-nil when NODE type is one of TYPES.
+TYPES is a type symbol or a list of type symbols."
+        (memq (org-element-type node)
+              (if (listp types) types (list types)))))
+
+    (unless (fboundp 'org-element-begin)
+      (defun org-element-begin (node)
+        "Return buffer position at NODE beginning."
+        (org-element-property :begin node)))
+
+    (unless (fboundp 'org-element-parent)
+      (defun org-element-parent (node)
+        "Return NODE parent."
+        (org-export-get-parent node)))
+
+    (unless (fboundp 'org-element-parent-element)
+      (defun org-element-parent-element (node)
+        "Return first element containing NODE, or nil."
+        (org-export-get-parent-element node)))
+
+    (unless (fboundp 'org-element-extract)
+      (defun org-element-extract (node)
+        "Extract NODE from the parse tree it belongs to."
+        (org-element-extract-element node)))
+
+    (unless (fboundp 'org-element-adopt)
+      (defun org-element-adopt (parent &rest children)
+        "Append CHILDREN to PARENT's contents."
+        (apply #'org-element-adopt-elements parent children)))))
+
 
 ;;; Define Back-End
 (org-export-define-backend 'rst
@@ -1191,14 +1240,14 @@ containing export options.  Modify DATA by side-effect and return it."
             ;; Wrap MATH-BLOCK around OBJECT in DATA.
             (org-element-insert-before math-block object)
             (org-element-extract object)
-            (org-element-adopt-elements math-block object)
+            (org-element-adopt math-block object)
             (when (zerop (or (org-element-property :post-blank object) 0))
               ;; MATH-BLOCK swallows consecutive math objects.
               (catch 'exit
                 (dolist (next next-elements)
                   (if (not (funcall valid-object-p next)) (throw 'exit nil)
                     (org-element-extract next)
-                    (org-element-adopt-elements math-block next)
+                    (org-element-adopt math-block next)
                     ;; Eschew the case: \beta$x$ -> \(\betax\).
                     (unless (memq (org-element-type next)
                                   '(subscript superscript))
@@ -1508,7 +1557,7 @@ a communication channel."
                  ((not (= 1 rowgroup-number))
                   ?-)
                  ((org-export-table-has-header-p
-                   (org-element-lineage table-row 'table) info)
+                   (org-element-lineage table-row '(table)) info)
                   ?=)
                  (t ?-)))
                (makeline

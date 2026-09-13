@@ -483,7 +483,8 @@ proper values:
 
 `yas-snippet-end' : Similar to beg.
 
-Attention: These hooks are not run when exiting nested/stacked snippet expansion!")
+Attention: These hooks are not run when exiting nested/stacked
+snippet expansion!")
 
 (defvar yas-before-expand-snippet-hook
   '()
@@ -555,7 +556,8 @@ conditions.
     sexp))
 
 (defcustom yas-keymap-disable-hook nil
-  "The `yas-keymap' bindings are disabled if any function in this list returns non-nil.
+  "Hooks deciding whether the `yas-keymap' bindings are disabled.
+The bindings are disabled if any function in this list returns non-nil.
 This is useful to control whether snippet navigation bindings
 override bindings from other packages (e.g., `company-mode')."
   :type 'hook)
@@ -1813,7 +1815,8 @@ Optional PROMPT sets the prompt to use."
 SNIPPETS is a list of snippet definitions, each taking the
 following form
 
- (KEY TEMPLATE NAME CONDITION GROUP EXPAND-ENV LOAD-FILE KEYBINDING UUID SAVE-FILE)
+ (KEY TEMPLATE NAME CONDITION GROUP EXPAND-ENV LOAD-FILE KEYBINDING
+  UUID SAVE-FILE)
 
 Within these, only KEY and TEMPLATE are actually mandatory.
 
@@ -2980,7 +2983,8 @@ marks it as something else (typically comment ender)."
     'again))
 
 (defun yas-longest-key-from-whitespace (start-point)
-  "As `yas-key-syntaxes' element, look for longest key between point and whitespace.
+  "As `yas-key-syntaxes' element, look for the longest key.
+The key is taken from between point and whitespace.
 
 A newline will be considered whitespace even if the mode syntax
 marks it as something else (typically comment ender)."
@@ -3727,8 +3731,8 @@ Use as a `:filter' argument for a conditional keybinding."
   "Clears unmodified field if at field start, skips to next tab.
 
 Otherwise deletes a character normally by calling `delete-char'."
-  (interactive)
   (declare (obsolete "Bind to `yas-maybe-skip-and-clear-field' instead." "0.13"))
+  (interactive)
   (cond ((yas--maybe-clear-field-filter t)
          (yas--skip-and-clear (or field (yas-current-field)))
          (yas-next-field 1))
@@ -4722,9 +4726,11 @@ The following count as a field:
 * \"${n: text}\", for a numbered field with default text, as long as N is not 0;
 
 * \"${n: text$(expression)}, the same with a Lisp expression;
-  this is caught with the curiously named `yas--multi-dollar-lisp-expression-regexp'
+  this is caught with the curiously named
+  `yas--multi-dollar-lisp-expression-regexp'
 
-* the same as above but unnumbered, (no N:) and number is calculated automatically.
+* the same as above but unnumbered, (no N:) and number is calculated
+  automatically.
 
 When multiple expressions are found, only the last one counts."
   ;;

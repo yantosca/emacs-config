@@ -157,7 +157,7 @@ set the path with these commands:
   )
 
 (defun cmake-point-in-indendation ()
-  (string-match "^[ \\t]*$" (buffer-substring (point-at-bol) (point))))
+  (string-match "^[ \\t]*$" (buffer-substring (line-beginning-position) (point))))
 
 (defun cmake-indent-line-to (column)
   "Indent the current line to COLUMN.
@@ -347,7 +347,8 @@ and store the result as a list in LISTVAR."
 
 ;;;###autoload
 (defun cmake-help ()
-  "Queries for any of the four available help topics and prints out the appropriate page."
+  "Query for any of the four available help topics.
+Prints out the appropriate page."
   (interactive)
   (let* ((default-entry (cmake-symbol-at-point))
          (command-list (cmake-get-list "command"))

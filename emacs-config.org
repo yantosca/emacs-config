@@ -89,6 +89,28 @@ wants.  See the Font section under Display for where this is applied.
 #+END_SRC
 
 
+** Native compilation warnings
+
+Emacs 28 and later natively compile packages in the background and pop
+up a *Warnings* buffer for anything the compiler dislikes in them.  The
+vendored packages under elisp/ and elpa/ have been cleaned up so they
+compile silently, but a future upstream drop will not have been, and
+nothing here can be done about warnings in someone else's code.
+
+`silent' still records everything in *Warnings* -- read it with C-h e --
+it just stops the buffer from stealing the frame at startup.  The guard
+is for Cannon, whose Emacs 26.1 has no native compiler and so does not
+define this variable at all.
+
+This has to run before the Externals section below, which is what loads
+the vendored packages and queues their compilation.
+
+#+BEGIN_SRC emacs-lisp
+  (when (fboundp 'native-comp-available-p)
+    (setq native-comp-async-report-warnings-errors 'silent))
+#+END_SRC
+
+
 * Externals
 
 This section loads external packages or configuration files that are
@@ -766,17 +788,17 @@ not shell-script-mode/sh-mode (editing .sh files) below.
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'shell-mode-hook
-	  '(lambda ()
+	  (lambda ()
              (local-set-key [home] 'comint-bol)                ;; Home key
 
 	     (local-set-key [up]                                 ;; Cycle up
-                            '(lambda () (interactive)          ;; through
+                            (lambda () (interactive)          ;; through
                                (if (comint-after-pmark-p)      ;; command
                                    (comint-previous-input 1)   ;; history
                                  (previous-line 1))))
 
 	     (local-set-key [down]                               ;; Cycle down
-                            '(lambda () (interactive)          ;; through
+                            (lambda () (interactive)          ;; through
                                (if (comint-after-pmark-p)      ;; command
                                    (comint-next-input 1)       ;; history
                                  (forward-line 1))))

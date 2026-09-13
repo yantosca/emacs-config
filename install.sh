@@ -54,6 +54,10 @@ cd ..
 # the config has loaded picks the right set automatically, so this needs no
 # updating when packages are added or dropped.
 #
+# load-history names whichever file was actually loaded, so on every run
+# after the first it reports .elc rather than .el.  Strip the trailing "c"
+# before compiling, or this step silently does nothing once it has run once.
+#
 # .elc files are gitignored -- they are per-machine derived artifacts, and
 # bytecode is not portable to an older Emacs than the one that built it.
 echo ""
@@ -64,11 +68,14 @@ emacs --batch -l ~/.emacs.d/init.el --eval '
       (ok 0) (fail 0))
   (dolist (entry load-history)
     (let ((f (car entry)))
-      (when (and (stringp f) (string-suffix-p ".el" f) (string-prefix-p root f))
-        (if (ignore-errors (byte-compile-file f))
-            (setq ok (1+ ok))
-          (setq fail (1+ fail))
-          (message "could not compile %s" (file-relative-name f root))))))
+      (when (and (stringp f) (string-prefix-p root f))
+        (when (string-suffix-p ".elc" f)
+          (setq f (substring f 0 -1)))
+        (when (and (string-suffix-p ".el" f) (file-exists-p f))
+          (if (ignore-errors (byte-compile-file f))
+              (setq ok (1+ ok))
+            (setq fail (1+ fail))
+            (message "could not compile %s" (file-relative-name f root)))))))
   (message "byte-compiled %d file(s), %d failed" ok fail))' 2>&1 \
     | grep -E "byte-compiled|could not compile"
 

@@ -27,8 +27,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-
 (defgroup org-bullets nil
   "Display bullets as UTF-8 characters"
   :group 'org-appearance)
@@ -78,7 +76,7 @@ Should this be undesirable, one can remove them with
 ;;;###autoload
 (define-minor-mode org-bullets-mode
     "UTF8 Bullets for org-mode"
-  nil nil nil
+  :init-value nil :lighter nil :keymap nil
   (let* (( keyword
            `(("^\\*+ "
               (0 (let* (( level (- (match-end 0) (match-beginning 0) 1))
@@ -111,13 +109,15 @@ Should this be undesirable, one can remove them with
     (if org-bullets-mode
         (progn
           (font-lock-add-keywords nil keyword)
-          (font-lock-fontify-buffer))
+          (font-lock-flush)
+          (font-lock-ensure))
       (save-excursion
         (goto-char (point-min))
         (font-lock-remove-keywords nil keyword)
         (while (re-search-forward "^\\*+ " nil t)
           (decompose-region (match-beginning 0) (match-end 0)))
-        (font-lock-fontify-buffer))
+        (font-lock-flush)
+        (font-lock-ensure))
       )))
 
 (provide 'org-bullets)

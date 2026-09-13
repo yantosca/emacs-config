@@ -43,6 +43,31 @@ When adding a new file-extension/mode association or key binding, find the match
 - `elpa/` holds vendored ELPA/MELPA packages (color-theme, yasnippet, magit, dash, async, ghub, git-commit, with-editor, magit-popup, treepy, better-shell, yasnippet-classic-snippets). Most are unmodified upstream drops.
 - `elpa/yasnippet-classic-snippets-1.0.2/snippets/` is the exception: snippet files here (organized by major-mode subdirectory, e.g. `fundamental-mode/int-test-results`) are directly authored/edited as part of this repo — e.g. GEOS-Chem release Git/GitHub message snippets. Treat this snippets directory as project content, not a dependency to leave alone.
 
+### Local portability patches
+
+The vendored `.el` files under `elisp/` and `elpa/` are no longer pristine
+upstream drops. They carry local patches that keep them compiling and running
+cleanly across the Emacs versions this config targets — 26.1 on Harvard Cannon
+through 31.x on calculon:
+
+- `elisp/ox-rst.el` has an Org 9.7 compatibility shim near the top, defining the
+  renamed `org-element-*` accessors in terms of their pre-9.7 equivalents when
+  the running Org predates 9.7. Without it, list, link, math and table export all
+  signal `void-function` on Emacs 29.3, which bundles Org 9.6.15.
+- `elisp/org-bullets.el` lost its `(require 'cl)` and its positional
+  `define-minor-mode` arguments; `cl` is gone in Emacs 31.
+- `elisp/cmake-mode.el`, `elisp/yaml-mode.el` and `elisp/markdown-mode.el` use
+  `line-beginning-position`/`line-end-position` instead of the obsolete
+  `point-at-bol`/`point-at-eol`. Do **not** "modernize" these to `pos-bol`/`pos-eol`
+  — those are Emacs 29+ only and would break Cannon.
+- `elpa/yasnippet-0.14.0/yasnippet.el` has reflowed docstrings and a relocated
+  `declare` form.
+
+**Re-check these after any upstream refresh** — pulling a new version of one of
+these files will silently drop its patch. `./install.sh` byte-compiles everything
+the config loads and reports failures; a clean run should print no warnings at
+all.
+
 ## Submodules
 
 `emacs-libvterm` and `elisp/rust-mode` are git submodules (see `.gitmodules`). `emacs-libvterm` is only built/loaded when `enable-vterm` is `t` in `emacs-config.org`'s `Global toggles` section.

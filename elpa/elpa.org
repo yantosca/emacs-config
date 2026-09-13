@@ -12,11 +12,16 @@ with the -nw (no-windowing-system) option.
   (add-to-list
    'load-path
    "~/.emacs.d/emacs-config/elpa/color-theme-6.6.1")
-  (when (display-graphic-p)
-    (require 'color-theme)
-    (setq color-theme-is-global t)
-    (color-theme-initialize)
-    (color-theme-yantosca))
+  ;; color-theme is only required on a graphical frame, so the byte
+  ;; compiler never sees its definitions and warns about all three of
+  ;; them plus color-theme-is-global.  The require above this guard is
+  ;; what supplies them at runtime.
+  (with-no-warnings
+    (when (display-graphic-p)
+      (require 'color-theme)
+      (setq color-theme-is-global t)
+      (color-theme-initialize)
+      (color-theme-yantosca)))
 #+END_SRC
 
 
