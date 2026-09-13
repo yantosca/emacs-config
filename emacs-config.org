@@ -17,12 +17,41 @@
 This section defines global variables that are used to toggle other
 settings further down in this initialization file.
 
+Everything here is a plain Emacs-lisp switch.  The defaults are derived
+from `my-machine' below, so this file can be copied to any of my machines
+unmodified; edit a `setq' here if a machine wants something different.
+
+** Machine
+
+Which machine this configuration is running on.  Used only to pick the
+defaults for the switches below -- nothing else should branch on it.
+
+Detected from `system-name' by prefix, because these hosts do not always
+report a bare name: this Mac calls itself "calculon-3.local".  An
+unrecognized host falls back to `generic', which is a plain GTK/X11 Linux
+setup.  Set `my-machine' by hand if the guess is wrong.
+
+#+BEGIN_SRC emacs-lisp
+  (defvar my-machine
+    (let ((host (downcase (car (split-string (system-name) "\\.")))))
+      (cond ((string-prefix-p "bender"    host) 'bender)
+            ((string-prefix-p "calculon"  host) 'calculon)
+            ((string-prefix-p "hypnotoad" host) 'hypnotoad)
+            ((string-prefix-p "zoidberg"  host) 'zoidberg)
+            ((eq system-type 'cygwin)           'cygwin)
+            ((eq system-type 'darwin)           'calculon)
+            (t                                  'generic)))
+    "Symbol naming the machine this Emacs is running on.
+Only used to choose defaults in the Global toggles section.")
+#+END_SRC
+
 ** Graphical backend library
 
 Select athena/X11 (t) or GTK (nil) as the graphical display package.
+Requires an Emacs actually built with the Athena toolkit; nil elsewhere.
 
 #+BEGIN_SRC emacs-lisp
-  (setq enable-athena-backend t)
+  (setq enable-athena-backend nil)
 #+END_SRC
 
 ** Number of frames
@@ -30,15 +59,33 @@ Select athena/X11 (t) or GTK (nil) as the graphical display package.
 Decide whether to use 1 or 2 vertical frames at startup.
 
 #+BEGIN_SRC emacs-lisp
-  (setq enable-two-vertical-frames t)
+  (setq enable-two-vertical-frames nil)
 #+END_SRC
 
 ** Vterm
 
-Enable vterm terminal emulation.
+Enable vterm terminal emulation.  Off on bender, which has no working
+vterm module build.
 
 #+BEGIN_SRC emacs-lisp
-  (setq enable-vterm t)
+  (setq enable-vterm (not (eq my-machine 'bender)))
+#+END_SRC
+
+** Default font
+
+The font used for graphical frames, as an X logical font description.
+DejaVu Sans Mono everywhere except this Mac, at the size each display
+wants.  See the Font section under Display for where this is applied.
+
+#+BEGIN_SRC emacs-lisp
+  (setq my-default-font
+        (pcase my-machine
+          ('calculon
+           "-*-source code pro-Bold-R-*-*-*-160-*-*-*-*-iso8859-1")
+          ((or 'cygwin 'zoidberg)
+           "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1")
+          (_
+           "-*-DejaVuSansMono-Bold-R-*-*-*-100-*-*-*-*-iso8859-1")))
 #+END_SRC
 
 
@@ -121,12 +168,13 @@ Select a default font (Emacs with GTK backend only)
 NOTE: If using athena/X11 as the backend, then the default font can be
 set with the emacs.Font specification in your ~/.Xresources file.
 
+The font itself is chosen per machine by `my-default-font', in the Global
+toggles section at the top of this file.
+
 #+BEGIN_SRC emacs-lisp
   (unless enable-athena-backend
     (when (display-graphic-p)
-      (set-face-font
-       'default
-       "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1")))
+      (set-face-font 'default my-default-font)))
 #+END_SRC
 
 ** Frames
@@ -862,13 +910,14 @@ See: http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-term.html
 
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
-    (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
+    (defun my-term-sentinel-kill-buffer (orig-fun proc msg)
+      "Kill the term buffer once PROC has exited."
       (if (memq (process-status proc) '(signal exit))
           (let ((buffer (process-buffer proc)))
-            ad-do-it
+            (funcall orig-fun proc msg)
             (kill-buffer buffer))
-        ad-do-it))
-    (ad-activate 'term-sentinel)
+        (funcall orig-fun proc msg)))
+    (advice-add 'term-sentinel :around #'my-term-sentinel-kill-buffer)
     )
 #+END_SRC
 
@@ -877,10 +926,10 @@ Always enable bash (sorry zsh...)
 #+BEGIN_SRC emacs-lisp
   (unless enable-vterm
     (defvar my-term-shell "/bin/bash")
-    (defadvice term (before force-bash)
-      (interactive
-       (list my-term-shell)))
-    (ad-activate 'term)
+    (defun my-term-force-bash (&rest _)
+      "Override `term''s interactive spec to always run `my-term-shell'."
+      (interactive (list my-term-shell)))
+    (advice-add 'term :before #'my-term-force-bash)
     )
 #+END_SRC
 
@@ -995,29 +1044,31 @@ Look for init files in the emacs-libvterm submodule.
 
 
 Kill the buffer when vterminal is exited.
-See http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html
+
+This used to advise =vterm-sentinel=, copied from the ansi-term recipe at
+http://emacs-journey.blogspot.com.au/2012/06/improving-ansi-vterm.html.
+No such function exists -- vterm's is the private =vterm--sentinel= -- so
+the advice never ran.  vterm does this itself via =vterm-kill-buffer-on-exit=,
+which already defaults to t; set it explicitly so the intent is visible and
+survives a change of default.
 
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
-    (defadvice vterm-sentinel (around my-advice-vterm-sentinel (proc msg))
-      (if (memq (process-status proc) '(signal exit))
-          (let ((buffer (process-buffer proc)))
-            ad-do-it
-            (kill-buffer buffer))
-        ad-do-it))
-    (ad-activate 'vterm-sentinel)
+    (setq vterm-kill-buffer-on-exit t)
   )
 #+END_SRC
 
 Always use bash (sorry zsh...)
 
+Unlike =term=, whose argument is the program to run, =vterm='s optional
+argument is a buffer name -- so overriding its interactive spec with a
+shell path named the buffer "/bin/bash" rather than choosing the shell.
+vterm reads the shell from =vterm-shell=, so set that instead.
+
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (defvar my-vterm-shell "/bin/bash")
-    (defadvice vterm (before force-bash)
-      (interactive
-       (list my-vterm-shell)))
-    (ad-activate 'vterm)
+    (setq vterm-shell my-vterm-shell)
   )
 #+END_SRC
 
@@ -1090,4 +1141,29 @@ Set some vterm-specific keybindings.
     (global-set-key (kbd "C-q") 'unique-bash-vterm)
     (define-key global-map (kbd "C-x e") 'multi-vterm)
   )
+#+END_SRC
+
+* Edit server
+
+Start the Emacs server inside this (GUI) session so that =emacsclient=
+can open files in it instead of launching a separate Emacs.  This is
+what the =~/bin/ec= script and git's =core.editor= connect to.
+
+Guarded with =server-running-p= so that starting a second Emacs (or a
+=--daemon= session, which starts its own server) does not complain about
+an existing socket.
+
+Wrapped in =condition-case= because =server-start= signals an error when
+the socket directory is considered unsafe -- e.g. =/tmp/emacs<uid>= owned
+by another user, which happens on shared/multi-user machines such as HPC
+login nodes.  Without this, such a machine would print an error on every
+startup.  Failing to get a server is never worth breaking init over.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'server)
+  (unless (server-running-p)
+    (condition-case err
+        (server-start)
+      (error
+       (message "Emacs server not started: %s" (error-message-string err)))))
 #+END_SRC
