@@ -122,6 +122,10 @@ through 31.x on calculon:
   — those are Emacs 29+ only and would break Cannon.
 - `elpa/yasnippet-0.14.0/yasnippet.el` has reflowed docstrings and a relocated
   `declare` form.
+- `elpa/color-theme-6.6.1/color-theme.el` uses `cl-lib` rather than `cl`, and
+  `custom-variable-p` rather than `user-variable-p`. The latter was removed in
+  Emacs 26, so `color-theme-get-vars` signalled `void-function` on every Emacs
+  we run before this.
 
 Separately, every vendored file that this config actually loads carries an
 explicit `-*- lexical-binding: nil; -*-` cookie, because Emacs 30+ warns about

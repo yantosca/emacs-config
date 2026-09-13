@@ -79,7 +79,7 @@
   (require 'reporter)
   (require 'sendmail))
 
-(require 'cl); set-difference is a function...
+(require 'cl-lib); cl-set-difference is a function...
 
 ;; for custom-face-attributes-get or face-custom-attributes-get
 (require 'cus-face)
@@ -905,7 +905,7 @@ variable must be a user variable according to `user-variable-p'."
 	(val))
     (mapatoms (lambda (v)
 		(and (boundp v)
-		     (user-variable-p v)
+		     (custom-variable-p v)
 		     (string-match color-theme-legal-variables
 				   (symbol-name v))
 		     (setq val (eval v))
@@ -1533,15 +1533,15 @@ a difference."
 			(color-theme-get-vars)
 			(color-theme-get-face-definitions)))
     (delete-frame))
-  (let ((params (set-difference
+  (let ((params (cl-set-difference
 		 (color-theme-frame-params theme-b)
 		 (color-theme-frame-params theme-a)
 		 :test 'equal))
-	(vars (set-difference
+	(vars (cl-set-difference
 	       (color-theme-variables theme-b)
 	       (color-theme-variables theme-a)
 	       :test 'equal))
-	(faces (set-difference
+	(faces (cl-set-difference
 		(color-theme-faces theme-b)
 		(color-theme-faces theme-a)
 		:test 'equal)))
