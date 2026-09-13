@@ -117,6 +117,39 @@ This section loads external packages or configuration files that are
 contained as part of this emacs-config distribution.  These are stored
 in the elpa/ and elisp/ subfolders.
 
+** Loading helper
+
+`org-babel-load-file' loads a tangled .el, and an error anywhere in it
+aborts the whole load -- the rest of that file and the rest of whatever
+org file loaded it.  So one vendored package that will not load takes
+out everything configured after it, which for a require down in
+elisp.org means most of this file.
+
+That is not hypothetical: this config runs on Emacs 26.1 on Cannon and
+31.x on calculon, and third-party code regularly wants a newer Emacs or
+a newer Org than the oldest of those ships.
+
+`my-require' downgrades that from "no configuration" to "no package".
+Use it for anything vendored under elisp/ or elpa/; plain `require' is
+fine for what Emacs itself ships.  Note that `require's own NOERROR
+argument is not enough here -- it only covers a missing file, not an
+error signalled while the file loads.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-require (feature &optional description)
+    "Require FEATURE, returning non-nil on success.
+Unlike `require', a failure to load is reported and swallowed rather
+than aborting the rest of the configuration.  DESCRIPTION names the
+package in the message if FEATURE alone is not obvious."
+    (condition-case err
+        (progn (require feature) t)
+      (error
+       (message "emacs-config: %s not loaded (%s)"
+                (or description feature)
+                (error-message-string err))
+       nil)))
+#+END_SRC
+
 ** External configurations
 
 The "elisp" folder contains Emacs-lisp files from
@@ -679,7 +712,7 @@ Load fortran-mode.
 Load markdown-mode
 
 #+BEGIN_SRC emacs-lisp
-  (require 'markdown-mode)
+  (my-require 'markdown-mode)
 #+END_SRC
 
 ** org-mode
@@ -1060,7 +1093,7 @@ Look for init files in the emacs-libvterm submodule.
 #+BEGIN_SRC emacs-lisp
   (when enable-vterm
     (add-to-list 'load-path "~/.emacs.d/emacs-config/emacs-libvterm")
-    (require 'vterm)
+    (my-require 'vterm)
   )
 #+END_SRC
 

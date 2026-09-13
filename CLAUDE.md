@@ -43,6 +43,48 @@ When adding a new file-extension/mode association or key binding, find the match
 - `elpa/` holds vendored ELPA/MELPA packages (color-theme, yasnippet, magit, dash, async, ghub, git-commit, with-editor, magit-popup, treepy, better-shell, yasnippet-classic-snippets). Most are unmodified upstream drops.
 - `elpa/yasnippet-classic-snippets-1.0.2/snippets/` is the exception: snippet files here (organized by major-mode subdirectory, e.g. `fundamental-mode/int-test-results`) are directly authored/edited as part of this repo — e.g. GEOS-Chem release Git/GitHub message snippets. Treat this snippets directory as project content, not a dependency to leave alone.
 
+### Emacs and Org versions per machine
+
+This config is copied unmodified to machines spanning Emacs 26.1 to 31.x, and
+Org version tracks the Emacs version. That gap is what most portability problems
+come down to:
+
+| Machine | Emacs | Org | Notes |
+|---|---|---|---|
+| calculon | 31.1 | bundled (9.8-era) | nothing to do |
+| zoidberg | 29.3 | **9.8.10 from GNU ELPA** | bundles 9.6.15, which predates the 9.7 `org-element-*` renames `ox-rst` needs |
+| Cannon | 26.1 | bundled 9.1 | cannot run a modern Org; see below |
+
+zoidberg's Org was installed with `package-install-upgrade-built-in` set to `t`
+(package.el otherwise treats the bundled Org as already satisfying the
+dependency). It lands in `~/.emacs.d/elpa/`, separate from this repo's vendored
+`elpa/`, and Emacs 27+ puts it on `load-path` before `init.el` runs, so the
+`org-babel-load-file` call there picks it up. To back it out, delete
+`~/.emacs.d/elpa/org-9.8.10*` and the bundled Org takes over again.
+
+**Cannon has no upgrade path.** GNU ELPA now ships only Org 9.8.10, which
+requires Emacs 28.2, and keeps no older versions; orgmode.org's own ELPA is a
+stale 2021 snapshot. Short of building Org 9.7 from git, Emacs 26.1 is stuck on
+Org 9.1, which is too old for `ox-rst` — it calls `org-assert-version`, added in
+Org 9.6. That is survivable rather than fatal only because of `my-require`
+(below): Cannon loses rst export and keeps everything else.
+
+### Failure isolation: `my-require`
+
+`org-babel-load-file` loads a tangled `.el`, and an error anywhere in it aborts
+the rest of that file *and* the org file that loaded it. A single vendored
+package that will not load therefore takes out everything configured after it —
+for a `require` in `elisp.org`, that is most of `emacs-config.org`.
+
+`my-require` (defined under `* Externals` in `emacs-config.org`) wraps `require`
+in a `condition-case` and returns non-nil on success. **Use it for anything
+vendored under `elisp/` or `elpa/`**; plain `require` is fine for what Emacs
+itself ships. Where the code after a require depends on the package having
+loaded, guard it: `(when (my-require 'foo) ...)`.
+
+Note that `require`'s own NOERROR argument is *not* a substitute — it only
+covers a missing file, not an error signalled while the file loads.
+
 ### Local portability patches
 
 The vendored `.el` files under `elisp/` and `elpa/` are no longer pristine

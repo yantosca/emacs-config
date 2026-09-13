@@ -63,7 +63,8 @@ cd ..
 echo ""
 echo "3. Byte-compiling the vendored packages..."
 echo ""
-emacs --batch -l ~/.emacs.d/init.el --eval '
+emacs --batch --eval '(progn (require (quote package)) (package-initialize))' \
+      -l ~/.emacs.d/init.el --eval '
 (let ((root (file-name-as-directory (expand-file-name "~/.emacs.d/emacs-config")))
       (ok 0) (fail 0))
   (dolist (entry load-history)

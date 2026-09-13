@@ -17,8 +17,7 @@ with the -nw (no-windowing-system) option.
   ;; them plus color-theme-is-global.  The require above this guard is
   ;; what supplies them at runtime.
   (with-no-warnings
-    (when (display-graphic-p)
-      (require 'color-theme)
+    (when (and (display-graphic-p) (my-require 'color-theme))
       (setq color-theme-is-global t)
       (color-theme-initialize)
       (color-theme-yantosca)))
@@ -32,8 +31,8 @@ Activate the YASnippets package.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path
    "~/.emacs.d/emacs-config/elpa/yasnippet-0.14.0")
-  (require 'yasnippet)
-  (yas-global-mode 1)
+  (when (my-require 'yasnippet)
+    (yas-global-mode 1))
 #+END_SRC
 
 Load some classic snippets for various major modes.
@@ -41,5 +40,5 @@ Load some classic snippets for various major modes.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path
    "~/.emacs.d/emacs-config/elpa/yasnippet-classic-snippets-1.0.2")
-  (require 'yasnippet-classic-snippets)
+  (my-require 'yasnippet-classic-snippets)
 #+END_SRC
