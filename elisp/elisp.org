@@ -5,6 +5,7 @@
 Tell emacs to look in these folders for emacs-lisp (*.el) files:
 
 #+BEGIN_SRC emacs-lisp
+  ;;; elisp.el --- tangled by org-babel-load-file  -*- lexical-binding: t; -*-
   (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/")
   (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/rust-mode")
 #+END_SRC

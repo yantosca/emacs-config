@@ -1,4 +1,4 @@
-;;; yasnippet-classic-snippets.el --- "Classic" yasnippet snippets
+;;; yasnippet-classic-snippets.el --- "Classic" yasnippet snippets  -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 2018 Free Software Foundation, Inc.
 

@@ -32,6 +32,7 @@ unrecognized host falls back to `generic', which is a plain GTK/X11 Linux
 setup.  Set `my-machine' by hand if the guess is wrong.
 
 #+BEGIN_SRC emacs-lisp
+  ;;; emacs-config.el --- tangled by org-babel-load-file  -*- lexical-binding: t; -*-
   (defvar my-machine
     (let ((host (downcase (car (split-string (system-name) "\\.")))))
       (cond ((string-prefix-p "bender"    host) 'bender)

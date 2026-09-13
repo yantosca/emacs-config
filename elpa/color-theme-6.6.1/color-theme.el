@@ -1,4 +1,4 @@
-;;; color-theme.el --- Install color themes
+;;; color-theme.el --- Install color themes  -*- lexical-binding: nil; -*-
 ;; 
 ;; Filename: color-theme.el
 ;; Description: Install color themes

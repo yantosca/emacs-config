@@ -123,6 +123,14 @@ through 31.x on calculon:
 - `elpa/yasnippet-0.14.0/yasnippet.el` has reflowed docstrings and a relocated
   `declare` form.
 
+Separately, every vendored file that this config actually loads carries an
+explicit `-*- lexical-binding: nil; -*-` cookie, because Emacs 30+ warns about
+files that have no cookie at all. `nil` is deliberate: it states the semantics
+the code was already written for, so it silences the warning while changing
+nothing. Do **not** flip these to `t` without testing that package — several
+(color-theme in particular, which dates to 2008) rely on dynamic binding. Our
+own files — `init.el` and the three tangled outputs — use `t`.
+
 **Re-check these after any upstream refresh** — pulling a new version of one of
 these files will silently drop its patch. `./install.sh` byte-compiles everything
 the config loads and reports failures; a clean run should print no warnings at
