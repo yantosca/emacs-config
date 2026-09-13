@@ -76,14 +76,32 @@ the rest of that file *and* the org file that loaded it. A single vendored
 package that will not load therefore takes out everything configured after it —
 for a `require` in `elisp.org`, that is most of `emacs-config.org`.
 
-`my-require` (defined under `* Externals` in `emacs-config.org`) wraps `require`
-in a `condition-case` and returns non-nil on success. **Use it for anything
+`my-require` (defined in `elisp/my-require.el`) wraps `require` in a
+`condition-case` and returns non-nil on success. **Use it for anything
 vendored under `elisp/` or `elpa/`**; plain `require` is fine for what Emacs
 itself ships. Where the code after a require depends on the package having
 loaded, guard it: `(when (my-require 'foo) ...)`.
 
 Note that `require`'s own NOERROR argument is *not* a substitute — it only
 covers a missing file, not an error signalled while the file loads.
+
+### Deploy skew: emacs-config.org is a *copy*
+
+`emacs-config.org` and `init.el` only reach `~/.emacs.d` when `install.sh` copies
+them. Everything else — `elisp/*.org`, `elpa/*.org` and the vendored `.el` files
+— is loaded in place from the repository. So `git pull` updates those
+immediately while the deployed `emacs-config.org` stays behind until someone runs
+`install.sh`.
+
+**Never let something in `elisp/` or `elpa/` depend on a symbol defined in
+`emacs-config.org`.** A pull would deliver the caller without the definition.
+This bit `my-require`, which is why it lives in `elisp/my-require.el` — a file
+that travels with the pull — rather than in `emacs-config.org` where it started.
+Both calculon and hypnotoad failed at startup with `Symbol's function definition
+is void: my-require` until that moved.
+
+The reverse direction is safe: `emacs-config.org` may freely use things defined
+under `elisp/`, since `* Externals` loads them before the rest of the file.
 
 ### Local portability patches
 

@@ -9,6 +9,17 @@ Tell emacs to look in these folders for emacs-lisp (*.el) files:
   (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/rust-mode")
 #+END_SRC
 
+`my-require' is used throughout this file.  Requiring it here rather
+than relying on emacs-config.org to have defined it matters: this file
+is loaded in place from the repository, so a git pull updates it, while
+emacs-config.org only reaches ~/.emacs.d when install.sh copies it.
+Pulling without installing would otherwise leave the calls below with
+no definition.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'my-require)
+#+END_SRC
+
 
 * Mode settings
 

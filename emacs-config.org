@@ -135,19 +135,16 @@ fine for what Emacs itself ships.  Note that `require's own NOERROR
 argument is not enough here -- it only covers a missing file, not an
 error signalled while the file loads.
 
+It is defined in elisp/my-require.el rather than here, because this
+file only reaches ~/.emacs.d when install.sh copies it, while elisp.org
+and elpa.org are loaded in place from the repository.  Defining it here
+meant a git pull could deliver callers in those two files while this
+one, and so the definition, stayed behind -- which is exactly what
+happened on calculon.
+
 #+BEGIN_SRC emacs-lisp
-  (defun my-require (feature &optional description)
-    "Require FEATURE, returning non-nil on success.
-Unlike `require', a failure to load is reported and swallowed rather
-than aborting the rest of the configuration.  DESCRIPTION names the
-package in the message if FEATURE alone is not obvious."
-    (condition-case err
-        (progn (require feature) t)
-      (error
-       (message "emacs-config: %s not loaded (%s)"
-                (or description feature)
-                (error-message-string err))
-       nil)))
+  (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/")
+  (require 'my-require)
 #+END_SRC
 
 ** External configurations

@@ -1,5 +1,16 @@
 ;; elpa.org -- Initializes external packages contained in this folder
 
+* Loading helper
+
+See the Loading helper section of emacs-config.org.  Required here as
+well so this file does not depend on elisp.org having run first.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/emacs-config/elisp/")
+  (require 'my-require)
+#+END_SRC
+
+
 * Color theme
 
 Activate the "Yantosca" custom color-theme, which has been added to the
