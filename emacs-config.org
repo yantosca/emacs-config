@@ -269,6 +269,20 @@ Display line and column numbers in bottom bar
   (setq-default column-number-mode t)
 #+END_SRC
 
+** Scratch buffer
+
+Display a custom message in the *scratch* buffer at startup.  The ruler
+line is exactly 80 characters wide, which makes it easy to size the
+frame or window for 80-column text.
+
+#+BEGIN_SRC emacs-lisp
+  (setq initial-scratch-message
+        (concat
+         ";; This buffer is for text that is not saved, and for Lisp evaluation.\n"
+         ";; To create a file, visit it with C-x C-f and enter text in its buffer.\n"
+         ";;-------+---------+---------+---------+---------+---------+---------+---------+\n"))
+#+END_SRC
+
 ** Scroll bar
 
 Set the vertical scroll bar on the left

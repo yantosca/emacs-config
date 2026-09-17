@@ -27,7 +27,7 @@ Each `.org` file contains `#+BEGIN_SRC emacs-lisp ... #+END_SRC` blocks; these a
 
 - `Global toggles` — feature flags read by later sections (`enable-athena-backend`, `enable-two-vertical-frames`, `enable-vterm`)
 - `Externals` — the `elisp.org`/`elpa.org` loading described above
-- `Display` — date/time, font, frames, line/column numbers, scroll bar, splash screen, title, visual bell
+- `Display` — date/time, font, frames, line/column numbers, scratch buffer, scroll bar, splash screen, title, visual bell
 - `General settings` — `custom-set-variables` block, backup/autosave, dired omit patterns, package archives, misc aliases
 - `Key bindings` — buffers, deletion, ediff, editing, modes, navigation, search/replace
 - `Major modes` — default mode, `auto-mode-alist` file-extension → mode mapping, and per-mode hooks (cperl, ediff, font-lock, f90, fortran, markdown, org, shell-script, text)
