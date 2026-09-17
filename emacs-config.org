@@ -38,19 +38,26 @@ on), but rc.fas.harvard.edu always appears in the node name.  The test
 looks anywhere in the name rather than anchoring to the end, so it does
 not matter how a given node chooses to spell itself.
 
+`zoidberg' covers two machines, not one: the home box, which answers to
+zoidberg, and the work box, which answers to EAS-RYANTOSCA2A because WSL
+takes its hostname from the Windows machine name.  They share a dotdrop
+profile and want identical settings, so both prefixes map to the same
+symbol rather than getting one each.
+
 #+BEGIN_SRC emacs-lisp
   ;;; emacs-config.el --- tangled by org-babel-load-file  -*- lexical-binding: t; -*-
   (defvar my-machine
     (let* ((fqdn (downcase (system-name)))
            (host (car (split-string fqdn "\\."))))
       (cond ((string-match-p "rc\\.fas\\.harvard\\.edu" fqdn) 'cannon)
-            ((string-prefix-p "bender"    host) 'bender)
-            ((string-prefix-p "calculon"  host) 'calculon)
-            ((string-prefix-p "hypnotoad" host) 'hypnotoad)
-            ((string-prefix-p "zoidberg"  host) 'zoidberg)
-            ((eq system-type 'cygwin)           'cygwin)
-            ((eq system-type 'darwin)           'calculon)
-            (t                                  'generic)))
+            ((string-prefix-p "bender"        host) 'bender)
+            ((string-prefix-p "calculon"      host) 'calculon)
+            ((string-prefix-p "hypnotoad"     host) 'hypnotoad)
+            ((string-prefix-p "zoidberg"      host) 'zoidberg)
+            ((string-prefix-p "eas-ryantosca" host) 'zoidberg)
+            ((eq system-type 'cygwin)               'cygwin)
+            ((eq system-type 'darwin)               'calculon)
+            (t                                      'generic)))
     "Symbol naming the machine this Emacs is running on.
 Only used to choose defaults in the Global toggles section.")
 #+END_SRC
@@ -84,18 +91,24 @@ vterm module build.
 ** Default font
 
 The font used for graphical frames, as an X logical font description.
-DejaVu Sans Mono everywhere except this Mac, at the size each display
-wants.  See the Font section under Display for where this is applied.
+DejaVu Sans Mono Bold at 12pt everywhere, except this Mac, which gets
+Source Code Pro Bold at 16pt.  See the Font section under Display for
+where this is applied.
+
+12pt is deliberately the fallback rather than a per-machine case, so an
+unrecognized host gets a size that is actually readable.  It used to be
+10pt, which no machine here ever wanted: Cannon needed its own case to
+escape it, and then the work zoidberg fell into it because its hostname
+is EAS-RYANTOSCA2A and nothing matched.  Adding a third exception would
+just have set up a fourth.
 
 #+BEGIN_SRC emacs-lisp
   (setq my-default-font
         (pcase my-machine
           ('calculon
            "-*-source code pro-Bold-R-*-*-*-160-*-*-*-*-iso8859-1")
-          ((or 'cannon 'cygwin 'zoidberg)
-           "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1")
           (_
-           "-*-DejaVuSansMono-Bold-R-*-*-*-100-*-*-*-*-iso8859-1")))
+           "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1")))
 #+END_SRC
 
 

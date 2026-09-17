@@ -52,15 +52,27 @@ come down to:
 | Machine | Emacs | Org | Notes |
 |---|---|---|---|
 | calculon | 31.1 | bundled (9.8-era) | nothing to do |
-| zoidberg | 29.3 | **9.8.10 from GNU ELPA** | bundles 9.6.15, which predates the 9.7 `org-element-*` renames `ox-rst` needs |
+| zoidberg — 2 WSL2 boxes: `Zoidberg` (home), `EAS-RYANTOSCA2A` (work) | 29.3 | bundled 9.6.15 on work; home unverified | 9.6.15 predates the 9.7 `org-element-*` renames `ox-rst` needs; on work that is covered by the compat shim in `elisp/ox-rst.el`, not by upgrading Org. See below |
 | Cannon | 26.1 | bundled 9.1 | cannot run a modern Org; see below |
 
-zoidberg's Org was installed with `package-install-upgrade-built-in` set to `t`
-(package.el otherwise treats the bundled Org as already satisfying the
-dependency). It lands in `~/.emacs.d/elpa/`, separate from this repo's vendored
-`elpa/`, and Emacs 27+ puts it on `load-path` before `init.el` runs, so the
-`org-babel-load-file` call there picks it up. To back it out, delete
-`~/.emacs.d/elpa/org-9.8.10*` and the bundled Org takes over again.
+The two zoidbergs share a dotdrop profile and want identical Emacs settings, which is
+why `my-machine` maps both hostnames to the same `'zoidberg` symbol rather than giving
+each its own — see the Machine section at the top of `emacs-config.org`.
+
+Their Org situation is *not* known to be identical. On the **work** box
+(`EAS-RYANTOSCA2A`), `~/.emacs.d/elpa/org-*` does not exist and `(org-version)` reports
+the bundled 9.6.15, so rst export there rides on the `elisp/ox-rst.el` shim. The
+**home** box is where the GNU ELPA Org 9.8.10 note that used to stand here came from,
+and whether that install is still in place has not been checked — run `ls
+~/.emacs.d/elpa/org-*` and `M-x org-version` there before relying on either answer.
+
+The ELPA route, for whichever box wants it: install with
+`package-install-upgrade-built-in` set to `t` (package.el otherwise treats the bundled
+Org as already satisfying the dependency). It lands in `~/.emacs.d/elpa/`, separate from
+this repo's vendored `elpa/`, and Emacs 27+ puts that on `load-path` before `init.el`
+runs, so the `org-babel-load-file` call there picks it up. To back it out, delete
+`~/.emacs.d/elpa/org-9.8.10*` and the bundled Org takes over again — the shim then
+carries `ox-rst`.
 
 **Cannon has no upgrade path.** GNU ELPA now ships only Org 9.8.10, which
 requires Emacs 28.2, and keeps no older versions; orgmode.org's own ELPA is a
