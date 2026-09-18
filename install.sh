@@ -17,30 +17,43 @@ echo ""
 cp -f ./emacs-config.org ~/.emacs.d
 cp -f ./init.el ~/.emacs.d
 
-# Skip building the emacs vterm if any argument is passed
-if [[ "x${1}" != "x" ]]; then
-    echo "2. Skip building emacs-libvterm..."
-    echo ""
-    echo "3. Done!"
-    exit 0
-fi
-
 # Load all submodules
-echo "2. Attempting to build the vterm module. If this fails"
-echo "   on your system, you can disable vterm by setting"
-echo "   '(setq enable-vterm nil)' in ~/.emacs.d/init.el."
+echo "2. Updating submodules and building the vterm module."
+echo ""
+echo "   If the build fails on your system, disable vterm in the Global"
+echo "   toggles section of emacs-config.org -- add this host to the"
+echo "   exclusion in '(setq enable-vterm ...)' -- and re-run this script."
+echo "   Setting it in ~/.emacs.d/init.el has no effect: init.el runs before"
+echo "   emacs-config.org, whose own setq overwrites it, and step 1 above"
+echo "   replaces init.el on every run."
 echo ""
 git submodule update --init --recursive
 
-# Build the emacs-libvterm module
-cd emacs-libvterm
-mkdir build
-cd build
-cmake ..
-make
-cd ..
-rm -rf build
-cd ..
+# Build the emacs-libvterm module, unless any argument was passed.
+#
+# Pass an argument to skip the build where the module cannot be built, or need
+# not be.  vterm-module.so only has to be rebuilt when a submodule bump touches
+# emacs-libvterm's C sources or CMakeLists.txt; an elisp-only bump needs nothing
+# but a fresh vterm.elc.  So skipping no longer exits the script -- the
+# byte-compile step below still has to run, because load takes a stale .elc over
+# its .el whatever the timestamps say (load-prefer-newer is nil by default), and
+# a bump left uncompiled would have no effect at all.
+#
+# Skipping matters on machines with no system libvterm, Cannon among them, where
+# every cmake run clones and static-links the libvterm mirror instead.
+if [[ "x${1}" != "x" ]]; then
+    echo ""
+    echo "   Skipping the emacs-libvterm build (argument given)."
+else
+    cd emacs-libvterm
+    mkdir build
+    cd build
+    cmake ..
+    make
+    cd ..
+    rm -rf build
+    cd ..
+fi
 
 # Byte-compile the vendored packages
 #

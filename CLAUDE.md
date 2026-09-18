@@ -8,7 +8,9 @@ This is Bob Yantosca's personal Emacs configuration. It's a directory meant to b
 
 ## Installation / applying changes
 
-- `./install.sh` copies `emacs-config.org` and `init.el` into `~/.emacs.d`, then runs `git submodule update --init --recursive` and builds the `emacs-libvterm` submodule via cmake/make. Pass any argument to `install.sh` to skip the vterm build (e.g. `./install.sh skip`).
+- `./install.sh` copies `emacs-config.org` and `init.el` into `~/.emacs.d`, then runs `git submodule update --init --recursive`, builds the `emacs-libvterm` submodule via cmake/make, and byte-compiles everything the config loads. Pass any argument (e.g. `./install.sh skip`) to skip *only* the cmake/make step; the copy, the submodule update and the byte-compile still run.
+- Use `./install.sh skip` where the C module cannot be built or need not be. `vterm-module.so` only has to be rebuilt when a submodule bump touches emacs-libvterm's C sources or `CMakeLists.txt` — an elisp-only bump needs nothing but a fresh `vterm.elc`. Cannon in particular has no system libvterm, so every cmake run there clones and static-links the libvterm mirror.
+- A submodule bump is never finished until the affected `.elc` is rebuilt. `load-prefer-newer` is `nil` and unset in this config, so `load` takes a stale `.elc` over its `.el` whatever the timestamps say, and `*.elc` is gitignored inside `emacs-libvterm` — so a checkout leaves the old bytecode in place and the bump silently does nothing.
 - To pick up edits without reinstalling, reload Emacs, or run `M-x org-babel-load-file` on the specific `.org` file you changed.
 - Never hand-edit the generated `.emacs-config.el` — it's rebuilt from `emacs-config.org` on every startup and is gitignored.
 
