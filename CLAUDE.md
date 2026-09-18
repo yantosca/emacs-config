@@ -54,8 +54,13 @@ come down to:
 | Machine | Emacs | Org | Notes |
 |---|---|---|---|
 | calculon | 31.1 | bundled (9.8-era) | nothing to do |
+| hypnotoad | 31 (snap install) | bundled 9.8.7 | nothing to do |
 | zoidberg — 2 WSL2 boxes: `Zoidberg` (home), `EAS-RYANTOSCA2A` (work) | 29.3 | bundled 9.6.15 on work; home unverified | 9.6.15 predates the 9.7 `org-element-*` renames `ox-rst` needs; on work that is covered by the compat shim in `elisp/ox-rst.el`, not by upgrading Org. See below |
 | Cannon | 26.1 | bundled 9.1 | cannot run a modern Org; see below |
+
+`bender` is deliberately absent: it is the one machine with no working vterm module
+build, which is why the `Global toggles` section reads `(setq enable-vterm (not (eq
+my-machine 'bender)))`. Nothing else branches on it.
 
 The two zoidbergs share a dotdrop profile and want identical Emacs settings, which is
 why `my-machine` maps both hostnames to the same `'zoidberg` symbol rather than giving
