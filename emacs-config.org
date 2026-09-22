@@ -88,6 +88,35 @@ vterm module build.
   (setq enable-vterm (not (eq my-machine 'bender)))
 #+END_SRC
 
+** Remote display
+
+Switch off the parts of the display that cost an X round trip and buy
+little.  On Cannon, and only there, Emacs is always a graphical frame on
+an ssh-forwarded X display: there is no console to sit at, so every
+synchronous request Emacs's redisplay makes crosses the network.
+
+Measured from a compute node to a WSLg server at home: a trivial `xset
+q' takes 1.2s, of which roughly 120ms is each individual round trip --
+against a TCP round-trip time of 27ms on the same connection, so most of
+it is delay added by the forwarding relays rather than distance.  This
+matters most in vterm, which forces a redisplay on every chunk of shell
+output and so pays that latency per keystroke.  xterm over the same link
+is unaffected, because X11 is asynchronous and xterm never waits for a
+reply; Emacs does.
+
+Gated on `my-machine' here, in the toggles section, so that nothing
+further down has to branch on the host -- the same arrangement as
+`enable-vterm' above.  If another machine is ever reached the same way,
+add it to this one test.  The `display-graphic-p' half keeps these off
+under `emacs -nw' on Cannon, where there is no X connection to spare and
+suppressing the bell would just be a silent behaviour change.
+
+#+BEGIN_SRC emacs-lisp
+  (setq enable-remote-x-tuning
+        (and (eq my-machine 'cannon)
+             (display-graphic-p)))
+#+END_SRC
+
 ** Default font
 
 The font used for graphical frames, as an X logical font description.
@@ -303,9 +332,41 @@ frame or window for 80-column text.
 Set the vertical scroll bar on the left
 This will not take effect if running emacs -nw.
 
+Skipped where `enable-remote-x-tuning' is set: the thumb is redrawn
+every time a buffer's size or point changes, which in vterm is every
+line of output, and each redraw costs a round trip.
+
 #+BEGIN_SRC emacs-lisp
-(when (display-graphic-p)
+(when (and (display-graphic-p)
+           (not enable-remote-x-tuning))
   (set-scroll-bar-mode 'left))
+#+END_SRC
+
+** Remote display tuning
+
+Switch off two things that are on by default in a graphical Emacs and
+that cost X round trips continuously rather than on demand.
+
+The blinking cursor is the expensive one: it is two redraws a second,
+forever, even with Emacs idle and untouched.  Over a forwarded display
+that keeps the X connection permanently busy and lengthens the redisplay
+stalls that make typing feel laggy -- and those stalls are what let the
+X server's keyboard auto-repeat fire, which is where duplicated
+characters in vterm come from.  The repeat threshold itself is a
+property of the X server, not of Emacs: `xset r rate 800 20' on the
+machine running the display widens it.
+
+The tool bar is a row of pixmaps redrawn whenever the frame changes.
+The menu bar is deliberately left alone: it is static between frame
+changes, so it costs almost nothing, and it is useful.
+
+Both hang off the toggle, so every machine but Cannon keeps its usual
+appearance.
+
+#+BEGIN_SRC emacs-lisp
+  (when enable-remote-x-tuning
+    (blink-cursor-mode -1)
+    (tool-bar-mode -1))
 #+END_SRC
 
 ** Splash screen
@@ -358,6 +419,17 @@ occurs.  This is less annoying than the audible bell.
   (defun flash-mode-line ()
     (invert-face 'mode-line)
     (run-with-timer 0.1 nil #'invert-face 'mode-line))
+#+END_SRC
+
+Where `enable-remote-x-tuning' is set, drop the flash: it inverts the
+mode line and schedules a timer to invert it back, so every bell is two
+full mode-line redraws.  A shell rings the bell constantly -- every
+tab-completion that does not resolve -- so in vterm this is a steady
+drip of round trips for an effect too brief to see over a slow link.
+
+#+BEGIN_SRC emacs-lisp
+  (when enable-remote-x-tuning
+    (setq ring-bell-function 'ignore))
 #+END_SRC
 
 
@@ -1147,6 +1219,23 @@ survives a change of default.
   (when enable-vterm
     (setq vterm-kill-buffer-on-exit t)
   )
+#+END_SRC
+
+Where `enable-remote-x-tuning' is set, let vterm batch redraws harder.
+=vterm-timer-delay= (0.1 upstream) is both the delay on vterm's redraw
+timer and the timeout it gives `accept-process-output' after sending a
+key.  Raising it coalesces consecutive output into one redisplay instead
+of several, and lets the shell's echo of a keystroke arrive within the
+same command loop iteration, so a keystroke costs one redisplay rather
+than two.  It is a ceiling, not a sleep -- the wait returns as soon as
+output arrives -- so the cost when the link is quick is nil.
+
+0.25 is a starting point rather than a tuned value; lower it if output
+feels chunky.
+
+#+BEGIN_SRC emacs-lisp
+  (when (and enable-vterm enable-remote-x-tuning)
+    (setq vterm-timer-delay 0.25))
 #+END_SRC
 
 Always use bash (sorry zsh...)
