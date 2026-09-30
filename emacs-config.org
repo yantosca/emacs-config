@@ -749,6 +749,8 @@ Load markdown-mode
 
 #+BEGIN_SRC emacs-lisp
   (my-require 'markdown-mode)
+  (add-to-list 'process-coding-system-alist
+               '("\\(pandoc\\|markdown_py\\)" . utf-8))
 #+END_SRC
 
 ** org-mode
